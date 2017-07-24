@@ -1,0 +1,15 @@
+#vesion 420 core
+
+out vec4 FragColor;
+
+in vec2 textureCoord;
+
+//uniform vec4 color;
+uniform sampler2D texture1;
+
+
+void main()
+{
+  //this can include textures
+  FragColor = texture(texture1, textureCoord);
+}

@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{8c90bb88-ef96-4148-85e8-c3e918af6d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Engine">
+      <UniqueIdentifier>{22a2912e-445d-465b-8edf-1622381720f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Libraries">
+      <UniqueIdentifier>{9e3a0891-4916-4efd-9486-2e9f387e134d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Precompiled">
+      <UniqueIdentifier>{dd49d44b-f944-41ff-9ba9-01a884cacefe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Learning">
+      <UniqueIdentifier>{ce272097-1f0b-47da-a4da-e3ee53f8cd12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Learning\Allocators">
+      <UniqueIdentifier>{bfec7e80-f3d9-415d-a1d4-e1cc27ed5245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpenGL Tutorials">
+      <UniqueIdentifier>{a1acc01f-2b1b-412b-93c3-1f74626de506}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Engine\headers">
+      <UniqueIdentifier>{0b103d3a-a0fc-446c-a601-e743371a4325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Engine\sources">
+      <UniqueIdentifier>{ce54b292-be58-43aa-ad9d-ed73029f9e35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Components">
+      <UniqueIdentifier>{58d8f627-4be3-45ee-804a-1902681b5a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Systems">
+      <UniqueIdentifier>{73761279-4a6c-44b1-9fdb-ccbf9e8d424e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Systems\Graphics">
+      <UniqueIdentifier>{6f1b5687-b6af-4ca1-b077-c6f2dda19cea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Systems\Graphics\headers">
+      <UniqueIdentifier>{44de81f8-584c-4a93-b1ef-5b05b6f0276b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Systems\Graphics\sources">
+      <UniqueIdentifier>{fcdaf460-8d83-4b59-a79e-ce2595776377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Shaders">
+      <UniqueIdentifier>{ddce333b-b21e-4206-98fc-b4a7ba480a73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\GameStates">
+      <UniqueIdentifier>{254f1ba9-a15f-4cc8-ac22-09bd234041a5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+    <Text Include="VertexShader.txt">
+      <Filter>OpenGL Tutorials</Filter>
+    </Text>
+    <Text Include="FragmentShader.txt">
+      <Filter>OpenGL Tutorials</Filter>
+    </Text>
+    <Text Include="SqVertexShader.txt">
+      <Filter>OpenGL Tutorials</Filter>
+    </Text>
+    <Text Include="SqFragmentShader.txt">
+      <Filter>OpenGL Tutorials</Filter>
+    </Text>
+    <Text Include="ECFragShader.txt">
+      <Filter>Core\Shaders</Filter>
+    </Text>
+    <Text Include="ECVertexShader.txt">
+      <Filter>Core\Shaders</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Core\Precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="StackMemoryPool.h">
+      <Filter>Learning\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomAllocator.h">
+      <Filter>Learning\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="StackAllocatorCustom.h">
+      <Filter>Learning\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Core\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="HelloTriangle.h">
+      <Filter>OpenGL Tutorials</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>OpenGL Tutorials</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>OpenGL Tutorials</Filter>
+    </ClInclude>
+    <ClInclude Include="HelloSqaure.h">
+      <Filter>OpenGL Tutorials</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>OpenGL Tutorials</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>Core\Engine\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Core\Engine\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Core\Engine\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Core\Engine\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Space.h">
+      <Filter>Core\Engine\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem.h">
+      <Filter>Core\Systems\Graphics\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemsInclude.h">
+      <Filter>Core\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentsInclude.h">
+      <Filter>Core\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Core\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Core\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Core\Engine\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Archetypes.h">
+      <Filter>Core\Engine\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchTypeFactory.h">
+      <Filter>Core\Engine\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Core\Engine\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomWindow.h">
+      <Filter>Core\Systems\Graphics\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RotationComponent.h">
+      <Filter>Core\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GLShader.h">
+      <Filter>Core\Systems\Graphics\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GLShaderUniforms.h">
+      <Filter>Core\Systems\Graphics\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics.h">
+      <Filter>Core\Systems\Graphics\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Core\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TestGameWorld.h">
+      <Filter>Core\GameStates</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Core\Precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="StackMemoryPool.cpp">
+      <Filter>Learning\Allocators</Filter>
+    </ClCompile>
+    <ClCompile Include="TestTexture.cpp">
+      <Filter>OpenGL Tutorials</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem.cpp">
+      <Filter>Core\Systems\Graphics\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="gameloop.cpp">
+      <Filter>Core\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>Core\Engine\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Core\Engine\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Space.cpp">
+      <Filter>Core\Engine\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ArchTypeFactory.cpp">
+      <Filter>Core\Engine\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Archtypes.cpp">
+      <Filter>Core\Engine\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Core\Engine\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Core\Engine\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomWindow.cpp">
+      <Filter>Core\Systems\Graphics\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShader.cpp">
+      <Filter>Core\Systems\Graphics\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics.cpp">
+      <Filter>Core\Systems\Graphics\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShaderUniforms.cpp">
+      <Filter>Core\Systems\Graphics\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="TestGameWorld.cpp">
+      <Filter>Core\GameStates</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
