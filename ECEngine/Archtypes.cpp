@@ -15,7 +15,7 @@ namespace Engine {
 			camera->AddComponent(ComponentPointer(new TransformComponent()));
 			camera->SetName("Camera");			
 
-			//camera->GET_COMPONENT(TransformComponent)->scale = glm::vec2(1200.0f, 800.0f);
+			//camera->GET_COMPONENT(TransformComponent)->scale = glm::vec2(1600.0f, 800.0f);
 
 			return camera;
 

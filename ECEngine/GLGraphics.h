@@ -38,15 +38,19 @@ namespace Engine {
 				MeshInfo() : VertexBufferObject(0), VertexArrayObject(0), ElementBufferObject(0) {}; //Init all buffers to zero at the start
 			};
 
+			GLuint texture1;
+
 			//Draw the sqaures
 			void DrawEntity(const EntityPointer &entityToDraw, const CameraComponentPointer &camera);
 			//use this to create the sqaures - matrix
-			void CreateMesh();
+			void InitiailzeBuffers();
+			void ActivateTexture();
 			//use this to delete the sqaures
 			void DeleteMesh();
 
-			MeshInfo quadInfo, circleInfo;
+			void NewFrame();
 
+			MeshInfo quadInfo, circleInfo;			
 			ShaderPointer GetShader(std::string shader);
 			void AddShader(std::string shaderName, ShaderPointer shader);
 

@@ -26,31 +26,29 @@ namespace Engine {
 		~GLShader();
 
 		template<typename T>
-		//updates shader uniforms
 		void UpdateUniforms(const std::string &uniformName, const T &data);
-		//locates what are uniforms
+
 		void FindUniforms(const std::string &uniformName);
 
 		void LoadShaderFile(const char *vertexFile, const char *fragmentfile);
 		void Compile();
 		void Use();
 		void UnUse();
-
+		GLuint shaderProgramID;
 	private:
 		bool CompileFile(ShaderType type);
 		bool shaderFlags[maxShaderType]; //check which shaders compiled
-		GLuint shaderProgramID;
+		
 		GLuint shaderIDs[maxShaderType];
 		std::string shaderCodeFiles[maxShaderType];
-		std::unordered_map<std::string, GLint> shaderUniformLocations;
+		std::unordered_map<std::string, GLint> shaderUniformLocations;		
 
 	};
 
 	using ShaderPointer = std::shared_ptr<GLShader>;
 
 	template<typename T>
-	void GLShader::UpdateUniforms(const std::string &uniformName, const T &data) {
-		//LoadShaderData
+	void GLShader::UpdateUniforms(const std::string &uniformName, const T &data) {		
 		LoadShaderData(shaderUniformLocations[uniformName], data);
 	}
 

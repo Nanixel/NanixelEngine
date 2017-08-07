@@ -30,37 +30,28 @@ namespace Engine {
 
 
 		running = true;
-
-		//add our systems to the engine		
+		
+		//the order of how these are added dictates how they are updated
 		systems.push_back(SystemPointer(new Systems::CustomWindow()));
 		systems.push_back(SystemPointer(new Systems::CameraSystem()));		
 		systems.push_back(SystemPointer(new Systems::GLGraphics()));
-
-		//button controller
 		
 		//create a new gameworld space to play in
-		SpacePointer gameWorld = CreateSpace("Test GameWorld");
-
-		//set this as our active space
+		SpacePointer gameWorldSpace = CreateSpace("Test GameWorld");		
 		SetActiveSpace("Test GameWorld");
-
-
-		//system types are not defined outside the 'Systems' namespace
+		
 		using namespace Systems;
-		//add systems to our space
-		gameWorld->AddSystem(GETSYS(CameraSystem));
-		gameWorld->AddSystem(GETSYS(GLGraphics));
 
-		for (auto sys : systems) {
-			//initialize all of our systems
+		gameWorldSpace->AddSystem(GETSYS(CameraSystem));
+		gameWorldSpace->AddSystem(GETSYS(GLGraphics));
+
+		for (auto sys : systems) {			
 			sys->Init();
 		}
 	}
 
 	void Engine::ShutDown() {
-
-		//THIS IS PROBABLY NO GOOD -> Need to shut down systems in the correct order!!!
-		//possibly sort this list before doing this
+		//the systems will shutdown in the order they are added 
 		for (auto sys : systems) {
 			sys->ShutDown();
 		}
@@ -75,33 +66,22 @@ namespace Engine {
 		ENGINE = nullptr;
 	}
 
-	//TODO - Dont currently have any concept of what a frame is....
-
-	//dt is deltaTime
-	//TODO - this needs to do something with the camera
 	void Engine::Update(float dt) {
 
 		//we set active space here to ensure that the mouse will be in worldspace coordinates for that space
 		SetActiveSpace(CurrentState()->GetLogicalSpace());
 
-		//update window management system -> responsible for window and input
 		using Systems::CustomWindow;
-		GETSYS(CustomWindow)->Update(dt);
-		//GETSYS(CustomWindow)->newFrame();
+		GETSYS(CustomWindow)->Update(dt);		
 
-		//the current statue should be set up by now...if its not then we need to error check here
 		//the initial state is set up in game -> the rest can be set up between the gamestates them selves (maybe a gamestate map manager?)
 		GameStatePointer gameState = CurrentState();
 
-		//remeber we set up a space in the Init() of this Engine
 		for (auto space = spaces.begin(); space != spaces.end(); ++space) {
-
-			//space->first is the name in the map!
 			SetActiveSpace(space->first);
 
-			//if this is the space the current gamestate wants to use for updating
+			//if this is the space matches what the current gamestate wants to use for updating
 			if (space->first == gameState->GetLogicalSpace()) {			
-			//	//keep in mind that the game state holds certain entities
 				space->second->PopulateSystemEntities(gameState);
 				gameState->Update(dt);
 			}
@@ -115,12 +95,11 @@ namespace Engine {
 
 	void Engine::mainLoop() {
 
-		dt = 1.0f / 60.0f;
+		dt = 1.0f / 60.0f;		
 
 		while (running) {
-
+			//scope timer starts timing when its created and only stops once it leaves scope
 			ScopeTimer frameTimer(&dt);
-
 			Update(dt);
 		}
 

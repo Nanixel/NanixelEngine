@@ -7,10 +7,9 @@ namespace Engine {
 	using mask = unsigned;
 
 	enum EnumeratedComponent {
-		//all components that attach to entities -> used for indexing components
-		//The value of an enum here is the index on the entity of the component
+
 		EC_NONE = 0,
-		EC_Drawable = 1,
+		EC_DrawableComponent = 1,
 		EC_SpriteComponent = 2,
 		EC_CameraComponent = 3,
 		EC_TransformComponent,
@@ -20,8 +19,7 @@ namespace Engine {
 	};
 
 	enum BitFieldComponent {
-		//these are used for rapidly checking which components are attached to an entity
-		//they can be ORed together as an entity may have many components -> able to check in a single swoop
+
 		MC_ALIVE = 1,
 		MC_Transform = 1 << 1,
 		MC_Drawable = 1 << 2,
@@ -47,7 +45,6 @@ namespace Engine {
 		Component() = delete;
 	};
 
-	//will die once no references are on this component
 	using ComponentPointer = std::shared_ptr<Component>;
 
 

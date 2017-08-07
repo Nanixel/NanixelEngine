@@ -180,6 +180,9 @@
     <ClInclude Include="TestGameWorld.h">
       <Filter>Core\GameStates</Filter>
     </ClInclude>
+    <ClInclude Include="DrawableComponent.h">
+      <Filter>Core\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />

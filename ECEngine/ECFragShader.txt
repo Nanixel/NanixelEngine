@@ -1,4 +1,4 @@
-#vesion 420 core
+#version 420 core
 
 out vec4 FragColor;
 

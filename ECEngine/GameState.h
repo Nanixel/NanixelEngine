@@ -49,7 +49,7 @@ namespace Engine {
 		GameState() = delete;
 		std::vector<std::string> spaces;
 		const GameStateType state;
-		std::string logicalSpace = "Game World";
+		std::string logicalSpace = "Test GameWorld";
 
 	protected:
 

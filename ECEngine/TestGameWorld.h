@@ -8,7 +8,7 @@
 namespace Engine {
 
 	namespace GameStates {
-
+		
 		class TestGameWorld : public GameState
 		{
 		public:
@@ -25,9 +25,10 @@ namespace Engine {
 
 		private:
 			//some custom stuff you wanna do with sqaures
-			void realTimeKeys(float dt);
-			void realTimeMouse(float dt);
-			void SpawnDefaultBoxes();
+			
+			void SpawnDefaultBoxes();			
+			void RealTimeKeys();
+			EntityPointerList boxList;
 		};
 
 		using TestGameWorldPointer = std::shared_ptr<TestGameWorld>;

@@ -16,7 +16,7 @@ namespace Engine {
 //replace this with main when ready
 int main(int argc, char* argv[]) {
 
-	new Engine::Engine( );
+	new Engine::Engine(  );
 
 	Engine::ENGINE->Init();
 

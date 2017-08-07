@@ -16,19 +16,13 @@ namespace Engine {
 	public:
 
 		TransformComponent() : Component(EC_TransformComponent, MC_Transform), position(glm::vec3(0.0f, 0.0f, 0.0f)), scale(glm::vec3(1.0f, 1.0f, 1.0f)),
-			rotation(0.0f), Speed(2.5f) {}
+			rotation(0.0f), speed(2.5f) {}
 
 		glm::vec3 scale;
-		glm::vec3 position;
+		glm::vec3 position;		
 
-		//these have more to do with movement....so they can probably be their own component
-		float Yaw;
-		float Pitch;
-
-		//move these into a movement component....maybe
-		float Speed;
-		float velocity;
-		//this is just the degrees value that will be converted into radians
+		float speed;
+		float velocity;		
 		float rotation;
 
 		glm::mat4 modelMatrix;

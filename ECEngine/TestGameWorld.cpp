@@ -8,6 +8,14 @@
 #include <cstdlib>
 #include <time.h>
 
+
+enum CameraMovement {
+	FORWARD,
+	BACKWARD,
+	LEFT,
+	RIGHT
+};
+
 namespace Engine {
 
 	extern Engine* ENGINE;
@@ -31,38 +39,33 @@ namespace Engine {
 		//Dont think anything calls this init right now
 		void TestGameWorld::Init() {
 
-			//Register the spaces that should be updated with this system
-			RegisterSpace("Test GameWorld");
-
-			//Set Which space the gamestates Update function should be used with
+			//The Test Gameworld space should update with this system
+			RegisterSpace("Test GameWorld");			
 			SetLogicalSpace("Test GameWorld");
-
 			SpacePointer gameWorld = ENGINE->GetSpace("Test GameWorld");
-
 			gameWorld->ClearSpace();
-
-			//all we are doing is moving through boxes...
+			
 			gameWorld->AddSystem(GETSYS(CameraSystem));
 			gameWorld->AddSystem(GETSYS(GLGraphics));
-
-			//register for drawable objects
+			
 			RegisterComponent(MC_Transform);
-			RegisterComponent(MC_Drawable);
+			RegisterComponent(MC_Drawable);						
 
-			//there is no concept of a player for now, just a camera
-			//create our default box entities
-
-			SpawnDefaultBoxes();
-
-	
-			//TransformComponentPointer cameraTransform = gameWorld->GetCamera()->GET_COMPONENT(TransformComponent);			
-
+			CustomWindowPointer window = GETSYS(CustomWindow);
+			window->HideMouseCursor();
+			
+			SpawnDefaultBoxes();			
 		}
 
 		void TestGameWorld::Update(float dt) {
 			//just have to update the camera here and take user input
 			//I can get the camera through the engines space
 			//This method is responsible for updating the camera!!!!
+			//realTimeMouse(dt);
+			CameraComponentPointer defaultCamera = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(CameraComponent);
+			RealTimeKeys();
+			ENGINE->SendMsg(nullptr, nullptr, Message::MSG_MOUSE_MOVE);
+			
 		}
 
 		void TestGameWorld::ShutDown() {
@@ -72,40 +75,39 @@ namespace Engine {
 
 		}
 
-		void TestGameWorld::SendMsg(EntityPointer entityOne, EntityPointer entityTwo, Message::Message message) {
-
-			//maybe use this to controll the camera for now
-
+		void TestGameWorld::SendMsg(EntityPointer entityOne, EntityPointer entityTwo, Message::Message message) {						
+			//Handle some entity on entity messages in this state
 		}
 
 		void TestGameWorld::SpawnDefaultBoxes() {
-
-			for (int i{ 0 }; i < 10; i++) {
-
-				EntityPointer boxEntity = ENGINE->Factory().create("Box");
-				boxEntity->GET_COMPONENT(TransformComponent)->position = sampleCubePositions[i];
-				boxEntity->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
-				boxEntity->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
+			for (int i = 0; i < 10; i++) {
+				EntityPointer box = ENGINE->Factory().create("box");
+				box->GET_COMPONENT(TransformComponent)->position = sampleCubePositions[i];
+				box->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
+				box->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
 				//add our entity to the active space
 				//PopulateSystemEntites() is then called by the engine to add the spaces entities to each system in the space (This includes GLGraphics)
 				//On GLGraphic's Update(), it loops through its entites and draws it (thereby drawing the boxes that I make here)
-				ENGINE->GetActiveSpace()->AddEntity(boxEntity);
+				ENGINE->GetActiveSpace()->AddEntity(box);
 			}			
-
 		}
 
-		void TestGameWorld::realTimeKeys(float dt) {
-			CameraComponentPointer camera = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(CameraComponent);
+		//program the real time keyboard input...might want to make the engine responsible for this
+		void TestGameWorld::RealTimeKeys() {
+			//Camera system must process keyboard here
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-
+				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_A_PRESS);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_S_PRESS);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_D_PRESS);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_W_PRESS);
 			}
 		}
-
-		void TestGameWorld::realTimeMouse(float dt) {
-
-		}
-
-
 	}
 
 }

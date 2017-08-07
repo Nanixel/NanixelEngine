@@ -82,6 +82,7 @@ namespace Engine {
 		ArchtypeFactory archetypeFactory;
 
 		bool running = true;
+		bool testingEngineEnabled = false;
 
 
 

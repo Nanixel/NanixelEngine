@@ -4,6 +4,7 @@
 
 #include <memory>
 #include "./System.h"
+#include "./ComponentsInclude.h"
 
 
 namespace Engine {
@@ -20,11 +21,11 @@ namespace Engine {
 			void ShutDown();
 			void SendMsg(EntityPointer firstEntity, EntityPointer secondEntity, Message::Message message);
 
-		private:
-			void ConstrainMouse(float width, float height) {
-
-			}
-
+	
+		private:			
+			void SetupCameraRotation(CameraComponentPointer camera);
+			void UpdateCameraVectors(CameraComponentPointer camera);
+			void MoveCamera(CameraComponentPointer camera);
 		};		
 		using CameraSystemPointer = std::shared_ptr<CameraSystem>;
 	}

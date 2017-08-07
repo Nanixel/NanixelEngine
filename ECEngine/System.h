@@ -26,21 +26,19 @@ namespace Engine {
 
 		virtual ~System() {};		
 
-		//inheriting class MUST define these
 		virtual void Init() = 0;		
 		virtual void Update(float) = 0;
 		virtual void ShutDown() = 0;
-		//used to send messages to a system
+
 		virtual void SendMsg(EntityPointer entityOne, EntityPointer entity2, Message::Message message) {}
 
-		//specifies a component type required for the system to function
 		void RegisterComponent(BitFieldComponent component);
 
-		//NOTE engine automatically pre-fills the system's _entities member with ALL entities in the current space that meet the mask requirements
 		inline mask Mask() {
 			return _mask;
 		}
 
+		//only the Space and Engine class can access the private methods of a system
 		friend class Space;
 		friend class Engine;
 

@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "./Component.h"
+#include "SFML/Window.hpp"
 
 
 namespace Engine {
@@ -18,25 +19,43 @@ namespace Engine {
 
 	class CameraComponent : public Component {
 	public:
-		enum CameraView {
-			CV_ORTHOGRAPHIC,
-			CV_PERSPECTIVE
+		enum ProjectionMode {
+			ORTHOGRAPHIC,
+			PERSPECTIVE
 		};
+
+		enum CameraViewType {
+			FIRST_PERSON,
+			THIRD_PERSON,
+			ISOMETRIC
+		};
+
 
 		CameraComponent() : Component(EC_CameraComponent, MC_Camera) {}
 
 		//defualt to perspective since I am building a 3D engine
-		CameraView viewType = CV_PERSPECTIVE;
+		ProjectionMode projectionMode = PERSPECTIVE;
+		CameraViewType viewType = FIRST_PERSON;
+
+		glm::vec3 Front = glm::vec3(0.0f, 0.0f, -1.0f);
+		glm::vec3 WorldUp = glm::vec3(0.0f, 0.1f, 0.0f);
+		glm::vec3 Up;
+		glm::vec3 Right;
+		glm::vec3 Position = glm::vec3(0.0f, 0.0f, 0.0f);
+
+		bool Active;
+
+		//Settings
 		float FOV = 45.0f;
 		float NearPlane = 0.1f;
 		float FarPlane = 100.0f;
-		float Sensitivity = 0.1f;
-
-		glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::vec3 Position = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::vec3 Right;
-		glm::vec3 Front = glm::vec3(0.0f, 0.0f, 0.0f); //this is the same as the front vector
-		glm::vec3 WorldUp;
+		float Sensitivity = 0.2f;
+		float Yaw = -90.0f;
+		float Pitch = 0.0f;
+		float Roll = 0.0f;
+		float Size = 90; //Size of orthographic projection
+						
+		glm::vec2 MousePosition = glm::vec2(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
 
 		//this class has access to the protected members of these classes
 		friend class Systems::CameraSystem;

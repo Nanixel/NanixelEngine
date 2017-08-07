@@ -13,42 +13,19 @@
 #include <vector>
 #include <functional>
 
-enum class Wheels {
-	Vertical
-};
-
-enum class Buttons
-{
-	Left,
-	Middle,
-	Right
-};
-
-enum class Keys {
-	Null,
-	Escape,
-	Up,
-	Down,
-	W,
-	A,
-	S,
-	D
-
-};
-
 namespace Engine {
 
 	namespace Systems {
 
 		class CustomWindow : public System
 		{
-			static CustomWindow* Instance;
+			//static CustomWindow* Instance;
 
 			//typedefs
-			using PollEventFunction = std::function<void(void)>;
-			using KeyDownFunction = std::function<void(Keys)>;
-			using MouseDownFuntion = std::function<void(Buttons)>;
-			using WheelScrollFunction = std::function<void(Wheels, float)>;
+			//using PollEventFunction = std::function<void(void)>;
+			//using KeyDownFunction = std::function<void(Keys)>;
+			//using MouseDownFuntion = std::function<void(Buttons)>;
+			//using WheelScrollFunction = std::function<void(Wheels, float)>;
 			using OnCloseFunction = std::function<void(void)>;
 
 
@@ -68,13 +45,14 @@ namespace Engine {
 			void PollWindowEvent();
 			void PollKeyboardEvent();
 			void PollMouseEvent();
-			void setContextSettings();
-			void NewFrame();
+			void SetContextSettings();			
 
+			void HideMouseCursor();
+			void ConstrainMouseToWindow();
 			
 			glm::vec2 GetMousePosition();
 
-			void Subscribe(KeyDownFunction callback) {
+	/*		void Subscribe(KeyDownFunction callback) {
 				KeyDownFunctionSubscribers.push_back(callback);
 			}
 			void Subscribe(MouseDownFuntion callback) {
@@ -85,74 +63,54 @@ namespace Engine {
 			}
 			void Subscribe(WheelScrollFunction callback) {
 				WheelScrollFunctionSubscribers.push_back(callback);
-			}
+			}*/
 
 
-			static void setInstance(CustomWindow* inst) {
-				Instance = inst;
-			}
+			//static void setInstance(CustomWindow* inst) {
+			//	//Instance = inst;
+			//}
 
-			static CustomWindow* getInstance() {
-				return Instance;
-			}
+			//static CustomWindow* getInstance() {
+			//	//return Instance;
+			//}
 
-			void HideMouseCursor();
-
-			void preventMouse() {
-				int maxX = OpenGLContext->getSize().x;
-				int maxY = OpenGLContext->getSize().y;
-
-				int mX = sf::Mouse::getPosition(*OpenGLContext).x;
-				int mY = sf::Mouse::getPosition(*OpenGLContext).y;
-
-				if (mX < 0 || mY < 0 || mX > maxX || mY > maxY) {
-					if (mX < 0)
-						mX = 0;
-					else if (mX > maxX)
-						mX = maxX;
-
-					if (mY < 0)
-						mY = 0;
-					else if (mY > maxY)
-						mY = maxY;
-
-					sf::Mouse::setPosition(sf::Vector2i(mX, mY), *OpenGLContext);
-				}
-			}
+			
 
 			int Width;
 			int Height;
-			OnCloseFunction onClose;
+			//OnCloseFunction onClose;
+			//unique pointer just means that only OpenGlContext can point to our window
+			
 		private:
-			std::unique_ptr<sf::Window> OpenGLContext;
 			sf::ContextSettings contextSettings;
 			sf::Event currentEvent;
 			std::string caption;
+			std::unique_ptr<sf::Window> OpenGLContext;
 
 			//this is an array of function calls
-			std::vector<KeyDownFunction> KeyDownFunctionSubscribers;
-			std::vector<PollEventFunction> EventFunctionSubscribers;
-			std::vector<MouseDownFuntion> MouseDownFunctionSubscribers;
-			std::vector<WheelScrollFunction> WheelScrollFunctionSubscribers;
+			//std::vector<KeyDownFunction> KeyDownFunctionSubscribers;
+			//std::vector<PollEventFunction> EventFunctionSubscribers;
+			//std::vector<MouseDownFuntion> MouseDownFunctionSubscribers;
+			//std::vector<WheelScrollFunction> WheelScrollFunctionSubscribers;
 
 
-			void CleanSubscribers(Keys key) {
-				for (auto& func : KeyDownFunctionSubscribers) {
-					func(key);
-				}
-			}
+			//void CleanSubscribers(Keys key) {
+			//	for (auto& func : KeyDownFunctionSubscribers) {
+			//		func(key);
+			//	}
+			//}
 
-			void CleanSubscribers(Buttons button) {
-				for (auto& func : MouseDownFunctionSubscribers) {
-					func(button);
-				}
-			}
+			//void CleanSubscribers(Buttons button) {
+			//	for (auto& func : MouseDownFunctionSubscribers) {
+			//		func(button);
+			//	}
+			//}
 
-			void CleanSubscribers(Wheels wheel) {
-				for (auto& func : WheelScrollFunctionSubscribers) {
-					func(wheel, currentEvent.mouseWheelScroll.delta);
-				}
-			}
+			//void CleanSubscribers(Wheels wheel) {
+			//	for (auto& func : WheelScrollFunctionSubscribers) {
+			//		func(wheel, currentEvent.mouseWheelScroll.delta);
+			//	}
+			//}
 		};
 		using CustomWindowPointer = std::shared_ptr<CustomWindow>;
 	}

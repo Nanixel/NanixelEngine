@@ -149,15 +149,15 @@ void realTimeMouse() {
 }
 
 
-void onWheelScroll(Wheels wheel, float delta) {
-	switch (wheel) {
-	case Wheels::Vertical:
-		camera.ProcessScroll(delta);
-		break;
-	default:
-		break;
-	}
-}
+//void onWheelScroll(Wheels wheel, float delta) {
+//	switch (wheel) {
+//	case Wheels::Vertical:
+//		camera.ProcessScroll(delta);
+//		break;
+//	default:
+//		break;
+//	}
+//}
 
 
 void drawHelloSquare(Shader* shader, float mixValue) {

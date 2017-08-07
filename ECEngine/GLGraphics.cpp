@@ -26,10 +26,14 @@ namespace Engine {
 		void GLGraphics::Init() {
 
 			RegisterComponent(MC_Transform);
-			RegisterComponent(MC_Sprite);
+			RegisterComponent(MC_Sprite);					
 
-			//set up buffers
-			CreateMesh();
+			if (glewInit() != GLEW_OK) {
+				std::cout << "ERROR::GLGRAPICS::FAILED_INITIALIZING_GLEW_INIT" << std::endl;
+			}
+
+			//probably got to move this to its own component?
+			InitiailzeBuffers();
 
 			//create a new shader
 			ShaderPointer defaultShader(new GLShader());
@@ -46,11 +50,8 @@ namespace Engine {
 		}
 
 		void GLGraphics::Update(float dt) {
-			//draws everything in the entities list that is a sprite component
-			CameraComponentPointer camera = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(CameraComponent);
-			
-			glEnable(GL_DEPTH_TEST);
-			
+			CameraComponentPointer camera = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(CameraComponent);						
+			NewFrame();
 			//for each entity in the graphics system entities....
 			for (auto& it : _entities) {
 				DrawEntity(it, camera);
@@ -72,31 +73,40 @@ namespace Engine {
 		//pointer holds is change able, but changing the actual pointer means we need to pass a pointer to the pointer or a reference of the pointer (done here)
 		void GLGraphics::DrawEntity(const EntityPointer& entityToDraw, const CameraComponentPointer& camera) {
 			//find our box shader
-			ShaderPointer shaderProgram = shadersDict.find(entityToDraw->GET_COMPONENT(SpriteComponent)->shaderName)->second;
+			glViewport(0, 0, 800, 600);
+			std::string sname = entityToDraw->GET_COMPONENT(SpriteComponent)->shaderName;
+			ShaderPointer shaderProgram = shadersDict.find(sname)->second;
 			//get the transform component of our entity - each has their own transform component = yes
 			//remember this is just a pointer to the transform component of this drawable entity
 			TransformComponentPointer transform = entityToDraw->GET_COMPONENT(TransformComponent);
 
 			if (shaderProgram.get() != nullptr) {
 				//this is probably the model matrix
-				glm::mat4x4 object2World;
-				//my cube positions will be attached to my cube entity
-				object2World = glm::translate(object2World, glm::vec3(entityToDraw->GET_COMPONENT(TransformComponent)->position.x,
-					entityToDraw->GET_COMPONENT(TransformComponent)->position.y, entityToDraw->GET_COMPONENT(TransformComponent)->position.z));
+				//update camera matricies -> remember camera is passed in as a reference to a pointer so we can do this
+				shaderProgram->UpdateUniforms("view", camera->viewMatrix);
+				shaderProgram->UpdateUniforms("projection", camera->projectionMatrix);
+				shaderProgram->UpdateUniforms("texture1", 0);
+				glm::mat4 object2World;
+				//these transform postions will describe where the ojects exist on the screen
+				object2World = glm::translate(object2World, glm::vec3(entityToDraw->GET_COMPONENT(TransformComponent)->position));
 				object2World = glm::rotate(object2World,
 					glm::radians(transform->rotation),
 					glm::vec3(0.0f, 0.0f, 1.0f));
 				object2World = glm::scale(object2World,
 					glm::vec3(transform->scale.x, transform->scale.y, transform->scale.z));
 
-				shaderProgram->UpdateUniforms("model", object2World);
-				//update camera matricies -> remember camera is passed in as a reference to a pointer so we can do this
-				shaderProgram->UpdateUniforms("view", camera->viewMatrix);
-				shaderProgram->UpdateUniforms("projection", camera->projectionMatrix);
+				//shaderProgram->UpdateUniforms("model", object2World);
+				unsigned int location = glGetUniformLocation(shaderProgram->shaderProgramID, "model");
+				glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(object2World));
+
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texture1);
+
 				//shaderProgram->UpdateUniforms("color", entityToDraw->GET_COMPONENT(SpriteComponent)->color);				
 				shaderProgram->Use();
-
 				glBindVertexArray(quadInfo.VertexArrayObject);
+
 				//check what the 36 means here - aka to reder a cube you need 36 vertices
 				//6 faces * 2 triangles * 3 verticies.....there is probably a better way to do this but I have not learned it yet
 				glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -104,9 +114,11 @@ namespace Engine {
 		}
 
 		//currently this handles textures too.....
-		void GLGraphics::CreateMesh() {
+		void GLGraphics::InitiailzeBuffers() {
 
-			float vertices[] = {
+			//these verticies describe the mesh
+
+			float meshVerticies[] = {
 				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 				0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
 				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -152,11 +164,11 @@ namespace Engine {
 			
 			glGenVertexArrays(1, &quadInfo.VertexArrayObject);
 			glGenBuffers(1, &quadInfo.VertexBufferObject);
-			glGenBuffers(1, &quadInfo.ElementBufferObject);
+			//glGenBuffers(1, &quadInfo.ElementBufferObject);
 
 			glBindVertexArray(quadInfo.VertexArrayObject);
 			glBindBuffer(GL_ARRAY_BUFFER, quadInfo.VertexBufferObject);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(meshVerticies), meshVerticies, GL_STATIC_DRAW);
 
 			//need to make an array of indicies if I am to use this
 			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ElementBufferObject);
@@ -177,7 +189,6 @@ namespace Engine {
 			//glBindBuffer(GL_ARRAY_BUFFER, 0);
 			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			GLuint texture1;
 			glGenTextures(1, &texture1);
 			glBindTexture(GL_TEXTURE_2D, texture1);
 			// set the texture wrapping parameters
@@ -202,7 +213,10 @@ namespace Engine {
 			stbi_image_free(data);
 
 		}
-		
+
+		void GLGraphics::ActivateTexture() {
+
+		}		
 
 		//0 is the unbinding value, therefore we check for it
 		void GLGraphics::DeleteMesh() {
@@ -232,6 +246,11 @@ namespace Engine {
 			shadersDict.emplace(shaderName, shader);
 		}
 
+		void GLGraphics::NewFrame() {
+			glEnable(GL_DEPTH_TEST);
+			glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		}
 	}
 }
 

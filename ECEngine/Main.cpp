@@ -16,19 +16,19 @@ float mixValue = 0.0;
 
 
 //might want to change this to take a function
-void OnKeyDown(Keys key) {
-	switch (key)
-	{
-	case Keys::Escape:
-		std::cout << "Escape was pressed" << std::endl;
-		break;
-	case Keys::A:
-		std::cout << "A was pressed" << std::endl;
-		break;
-	default:
-		break;
-	}
-}
+//void OnKeyDown(Keys key) {
+//	switch (key)
+//	{
+//	case Keys::Escape:
+//		std::cout << "Escape was pressed" << std::endl;
+//		break;
+//	case Keys::A:
+//		std::cout << "A was pressed" << std::endl;
+//		break;
+//	default:
+//		break;
+//	}
+//}
 
 
 void testStackStuff() {

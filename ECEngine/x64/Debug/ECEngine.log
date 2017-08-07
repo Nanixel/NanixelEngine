@@ -1,19 +1,4 @@
-﻿  CameraSystem.cpp
-c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
-  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): note: see declaration of 'Engine::Engine'
-  Generating Code...
-  Compiling...
-  gameloop.cpp
-c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
-  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): note: see declaration of 'Engine::Engine'
-  TestGameWorld.cpp
-c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
-  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): note: see declaration of 'Engine::Engine'
-  Space.cpp
-c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
-  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): note: see declaration of 'Engine::Engine'
-  GameState.cpp
-  GLGraphics.cpp
+﻿  GLGraphics.cpp
 c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
   c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): note: see declaration of 'Engine::Engine'
   Engine.cpp
@@ -22,8 +7,14 @@ c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(
   CustomWindow.cpp
 c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
   c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): note: see declaration of 'Engine::Engine'
-c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\customwindow.cpp(188): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\customwindow.cpp(189): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\customwindow.cpp(175): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\customwindow.cpp(176): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
   Generating Code...
+  Skipping... (no relevant changes detected)
+  gameloop.cpp
+  TestGameWorld.cpp
+  Space.cpp
+  Main.cpp
+  CameraSystem.cpp
   ECEngine.vcxproj -> C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.exe
   ECEngine.vcxproj -> C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.pdb (Full PDB)

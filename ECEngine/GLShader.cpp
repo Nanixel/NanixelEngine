@@ -57,13 +57,13 @@ namespace Engine {
 		return GL_TRUE;
 	}
 
-	static GLboolean checkProgramStatus(GLuint programID) {
+	static bool checkProgramStatus(GLuint programID) {
 
 		GLint programStatus;
 
 		glGetProgramiv(programID, GL_LINK_STATUS, &programStatus);
 
-		if (programStatus != GL_TRUE) {
+		if (programStatus != true) {
 
 			GLint programInfoLogSize;
 			glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &programInfoLogSize);
@@ -74,7 +74,7 @@ namespace Engine {
 			return GL_FALSE;
 		}
 
-		return GL_TRUE;
+		return true;
 	}
 
 	GLShader::GLShader() {

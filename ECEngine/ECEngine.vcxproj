@@ -178,6 +178,7 @@
     <ClInclude Include="ComponentsInclude.h" />
     <ClInclude Include="CustomAllocator.h" />
     <ClInclude Include="CustomWindow.h" />
+    <ClInclude Include="DrawableComponent.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameState.h" />

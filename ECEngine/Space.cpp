@@ -34,7 +34,6 @@ namespace Engine {
 	}
 
 	EntityPointer Space::CreateEntity() {
-		//make sure you understand this
 		_entities.push_back(EntityPointer(new Entity));
 		return _entities.back();
 	}
@@ -52,6 +51,7 @@ namespace Engine {
 
 	//this is called on the gamestate
 	void Space::PopulateSystemEntities(SystemPointer sys) const {
+		//clear the current system entities and populate the system with some new ones
 		sys->_entities.clear();
 		if (sys->Mask() != MC_NOOBJECTS) {
 			//foreach entity in this space, add it to each of our systems entities
@@ -61,8 +61,7 @@ namespace Engine {
 				mask m = sys->Mask();
 				if (it->CheckMask(m)) {
 					sys->_entities.push_back(it);
-				}
-				//CHECK MASK RIGHT HERE				
+				}			
 			}
 		}
 	}
@@ -70,7 +69,7 @@ namespace Engine {
 
 	EntityPointerList Space::GetEntities(mask m) const {
 		EntityPointerList matches;
-		//search for all entiteis that fit the mask
+
 		for (auto it : _entities) {
 			if (it->CheckMask(m)) {
 				matches.push_back(it);
