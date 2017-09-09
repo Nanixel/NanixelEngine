@@ -14,6 +14,8 @@ namespace Engine {
 		//remember the DefaultCamara is a *CreateArchetypeFn
 		AddArchtype("DefaultCamera", Archtypes::DefaultCamera);
 
+		AddArchtype("2DCamera", Archtypes::Default2DCamera);
+
 		AddArchtype("box", Archtypes::BoxGameObject);
 
 		AddArchtype("Player", Archtypes::Player);

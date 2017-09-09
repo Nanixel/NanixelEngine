@@ -14,6 +14,7 @@ namespace Engine {
 		EC_CustomWindow,
 		EC_GLGraphics,
 		EC_CameraSystem,
+		EC_ResourceSystem,
 		MovementSys,
 		GameStateSys,
 		MAX

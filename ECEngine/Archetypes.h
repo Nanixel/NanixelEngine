@@ -1,6 +1,7 @@
 #pragma once
 #include "./Entity.h"
 #include "./ComponentsInclude.h"
+#include <memory>
 
 namespace Engine {
 
@@ -10,6 +11,8 @@ namespace Engine {
 	namespace Archtypes {
 
 		EntityPointer DefaultCamera();
+
+		EntityPointer Default2DCamera();
 
 		EntityPointer BoxGameObject();
 

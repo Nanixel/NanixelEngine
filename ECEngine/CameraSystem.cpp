@@ -38,6 +38,9 @@ namespace Engine {
 				case CameraComponent::CameraViewType::ISOMETRIC:
 					//do something with isometric view
 					break;
+				case CameraComponent::CameraViewType::OVERHEAD:
+					//adjust/setup 2D camera
+					break;
 				default:
 					break;
 				}
@@ -47,9 +50,12 @@ namespace Engine {
 				
 				if (camera->projectionMode == CameraComponent::ProjectionMode::PERSPECTIVE) {
 					camera->projectionMatrix = glm::perspective(glm::radians(camera->FOV), (float)windowDimensions.first / (float)windowDimensions.second, camera->NearPlane, camera->FarPlane);
+					camera->viewMatrix = glm::lookAt(camera->Position, camera->Position + camera->Front, camera->Up);
 				}
-				camera->viewMatrix = glm::lookAt(camera->Position, camera->Position + camera->Front, camera->Up);
-			
+				else if (camera->projectionMode == CameraComponent::ProjectionMode::ORTHOGRAPHIC) {
+					//HARD CODED FOR NOW
+					camera->projectionMatrix = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
+				}							
 			}
 		}
 		

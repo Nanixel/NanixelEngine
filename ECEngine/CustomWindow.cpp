@@ -41,11 +41,9 @@ namespace Engine {
 			OpenGLContext->setVerticalSyncEnabled(true);
 			if (!OpenGLContext) {				
 				std::exception("No OpenGL target found");
-			}
-			//take this out of here and put it in the graphics code
-			
-			
+			}									
 		}
+
 		void CustomWindow::SetContextSettings() {
 			contextSettings.depthBits = 24;
 			contextSettings.stencilBits = 8;
@@ -53,6 +51,7 @@ namespace Engine {
 			contextSettings.majorVersion = 3;
 			contextSettings.minorVersion = 3;
 		}
+
 		void CustomWindow::ShutDown() {
 			OpenGLContext->close();
 		}

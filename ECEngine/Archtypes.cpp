@@ -21,6 +21,20 @@ namespace Engine {
 
 		}
 
+		EntityPointer Default2DCamera() {
+
+			EntityPointer cameraEntity = std::make_shared<Entity>();
+			cameraEntity->AddComponent(std::make_shared<CameraComponent>());
+
+			cameraEntity->GET_COMPONENT(CameraComponent)->projectionMode = CameraComponent::ProjectionMode::ORTHOGRAPHIC;
+			cameraEntity->GET_COMPONENT(CameraComponent)->viewType = CameraComponent::CameraViewType::OVERHEAD;
+
+			cameraEntity->AddComponent(std::make_shared<TransformComponent>());
+			cameraEntity->SetName("2DCamera");
+			
+			return cameraEntity;
+		}
+
 		EntityPointer BoxGameObject() {
 			//dynamic memory allocation
 			EntityPointer boxEntity(new Entity());

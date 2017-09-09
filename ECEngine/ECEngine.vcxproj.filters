@@ -61,6 +61,18 @@
     <Filter Include="Core\GameStates">
       <UniqueIdentifier>{254f1ba9-a15f-4cc8-ac22-09bd234041a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Utilities">
+      <UniqueIdentifier>{fe5bee35-d964-4bae-9862-930deb1b05e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Systems\Resources">
+      <UniqueIdentifier>{c1e7a9af-33d3-4264-8e44-f3b42c7480ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Systems\Resources\headers">
+      <UniqueIdentifier>{4bb83bf9-ecf0-4298-8e72-ca78f832856c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Systems\Resources\sources">
+      <UniqueIdentifier>{77997dea-be1d-43a8-9e04-8f78c982a433}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -80,6 +92,12 @@
       <Filter>Core\Shaders</Filter>
     </Text>
     <Text Include="ECVertexShader.txt">
+      <Filter>Core\Shaders</Filter>
+    </Text>
+    <Text Include="2DVertexShader.txt">
+      <Filter>Core\Shaders</Filter>
+    </Text>
+    <Text Include="2DFragmentShader.txt">
       <Filter>Core\Shaders</Filter>
     </Text>
   </ItemGroup>
@@ -162,15 +180,6 @@
     <ClInclude Include="CustomWindow.h">
       <Filter>Core\Systems\Graphics\headers</Filter>
     </ClInclude>
-    <ClInclude Include="RotationComponent.h">
-      <Filter>Core\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GLShader.h">
-      <Filter>Core\Systems\Graphics\headers</Filter>
-    </ClInclude>
-    <ClInclude Include="GLShaderUniforms.h">
-      <Filter>Core\Systems\Graphics\headers</Filter>
-    </ClInclude>
     <ClInclude Include="GLGraphics.h">
       <Filter>Core\Systems\Graphics\headers</Filter>
     </ClInclude>
@@ -180,8 +189,17 @@
     <ClInclude Include="TestGameWorld.h">
       <Filter>Core\GameStates</Filter>
     </ClInclude>
-    <ClInclude Include="DrawableComponent.h">
+    <ClInclude Include="Constants.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceComponent.h">
       <Filter>Core\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Core\Systems\Resources\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="2DGameWorld.h">
+      <Filter>Core\GameStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -225,16 +243,16 @@
     <ClCompile Include="CustomWindow.cpp">
       <Filter>Core\Systems\Graphics\sources</Filter>
     </ClCompile>
-    <ClCompile Include="GLShader.cpp">
-      <Filter>Core\Systems\Graphics\sources</Filter>
-    </ClCompile>
     <ClCompile Include="GLGraphics.cpp">
       <Filter>Core\Systems\Graphics\sources</Filter>
     </ClCompile>
-    <ClCompile Include="GLShaderUniforms.cpp">
-      <Filter>Core\Systems\Graphics\sources</Filter>
-    </ClCompile>
     <ClCompile Include="TestGameWorld.cpp">
+      <Filter>Core\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Core\Systems\Resources\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="2DGameWorld.cpp">
       <Filter>Core\GameStates</Filter>
     </ClCompile>
   </ItemGroup>

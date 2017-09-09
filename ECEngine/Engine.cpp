@@ -32,9 +32,9 @@ namespace Engine {
 		running = true;
 		
 		//the order of how these are added dictates how they are updated
-		systems.push_back(SystemPointer(new Systems::CustomWindow()));
-		systems.push_back(SystemPointer(new Systems::CameraSystem()));		
-		systems.push_back(SystemPointer(new Systems::GLGraphics()));
+		systems.push_back(std::make_shared<Systems::CustomWindow>());
+		systems.push_back(std::make_shared<Systems::CameraSystem>());
+		systems.push_back(std::make_shared<Systems::GLGraphics>());		
 		
 		//create a new gameworld space to play in
 		SpacePointer gameWorldSpace = CreateSpace("Test GameWorld");		
@@ -112,7 +112,7 @@ namespace Engine {
 		}
 		else {
 			//making a new space automatically makes a new camera
-			spaces.emplace(name, SpacePointer(new Space(name)));
+			spaces.emplace(name, std::make_shared<Space>(name));
 		}
 
 		return GetSpace(name);

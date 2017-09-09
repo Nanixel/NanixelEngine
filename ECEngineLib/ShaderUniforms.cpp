@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "./GLShaderUniforms.h"
+#include "./ShaderUniforms.h"
 #include <glm/gtc/type_ptr.hpp>
 
 void LoadShaderData(const GLint location, const GLint &data) {

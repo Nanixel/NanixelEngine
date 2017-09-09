@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "./Engine.h"
 #include "GLGraphics.h"
+#include "stb_image.h"
+#include "./Constants.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp> //convert glm data type to raw pointers
 #include <math.h>
+#include <numeric>
 #include <glm/gtc/matrix_transform.hpp> //scale, rotate, translate, projection, ortho
-#include "stb_image.h"
-
 
 struct QuadMesh {
 	glm::vec4 vertices;
@@ -28,6 +29,7 @@ namespace Engine {
 			RegisterComponent(MC_Transform);
 			RegisterComponent(MC_Sprite);					
 
+			//Initialize glewInit()
 			if (glewInit() != GLEW_OK) {
 				std::cout << "ERROR::GLGRAPICS::FAILED_INITIALIZING_GLEW_INIT" << std::endl;
 			}
@@ -36,7 +38,7 @@ namespace Engine {
 			InitiailzeBuffers();
 
 			//create a new shader
-			ShaderPointer defaultShader(new GLShader());
+			Shaders::ShaderPointer defaultShader = std::make_shared<Shaders::ShaderUtility>();
 			defaultShader->LoadShaderFile("ECVertexShader.txt", "ECFragShader.txt");
 			defaultShader->Compile();
 
@@ -72,20 +74,16 @@ namespace Engine {
 		//we pass in references to the pointers since we may need to allocate memory for this pointers -> the value the 
 		//pointer holds is change able, but changing the actual pointer means we need to pass a pointer to the pointer or a reference of the pointer (done here)
 		void GLGraphics::DrawEntity(const EntityPointer& entityToDraw, const CameraComponentPointer& camera) {
-			//find our box shader
+			//move this out of here
 			glViewport(0, 0, 800, 600);
 			std::string sname = entityToDraw->GET_COMPONENT(SpriteComponent)->shaderName;
-			ShaderPointer shaderProgram = shadersDict.find(sname)->second;
-			//get the transform component of our entity - each has their own transform component = yes
-			//remember this is just a pointer to the transform component of this drawable entity
+			Shaders::ShaderPointer shaderProgram = shadersDict.find(sname)->second;
 			TransformComponentPointer transform = entityToDraw->GET_COMPONENT(TransformComponent);
 
 			if (shaderProgram.get() != nullptr) {
-				//this is probably the model matrix
-				//update camera matricies -> remember camera is passed in as a reference to a pointer so we can do this
-				shaderProgram->UpdateUniforms("view", camera->viewMatrix);
-				shaderProgram->UpdateUniforms("projection", camera->projectionMatrix);
-				shaderProgram->UpdateUniforms("texture1", 0);
+				shaderProgram->UpdateUniforms(Constants::VIEWUNIFORM, camera->viewMatrix);
+				shaderProgram->UpdateUniforms(Constants::PROJECTIONUNIFORM, camera->projectionMatrix);
+				shaderProgram->UpdateUniforms(Constants::TEXTUREUNITFORM, 0);
 				glm::mat4 object2World;
 				//these transform postions will describe where the ojects exist on the screen
 				object2World = glm::translate(object2World, glm::vec3(entityToDraw->GET_COMPONENT(TransformComponent)->position));
@@ -95,15 +93,13 @@ namespace Engine {
 				object2World = glm::scale(object2World,
 					glm::vec3(transform->scale.x, transform->scale.y, transform->scale.z));
 
-				//shaderProgram->UpdateUniforms("model", object2World);
-				unsigned int location = glGetUniformLocation(shaderProgram->shaderProgramID, "model");
-				glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(object2World));
+				shaderProgram->UpdateUniforms(Constants::MODELUNIFORM, object2World);
 
 
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, texture1);
 
-				//shaderProgram->UpdateUniforms("color", entityToDraw->GET_COMPONENT(SpriteComponent)->color);				
+				shaderProgram->UpdateUniforms("color", entityToDraw->GET_COMPONENT(SpriteComponent)->color);				
 				shaderProgram->Use();
 				glBindVertexArray(quadInfo.VertexArrayObject);
 
@@ -116,8 +112,8 @@ namespace Engine {
 		//currently this handles textures too.....
 		void GLGraphics::InitiailzeBuffers() {
 
-			//these verticies describe the mesh
-
+			
+			//Need to find a way to convert a vector to this
 			float meshVerticies[] = {
 				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 				0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -174,9 +170,6 @@ namespace Engine {
 			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ElementBufferObject);
 			//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(something2), something2, GL_STATIC_DRAW);
 
-			//need to do this for color and textures....so can probably reuse this
-			//first arg is the location
-			//these also need to be adjustable depending on what i have......
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(0);
 
@@ -214,6 +207,28 @@ namespace Engine {
 
 		}
 
+		void GLGraphics::InitRenderData(GLfloat *meshData, std::vector<VertexAttribute> meshAttributes) {
+			int strideMultiplier = std::accumulate(meshAttributes.begin(), meshAttributes.end(), 0, 
+				[](const VertexAttribute& attrib) {return attrib.size; });
+			GLsizei stride = strideMultiplier * sizeof(GLfloat);
+			int counter = 0;
+
+			glGenVertexArrays(1, &quadInfo.VertexArrayObject);
+			glGenBuffers(1, &quadInfo.VertexBufferObject);
+
+			glBindBuffer(GL_ARRAY_BUFFER, quadInfo.VertexBufferObject);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(*meshData), meshData, GL_STATIC_DRAW);
+			
+			glBindVertexArray(quadInfo.VertexArrayObject);
+			for (auto it = meshAttributes.begin(); it != meshAttributes.end(); it++) {
+				if (it->size > 0) {
+					glEnableVertexAttribArray(it->location);
+					glVertexAttribPointer(0, it->size, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(counter * sizeof(GLfloat)));
+					counter += it->size;
+				}
+			}									
+		}
+
 		void GLGraphics::ActivateTexture() {
 
 		}		
@@ -231,7 +246,7 @@ namespace Engine {
 			}
 		}
 
-		ShaderPointer GLGraphics::GetShader(std::string shader) {
+		Shaders::ShaderPointer GLGraphics::GetShader(std::string shader) {
 			//find the shader by its name
 			ShaderMap::iterator it = shadersDict.find(shader);
 			if (it != shadersDict.end()) {
@@ -242,7 +257,7 @@ namespace Engine {
 			throw std::range_error("ERROR::SHADER::SHADER_NOT_FOUND_ON_ADD");
 		}
 
-		void GLGraphics::AddShader(std::string shaderName, ShaderPointer shader) {
+		void GLGraphics::AddShader(std::string shaderName, Shaders::ShaderPointer shader) {
 			shadersDict.emplace(shaderName, shader);
 		}
 

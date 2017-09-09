@@ -14,7 +14,8 @@ namespace Engine {
 			MSG_D_PRESS,
 			MSG_W_PRESS,
 			MSG_ESC_PRESS,
-			MSG_MOUSE_MOVE
+			MSG_MOUSE_MOVE,
+			MSG_UPDATE_RESOURCE
 			//types of game messages
 		};
 	}

@@ -6,6 +6,9 @@
 namespace Engine {
 
 	class DrawableComponent : public Component {
+	protected:
+		//only instances of this class and dirivatives of this class can access this
+		bool Visible;
 	public:
 		DrawableComponent() : Component(EC_DrawableComponent, MC_Drawable) {}
 		

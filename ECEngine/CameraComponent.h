@@ -27,7 +27,8 @@ namespace Engine {
 		enum CameraViewType {
 			FIRST_PERSON,
 			THIRD_PERSON,
-			ISOMETRIC
+			ISOMETRIC,
+			OVERHEAD
 		};
 
 

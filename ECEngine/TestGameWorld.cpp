@@ -49,7 +49,7 @@ namespace Engine {
 			gameWorld->AddSystem(GETSYS(GLGraphics));
 			
 			RegisterComponent(MC_Transform);
-			RegisterComponent(MC_Drawable);						
+			//RegisterComponent(MC_Drawable);						
 
 			CustomWindowPointer window = GETSYS(CustomWindow);
 			window->HideMouseCursor();
