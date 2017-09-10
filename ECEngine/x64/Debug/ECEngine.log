@@ -1,8 +1,7 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (ECEngineTest.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Engine.cpp
+  GLGraphics.cpp
 c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
-c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
-  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine.h(20): note: see declaration of 'Engine::Engine'
-     Creating library C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.lib and object C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.exp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
+  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): note: see declaration of 'Engine::Engine'
   ECEngine.vcxproj -> C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.exe
   ECEngine.vcxproj -> C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.pdb (Full PDB)

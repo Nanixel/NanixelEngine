@@ -1,12 +1,7 @@
 #include "stdafx.h"
-#include "CustomAllocator.h"
-#include "StackAllocatorCustom.h"
 #include <cstdlib>
 #include <string>
-#include "CustomWindow.h"
-#include "HelloTriangle.h"
-#include "HelloSqaure.h"
-#include "Camera.h"
+
 
 bool Active;
 
@@ -37,7 +32,7 @@ void testStackStuff() {
 
 	//testAddingElements();
 
-	testStackAllocator();
+	//testStackAllocator();
 }
 
 
