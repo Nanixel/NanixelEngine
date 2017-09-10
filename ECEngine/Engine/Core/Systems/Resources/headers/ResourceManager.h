@@ -1,7 +1,7 @@
 #pragma once
-#include "./System.h"
-#include "./Texture.h"
-#include "./ShaderUtility.h"
+#include "../ECEngine/Engine/Core/Engine/headers/System.h"
+#include "../ECEngineLib/Texture.h"
+#include "../ECEngineLib/ShaderUtility.h"
 
 #include <GL/glew.h>
 #include <vector>

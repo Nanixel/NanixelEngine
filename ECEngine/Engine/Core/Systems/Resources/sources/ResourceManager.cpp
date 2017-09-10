@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "ResourceManager.h"
-#include "stb_image.h"
+#include "../ECEngine/Engine/Core/Systems/Resources/headers/ResourceManager.h"
+#include "../ECEngine/Engine/Core/Libraries/stb_image.h"
 
 namespace Engine {
 

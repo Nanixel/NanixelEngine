@@ -1,7 +1,52 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (ECEngineTest.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  stdafx.cpp
+  Main.cpp
+  TestTexture.cpp
+  StackMemoryPool.cpp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\learning\allocators\stackmemorypool.cpp(72): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
   GLGraphics.cpp
 c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
 c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
   c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): note: see declaration of 'Engine::Engine'
+  CustomWindow.cpp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
+  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): note: see declaration of 'Engine::Engine'
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\systems\graphics\sources\customwindow.cpp(174): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\systems\graphics\sources\customwindow.cpp(175): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  CameraSystem.cpp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
+  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): note: see declaration of 'Engine::Engine'
+  ResourceManager.cpp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\texture.h(24): warning C4091: '__declspec(dllexport)': ignored on left of 'Texture::Texture' when no variable is declared
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
+  TestGameWorld.cpp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
+  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): note: see declaration of 'Engine::Engine'
+  2DGameWorld.cpp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
+  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): note: see declaration of 'Engine::Engine'
+  System.cpp
+  Space.cpp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
+  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): note: see declaration of 'Engine::Engine'
+  GameState.cpp
+  Entity.cpp
+  Engine.cpp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
+  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): note: see declaration of 'Engine::Engine'
+  Archtypes.cpp
+  ArchTypeFactory.cpp
+  gameloop.cpp
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
+  c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(20): note: see declaration of 'Engine::Engine'
+  Generating Code...
+     Creating library C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.lib and object C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.exp
   ECEngine.vcxproj -> C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.exe
   ECEngine.vcxproj -> C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.pdb (Full PDB)
