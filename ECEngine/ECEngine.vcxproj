@@ -161,6 +161,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="Engine\Archives\Notes.txt" />
     <Text Include="Engine\Core\Shaders\2DFragmentShader.txt" />
     <Text Include="Engine\Core\Shaders\2DVertexShader.txt" />
     <Text Include="Engine\Core\Shaders\ECFragShader.txt" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Engine\Core\GameStates\TestGameWorld.h" />
     <ClInclude Include="Engine\Core\Libraries\stb_image.h" />
     <ClInclude Include="Engine\Core\Libraries\Timer.h" />
+    <ClInclude Include="Engine\Core\Systems\Resources\headers\BaseTexture.h" />
     <ClInclude Include="Engine\Core\Systems\Resources\headers\ResourceManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Engine\Core\Systems\Graphics\headers\CameraSystem.h" />

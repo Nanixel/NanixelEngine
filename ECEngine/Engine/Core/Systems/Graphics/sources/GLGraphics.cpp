@@ -3,10 +3,11 @@
 #include "../ECEngine/Engine/Core/Systems/Graphics/headers/GLGraphics.h"
 #include "../ECEngine/Engine/Core/Libraries/stb_image.h"
 #include "../ECEngine/Engine/Core/Utilities/Constants.h"
+#include "../ECEngine/Engine/Core/Systems/Resources/headers/ResourceManager.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp> //convert glm data type to raw pointers
 #include <math.h>
-//#include <numeric>
+#include <numeric>
 #include <glm/gtc/matrix_transform.hpp> //scale, rotate, translate, projection, ortho
 
 struct QuadMesh {
@@ -36,6 +37,7 @@ namespace Engine {
 
 			//probably got to move this to its own component?
 			InitiailzeBuffers();
+
 
 			//create a new shader
 			Shaders::ShaderPointer defaultShader = std::make_shared<Shaders::ShaderUtility>();
@@ -74,32 +76,33 @@ namespace Engine {
 		//we pass in references to the pointers since we may need to allocate memory for this pointers -> the value the 
 		//pointer holds is change able, but changing the actual pointer means we need to pass a pointer to the pointer or a reference of the pointer (done here)
 		void GLGraphics::DrawEntity(const EntityPointer& entityToDraw, const CameraComponentPointer& camera) {
-			//move this out of here
-			glViewport(0, 0, 800, 600);
+			
+			SpritePointer spriteComponent = entityToDraw->GET_COMPONENT(SpriteComponent);
 			std::string sname = entityToDraw->GET_COMPONENT(SpriteComponent)->shaderName;
 			Shaders::ShaderPointer shaderProgram = shadersDict.find(sname)->second;
 			TransformComponentPointer transform = entityToDraw->GET_COMPONENT(TransformComponent);
 
 			if (shaderProgram.get() != nullptr) {
+				//view may not exist if this is a 2D game
 				shaderProgram->UpdateUniforms(Constants::VIEWUNIFORM, camera->viewMatrix);
 				shaderProgram->UpdateUniforms(Constants::PROJECTIONUNIFORM, camera->projectionMatrix);
-				shaderProgram->UpdateUniforms(Constants::TEXTUREUNITFORM, 0);
-				glm::mat4 object2World;
-				//these transform postions will describe where the ojects exist on the screen
-				object2World = glm::translate(object2World, glm::vec3(entityToDraw->GET_COMPONENT(TransformComponent)->position));
-				object2World = glm::rotate(object2World,
-					glm::radians(transform->rotation),
-					glm::vec3(0.0f, 0.0f, 1.0f));
-				object2World = glm::scale(object2World,
-					glm::vec3(transform->scale.x, transform->scale.y, transform->scale.z));
-
-				shaderProgram->UpdateUniforms(Constants::MODELUNIFORM, object2World);
-
+				shaderProgram->UpdateUniforms(Constants::COLORUNIFORM, entityToDraw->GET_COMPONENT(SpriteComponent)->color);
 
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, texture1);
+				TexturePointer texture = ResourceManager::GetTexture(spriteComponent->textureName);
+				glBindTexture(GL_TEXTURE_2D, texture->ID);
+				shaderProgram->UpdateUniforms(Constants::TEXTUREUNITFORM, 0);
 
-				shaderProgram->UpdateUniforms("color", entityToDraw->GET_COMPONENT(SpriteComponent)->color);				
+				glm::mat4 model;				
+				model = glm::translate(model, glm::vec3(entityToDraw->GET_COMPONENT(TransformComponent)->position));
+				model = glm::rotate(model,
+					glm::radians(transform->rotation),
+					glm::vec3(0.0f, 0.0f, 1.0f));
+				model = glm::scale(model,
+					glm::vec3(transform->scale.x, transform->scale.y, transform->scale.z));
+
+				shaderProgram->UpdateUniforms(Constants::MODELUNIFORM, model);				
+								
 				shaderProgram->Use();
 				glBindVertexArray(quadInfo.VertexArrayObject);
 
@@ -112,9 +115,8 @@ namespace Engine {
 		//currently this handles textures too.....
 		void GLGraphics::InitiailzeBuffers() {
 
-			
-			//Need to find a way to convert a vector to this
-			float meshVerticies[] = {
+			//each sprite should be responsible for defining its verticies			
+			std::vector<float> meshVerticies = {
 				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 				0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
 				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -157,77 +159,52 @@ namespace Engine {
 				-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
 				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 			};
-			
+
+			VertexAttribute positionAttribute;
+			positionAttribute.location = 0;
+			positionAttribute.size = 3;
+			positionAttribute.type = VertexAttributeType::POSITION;
+
+			VertexAttribute textureAttribute;
+			textureAttribute.location = 1;
+			textureAttribute.size = 2;
+			textureAttribute.type = VertexAttributeType::TEXTURE;
+
+			std::vector<VertexAttribute> attributes{ positionAttribute, textureAttribute };
+
+			InitRenderData(meshVerticies, attributes);
+			InitTextureData();		
+		}
+
+		void GLGraphics::InitRenderData(std::vector<float>& meshData, std::vector<VertexAttribute> meshAttributes) {
+			int strideMultiplier = std::accumulate(meshAttributes.begin(), meshAttributes.end(), 0, 
+				[](int sum, const VertexAttribute& attrib) {return sum + attrib.size; });
+			GLsizei stride = strideMultiplier * sizeof(GLfloat);
+			int counter = 0;
+
 			glGenVertexArrays(1, &quadInfo.VertexArrayObject);
 			glGenBuffers(1, &quadInfo.VertexBufferObject);
-			//glGenBuffers(1, &quadInfo.ElementBufferObject);
 
 			glBindVertexArray(quadInfo.VertexArrayObject);
 			glBindBuffer(GL_ARRAY_BUFFER, quadInfo.VertexBufferObject);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(meshVerticies), meshVerticies, GL_STATIC_DRAW);
-
-			//need to make an array of indicies if I am to use this
-			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ElementBufferObject);
-			//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(something2), something2, GL_STATIC_DRAW);
-
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(0);
-
-			//TODO - Separate this texture stuff later on!!!
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-			glEnableVertexAttribArray(1); //going to be the second index in the vertex attribute array
-
-			////Binding to 0 will unbind the buffers so you cannot modify the data
-			//glBindVertexArray(0); //_quadInfo.vao will now remember how to read your Data from GraphicsQuad
-			//glBindBuffer(GL_ARRAY_BUFFER, 0);
-			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-			glGenTextures(1, &texture1);
-			glBindTexture(GL_TEXTURE_2D, texture1);
-			// set the texture wrapping parameters
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			// set texture filtering parameters
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			// load image, create texture and generate mipmaps
-			GLint width, height, nrChannels;
-			stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-			unsigned char *data = stbi_load("../ECEngine/Engine/Core/Systems/Resources/assets/container.jpg", &width, &height, &nrChannels, 0);
-			if (data)
-			{
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-				glGenerateMipmap(GL_TEXTURE_2D);
+			glBufferData(GL_ARRAY_BUFFER, meshData.size() * sizeof(meshData), &meshData[0], GL_STATIC_DRAW);			
+			
+			for (auto it = meshAttributes.begin(); it != meshAttributes.end(); it++) {
+				if (it->size > 0) {
+					glEnableVertexAttribArray(it->location);
+					glVertexAttribPointer(it->location, it->size, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(counter * sizeof(GLfloat)));
+					counter += it->size;
+				}
 			}
-			else
-			{
-				std::cout << "ERROR::TEXTURE::FAILED_TO_LOAD_TEXTURE\n" << "containder.jpg" << std::endl;
-			}
-			stbi_image_free(data);
-
+			glBindVertexArray(0); //_quadInfo.vao will now remember how to read your Data from GraphicsQuad
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 
-		//void GLGraphics::InitRenderData(GLfloat *meshData, std::vector<VertexAttribute> meshAttributes) {
-		//	int strideMultiplier = std::accumulate(meshAttributes.begin(), meshAttributes.end(), 0, 
-		//		[](const VertexAttribute& attrib) {return attrib.size; });
-		//	GLsizei stride = strideMultiplier * sizeof(GLfloat);
-		//	int counter = 0;
-
-		//	glGenVertexArrays(1, &quadInfo.VertexArrayObject);
-		//	glGenBuffers(1, &quadInfo.VertexBufferObject);
-
-		//	glBindBuffer(GL_ARRAY_BUFFER, quadInfo.VertexBufferObject);
-		//	glBufferData(GL_ARRAY_BUFFER, sizeof(*meshData), meshData, GL_STATIC_DRAW);
-		//	
-		//	glBindVertexArray(quadInfo.VertexArrayObject);
-		//	for (auto it = meshAttributes.begin(); it != meshAttributes.end(); it++) {
-		//		if (it->size > 0) {
-		//			glEnableVertexAttribArray(it->location);
-		//			glVertexAttribPointer(0, it->size, GL_FLOAT, GL_FALSE, stride, (GLvoid*)(counter * sizeof(GLfloat)));
-		//			counter += it->size;
-		//		}
-		//	}									
-		//}
+		//Init Texture data will be responsible for initializing all of the textures for that gamespace
+		void GLGraphics::InitTextureData() {
+			ResourceManager::LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container.jpg", false, "container");
+		}
 
 		void GLGraphics::ActivateTexture() {
 
@@ -265,6 +242,7 @@ namespace Engine {
 			glEnable(GL_DEPTH_TEST);
 			glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glViewport(0, 0, 800, 600);
 		}
 	}
 }

@@ -85,6 +85,7 @@ namespace Engine {
 				box->GET_COMPONENT(TransformComponent)->position = sampleCubePositions[i];
 				box->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
 				box->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
+				box->GET_COMPONENT(SpriteComponent)->textureName = "container";
 				//add our entity to the active space
 				//PopulateSystemEntites() is then called by the engine to add the spaces entities to each system in the space (This includes GLGraphics)
 				//On GLGraphic's Update(), it loops through its entites and draws it (thereby drawing the boxes that I make here)

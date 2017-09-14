@@ -7,31 +7,8 @@ namespace Engine {
 	//NOT CURRENTLY HOOKED UP TO ENGINE - REMOVE THIS ONCE IT IS
 
 	namespace Systems {
-		ResourceManager::ResourceManager() : System(std::string("ECResourceSystem"), SystemType::EC_ResourceSystem)
-		{
-		}
-
-		ResourceManager::~ResourceManager()
-		{
-		}
-
-		void ResourceManager::Init() {
-			RegisterComponent(BitFieldComponent::MC_Resource);
-
-		}
-
-		void ResourceManager::Update(float dt) {
-
-		}
-
-		void ResourceManager::ShutDown() {
-			ClearResources();
-		}
-
-		//remember this works as a recieve message...the engine will send it and this will decide what to do with it
-		void ResourceManager::SendMsg(EntityPointer firstEntity, EntityPointer secondEntity, Message::Message message) {
-
-		}
+		
+		TextureMap ResourceManager::texturesMap;
 
 		void ResourceManager::ClearResources() {
 			for (auto iter : texturesMap) {
@@ -42,7 +19,7 @@ namespace Engine {
 
 		//TEST THIS ON THE TEST DUMP BEFORE STARTING
 		void ResourceManager::LoadTextureDataFromFile(const GLchar *file, GLboolean alpha, std::string name) {
-			Texture::TexturePointer texture = std::make_shared<Texture::Texture>();
+			TexturePointer texture = std::make_shared<Texture::BaseTexture>();
 
 			if (alpha) {
 				texture->Internal_Format = GL_RGBA;
@@ -67,12 +44,13 @@ namespace Engine {
 		}
 
 		//just sets the properties of a texture object
-		void ResourceManager::GenerateTexture(Texture::TexturePointer textureObject, GLuint width, GLuint height, unsigned char* data) {
+		void ResourceManager::GenerateTexture(TexturePointer textureObject, GLuint width, GLuint height, unsigned char* data) {
 			textureObject->Width = width;
 			textureObject->Height = height;
 
 			glBindTexture(GL_TEXTURE_2D, textureObject->ID);
 			glTexImage2D(GL_TEXTURE_2D, 0, textureObject->Internal_Format, width, height, 0, textureObject->Image_Format, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureObject->Wrap_S);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureObject->Wrap_T);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureObject->Filter_Min);
@@ -82,7 +60,7 @@ namespace Engine {
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
-		void ResourceManager::BindTexture(const std::string& name) const {
+		void ResourceManager::BindTexture(const std::string& name) {
 			auto it = texturesMap.find(name);
 			if (it != texturesMap.end()) {
 				glBindTexture(GL_TEXTURE_2D, it->second->ID);

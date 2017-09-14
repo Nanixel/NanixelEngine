@@ -1,0 +1,46 @@
+			//glGenVertexArrays(1, &quadInfo.VertexArrayObject);
+			//glGenBuffers(1, &quadInfo.VertexBufferObject);
+			////glGenBuffers(1, &quadInfo.ElementBufferObject);
+
+			//glBindVertexArray(quadInfo.VertexArrayObject);
+			//glBindBuffer(GL_ARRAY_BUFFER, quadInfo.VertexBufferObject);
+			//glBufferData(GL_ARRAY_BUFFER, meshVerticies.size() * sizeof(meshVerticies), &meshVerticies[0], GL_STATIC_DRAW);
+
+			////need to make an array of indicies if I am to use this
+			////glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ElementBufferObject);
+			////glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(something2), something2, GL_STATIC_DRAW);
+
+			//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+			//glEnableVertexAttribArray(0);
+
+			////TODO - Separate this texture stuff later on!!!
+			//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+			//glEnableVertexAttribArray(1); //going to be the second index in the vertex attribute array
+
+			//////Binding to 0 will unbind the buffers so you cannot modify the data
+			////glBindVertexArray(0); //_quadInfo.vao will now remember how to read your Data from GraphicsQuad
+			////glBindBuffer(GL_ARRAY_BUFFER, 0);
+			////glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+			//glGenTextures(1, &texture1);
+			//glBindTexture(GL_TEXTURE_2D, texture1);
+			//// set the texture wrapping parameters
+			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			//// set texture filtering parameters
+			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			//// load image, create texture and generate mipmaps
+			//GLint width, height, nrChannels;
+			//stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
+			//unsigned char *data = stbi_load("../ECEngine/Engine/Core/Systems/Resources/assets/container.jpg", &width, &height, &nrChannels, 0);
+			//if (data)
+			//{
+			//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			//	glGenerateMipmap(GL_TEXTURE_2D);
+			//}
+			//else
+			//{
+			//	std::cout << "ERROR::TEXTURE::FAILED_TO_LOAD_TEXTURE\n" << "containder.jpg" << std::endl;
+			//}
+			//stbi_image_free(data);

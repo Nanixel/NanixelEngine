@@ -24,6 +24,7 @@ namespace Engine {
 				TEXTURE
 			};
 			struct VertexAttribute {
+				VertexAttribute() : size(5), location(1), type(VertexAttributeType::POSITION) {}
 				GLint size;								
 				int location;
 				VertexAttributeType type;
@@ -38,7 +39,8 @@ namespace Engine {
 
 			void AddShader(std::string shaderName, Shaders::ShaderPointer shader);
 
-			void InitRenderData(GLfloat *meshData, std::vector<VertexAttribute> meshAttributes);
+			void InitRenderData(std::vector<GLfloat>& meshData, std::vector<VertexAttribute> meshAttributes);
+			void InitTextureData();
 			
 		private:
 			//these are just going to be matricies

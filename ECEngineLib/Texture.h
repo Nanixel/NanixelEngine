@@ -21,8 +21,5 @@ namespace Texture {
 		GLuint Wrap_T;
 		GLuint Filter_Min;
 		GLuint Filter_Max;
-	};
-
-	using TexturePointer = std::shared_ptr<Texture>;
-	using TextureMap = std::unordered_map<std::string, TexturePointer>;
+	};		
 }

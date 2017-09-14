@@ -39,6 +39,7 @@
     <Text Include="Engine\OpenGLTutorials\VertexShader.txt">
       <Filter>Shaders</Filter>
     </Text>
+    <Text Include="Engine\Archives\Notes.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -138,6 +139,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Systems\Resources\headers\ResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Systems\Resources\headers\BaseTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

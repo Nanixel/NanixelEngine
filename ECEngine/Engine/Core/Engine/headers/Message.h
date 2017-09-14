@@ -15,7 +15,7 @@ namespace Engine {
 			MSG_W_PRESS,
 			MSG_ESC_PRESS,
 			MSG_MOUSE_MOVE,
-			MSG_UPDATE_RESOURCE
+			MSG_UPDATE_RESOURCE //use this when you want to update the resources in the resource manager
 			//types of game messages
 		};
 	}
