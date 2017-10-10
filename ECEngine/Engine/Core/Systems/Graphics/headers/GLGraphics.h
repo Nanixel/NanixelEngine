@@ -8,27 +8,16 @@
 #include <GL/glew.h> //this holds most of our opengl functions
 #include <unordered_map>
 #include "./ShaderUtility.h"
+//#include "../ECEngine/Engine/Core/Systems/Graphics/helpers/SpriteHandler.h"
 
 namespace Engine {
+
 	class CameraComponent;
 	namespace Systems {
 		//GLGraphics should not care about what it is drawing, it should just take the shaders provided and draw the entity based on its component settings
 		class GLGraphics : public System
 		{
-		public:
-			//Mesh = collection of verticies and edges that define a shape of an object
-			enum MeshType {QUAD = 0, CIRCLE};
-			enum VertexAttributeType {
-				POSITION = 0,
-				COLOR = 1,
-				TEXTURE
-			};
-			struct VertexAttribute {
-				VertexAttribute() : size(5), location(1), type(VertexAttributeType::POSITION) {}
-				GLint size;								
-				int location;
-				VertexAttributeType type;
-			};
+		public:	
 
 			GLGraphics();
 
@@ -38,23 +27,17 @@ namespace Engine {
 			void SendMsg(EntityPointer entityOne, EntityPointer entity2, Message::Message message);
 
 			void AddShader(std::string shaderName, Shaders::ShaderPointer shader);
-
-			void InitRenderData(std::vector<GLfloat>& meshData, std::vector<VertexAttribute> meshAttributes);
-			void InitTextureData();
 			
-		private:
-			//these are just going to be matricies
-			//These buffer objects hold on to the vertex info, texture info, location info, and color info
-			struct MeshInfo {
-				GLuint VertexBufferObject;
-				GLuint VertexArrayObject;
-				//this is used for not having to define verticies twice
-				GLuint ElementBufferObject;
+		private:									
 
-				MeshInfo() : VertexBufferObject(0), VertexArrayObject(0), ElementBufferObject(0) {}; //Init all buffers to zero at the start
-			};			
+			//GLuint _vertexArrayObject;
+			//GLuint _staticBufferID;
+			//GLuint _dynamicBufferID;
+			//GLuint _staticElementBufferID;
+			//GLuint _dynamicElementBufferID;
 
-			GLuint texture1;
+			//this map will be used to store all of the mesh verticies of a particular space
+			//std::unordered_map<std::string, Sprite::SpriteDataPointer> spriteDataMap;
 			
 			void DrawEntity(const EntityPointer &entityToDraw, const CameraComponentPointer &camera);			
 			void InitiailzeBuffers();
@@ -62,10 +45,6 @@ namespace Engine {
 			void DeleteMesh();
 			void NewFrame();
 
-			//this should be on the sprite component
-			std::vector<VertexAttribute> meshAttributes;
-
-			MeshInfo quadInfo, circleInfo;			
 			Shaders::ShaderPointer GetShader(std::string shader);
 			
 
@@ -80,7 +59,12 @@ namespace Engine {
 
 #endif // !GLGRAPHICS_H
 
+//to be added later
 
+//Use static frame objects to store the data that doesnt change everyframe - textures and colors
+//MeshInfo staticFrameObjects;
+//Use dynamic frame objects to store the data that does change everyframe - position, lighting
+//MeshInfo dynamicFrameObjects;
 
 
 

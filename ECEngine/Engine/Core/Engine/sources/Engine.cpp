@@ -30,6 +30,8 @@ namespace Engine {
 
 		running = true;
 		
+		_resourceManager = std::make_shared<Systems::ResourceManager>();
+
 		//the order of how these are added dictates how they are updated
 		systems.push_back(std::make_shared<Systems::CustomWindow>());
 		systems.push_back(std::make_shared<Systems::CameraSystem>());
@@ -42,12 +44,13 @@ namespace Engine {
 		using namespace Systems;
 
 		gameWorldSpace->AddSystem(GETSYS(CameraSystem));
-		gameWorldSpace->AddSystem(GETSYS(GLGraphics));
+		gameWorldSpace->AddSystem(GETSYS(GLGraphics));		
 
-		for (auto sys : systems) {			
+		for (auto sys : systems) {
+			//can't work with entities on initialization so cant do any sort of preprocessing
 			sys->Init();
 		}
-	}
+	}	
 
 	void Engine::ShutDown() {
 		//the systems will shutdown in the order they are added 
@@ -79,6 +82,8 @@ namespace Engine {
 		for (auto space = spaces.begin(); space != spaces.end(); ++space) {
 			SetActiveSpace(space->first);
 
+			//IN THE CODE BELOW TWO CALLS CAN HAPPEN TO PopulateSystemEntities -> change this so that only one call happens!!!
+
 			//if this is the space matches what the current gamestate wants to use for updating
 			if (space->first == gameState->GetLogicalSpace()) {			
 				space->second->PopulateSystemEntities(gameState);
@@ -109,8 +114,7 @@ namespace Engine {
 		if (space != spaces.end()) {
 			return (*space).second;
 		}
-		else {
-			//making a new space automatically makes a new camera
+		else {			
 			spaces.emplace(name, std::make_shared<Space>(name));
 		}
 

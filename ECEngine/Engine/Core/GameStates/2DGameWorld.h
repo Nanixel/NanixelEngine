@@ -27,6 +27,9 @@ namespace Engine {
 		private:
 			//some custom stuff you wanna do with sqaures
 			void AddCustomShader();
+			void SetUpSpaceCamera();
+			void LoadResourceData();
+			void CreateEntities();
 			//GLfloat basicVerticies[] = {
 			//	//Pos		//Tex
 			//	0.0f, 1.0f, 0.0f, 1.0f,

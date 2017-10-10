@@ -191,8 +191,12 @@
     <ClInclude Include="Engine\Core\GameStates\TestGameWorld.h" />
     <ClInclude Include="Engine\Core\Libraries\stb_image.h" />
     <ClInclude Include="Engine\Core\Libraries\Timer.h" />
+    <ClInclude Include="Engine\Core\Systems\Graphics\helpers\SpriteHandler.h" />
     <ClInclude Include="Engine\Core\Systems\Resources\headers\BaseTexture.h" />
+    <ClInclude Include="Engine\Core\Systems\Resources\headers\Resource.h" />
     <ClInclude Include="Engine\Core\Systems\Resources\headers\ResourceManager.h" />
+    <ClInclude Include="Engine\Core\Systems\Resources\headers\ResourceMap.h" />
+    <ClInclude Include="Engine\Core\Systems\Resources\headers\SptireResource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Engine\Core\Systems\Graphics\headers\CameraSystem.h" />
     <ClInclude Include="Engine\Core\Systems\Graphics\headers\CustomWindow.h" />

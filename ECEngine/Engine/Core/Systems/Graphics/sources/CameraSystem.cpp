@@ -34,6 +34,7 @@ namespace Engine {
 				case CameraComponent::CameraViewType::FIRST_PERSON:
 				case CameraComponent::CameraViewType::THIRD_PERSON:
 					SetupCameraRotation(camera);
+					UpdateCameraVectors(camera);
 					break;
 				case CameraComponent::CameraViewType::ISOMETRIC:
 					//do something with isometric view
@@ -45,7 +46,7 @@ namespace Engine {
 					break;
 				}
 				
-				UpdateCameraVectors(camera);
+				
 				std::pair<int, int> windowDimensions = std::pair<int, int>(800, 600);				
 				
 				if (camera->projectionMode == CameraComponent::ProjectionMode::PERSPECTIVE) {

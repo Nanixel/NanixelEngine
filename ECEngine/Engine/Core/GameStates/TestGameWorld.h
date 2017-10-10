@@ -23,12 +23,14 @@ namespace Engine {
 			void ShutDown();
 			void SendMsg(EntityPointer entityOne, EntityPointer entityTwo, Message::Message message);
 
+			void LoadResourceData();
+
 		private:
 			//some custom stuff you wanna do with sqaures
 			
 			void SpawnDefaultBoxes();			
 			void RealTimeKeys();
-			EntityPointerList boxList;
+			EntityPointerList boxList;		
 		};
 
 		using TestGameWorldPointer = std::shared_ptr<TestGameWorld>;

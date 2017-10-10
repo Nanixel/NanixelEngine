@@ -34,10 +34,11 @@ namespace Engine {
 	}
 
 	EntityPointer Space::CreateEntity() {
-		_entities.push_back(EntityPointer(new Entity));
+		_entities.push_back(std::make_shared<Entity>());
 		return _entities.back();
 	}
 
+	//this is kind of a limitation
 	EntityPointer Space::CreateCamera() {
 		EntityPointer camera = ENGINE->Factory().create("DefaultCamera");
 		_entities.push_back(camera);
@@ -65,6 +66,12 @@ namespace Engine {
 			}
 		}
 	}
+
+	//void Space::LoadSpaceResources(std::vector<Sprite::SpriteResource::SpriteSourceShared> resources) {
+	//	Systems::ResourceManager::ResourceManagerShared manager = ENGINE->GetResourceManager();
+	//	std::for_each(resources.begin(), resources.end(), &manager->AddSpriteResource);
+	//	//manager->AddSpriteResource()
+	//}
 
 
 	EntityPointerList Space::GetEntities(mask m) const {

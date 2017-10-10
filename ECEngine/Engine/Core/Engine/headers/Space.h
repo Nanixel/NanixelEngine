@@ -6,10 +6,19 @@
 #include "System.h"
 #include "Entity.h"
 #include "Component.h"
-
+//#include "../ECEngine/Engine/Core/Systems/Resources/headers/SptireResource.h"
 //A space is a world in which a game object can exist and interact
 
 namespace Engine {
+
+	enum CameraType {
+		FIRST_PERSON,
+		THIRD_PERSON,
+		ISOMETRIC,
+		TWO_DIMENTIONAL_SIDE_SCROLLER,
+		TWO_DIMENTIONAL_OVERHEAD,
+		NONE //define your own camera
+	};
 
 	class Space {
 	public:
@@ -21,6 +30,8 @@ namespace Engine {
 		void AddSystem(SystemPointer);
 		void RemoveSystem(std::string);
 		void PopulateSystemEntities(SystemPointer system) const;
+		//load any resources that this space is going to need - only works for sprites at the moment
+		//void LoadSpaceResources(std::vector<Sprite::SpriteResource::SpriteSourceShared> resources);
 
 		EntityPointer CreateEntity();
 		EntityPointer CreateCamera();

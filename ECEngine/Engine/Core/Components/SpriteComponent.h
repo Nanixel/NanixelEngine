@@ -14,20 +14,25 @@ namespace Engine {
 
 	class SpriteComponent : public Component {
 	protected:
-		//if the object is visible we do not want to draw it...
 		bool visible = true;
 	public:
 		SpriteComponent() : Component(EC_SpriteComponent, MC_Sprite) {}
+		
+		//enum MeshType {
+		//	QUAD,
+		//	CIRCLE
+		//};
 
-		enum MeshType {
-			QUAD,
-			CIRCLE
-		};			
+		//MeshType type = QUAD;
 
-		glm::vec4 color = { 0.0f, 1.0f, 0.0f, 1.0f };
-		std::string shaderName = "box";
-		MeshType type = QUAD;
-		std::string textureName;
+
+		glm::vec3 color = { 0.0f, 1.0f, 0.0f };
+		//needs to be base if we only want the object to be colored and not have a texture
+		std::string textureName = "base";
+		std::string shaderName;			
+		//GLuint vertexBufferSize;
+		std::string spriteTypeName;
+
 	};
 
 	using SpritePointer = std::shared_ptr<SpriteComponent>;

@@ -11,8 +11,11 @@
 #include "./Message.h"
 #include "./Space.h"
 
+//Keep in mind that if the engine includes anything here it must not be included in anything that includes Engine.h
 #include "../ECEngine/Engine/Core/Systems/SystemsInclude.h"
 #include "../ECEngine/Engine/Core/GameStates/TestGameWorld.h"
+#include "../ECEngine/Engine/Core/GameStates/2DGameWorld.h"
+#include "../ECEngine/Engine/Core/Systems/Resources/headers/ResourceManager.h"
 
 
 namespace Engine {
@@ -44,6 +47,8 @@ namespace Engine {
 
 		bool SpaceExists(std::string name);
 
+		void PreprocessGameStateEntities();
+
 		//remember objects are NOT automaticcally added to a space
 		ArchtypeFactory& Factory();
 
@@ -65,6 +70,10 @@ namespace Engine {
 		//pops the current gamestate off the stack
 		void PopGameState();
 
+		Systems::ResourceManager::ResourceManagerShared GetResourceManager() {
+			return _resourceManager;
+		}
+
 	private:
 
 		std::stack<GameStatePointer> gameStateStack;
@@ -80,6 +89,8 @@ namespace Engine {
 		SystemPointerList systems;
 
 		ArchtypeFactory archetypeFactory;
+
+		Systems::ResourceManager::ResourceManagerShared _resourceManager;
 
 		bool running = true;
 		bool testingEngineEnabled = false;

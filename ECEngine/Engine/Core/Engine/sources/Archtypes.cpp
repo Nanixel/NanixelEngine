@@ -8,17 +8,16 @@ namespace Engine {
 
 		EntityPointer DefaultCamera() {
 
-			EntityPointer camera(new Entity); //make a new camera entity
+			EntityPointer camera = std::make_shared<Entity>();
+		
+			camera->AddComponent(std::make_shared<CameraComponent>());
+			camera->AddComponent(std::make_shared<TransformComponent>());
 
-			//attach camera related components to this new entity
-			camera->AddComponent(ComponentPointer(new CameraComponent()));
-			camera->AddComponent(ComponentPointer(new TransformComponent()));
-			camera->SetName("Camera");			
+			camera->GET_COMPONENT(CameraComponent)->projectionMode = CameraComponent::ProjectionMode::PERSPECTIVE;
 
-			//camera->GET_COMPONENT(TransformComponent)->scale = glm::vec2(1600.0f, 800.0f);
+			camera->SetName("Camera");						
 
 			return camera;
-
 		}
 
 		EntityPointer Default2DCamera() {
@@ -37,11 +36,10 @@ namespace Engine {
 
 		EntityPointer BoxGameObject() {
 			//dynamic memory allocation
-			EntityPointer boxEntity(new Entity());
-			//note that we make new components here
-			//boxEntity->AddComponent(ComponentPointer(new RigidBody()));
-			boxEntity->AddComponent(ComponentPointer(new TransformComponent()));
-			boxEntity->AddComponent(ComponentPointer(new SpriteComponent()));
+			EntityPointer boxEntity = std::make_shared<Entity>();
+	
+			boxEntity->AddComponent(std::make_shared<TransformComponent>());
+			boxEntity->AddComponent(std::make_shared<SpriteComponent>());
 			boxEntity->SetName("box");
 
 			return boxEntity;

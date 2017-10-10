@@ -3,13 +3,16 @@
 out vec4 FragColor;
 
 in vec2 textureCoord;
+in vec4 testColor;
 
 //uniform vec4 color;
 uniform sampler2D texture1;
+//uniform sampler2D texture2;
 
 
 void main()
 {
   //this can include textures
-  FragColor = texture(texture1, textureCoord);
+  FragColor = testColor * texture(texture1, textureCoord);
+  //FragColor[1] = testColor * texture(texture2, textureCoord);
 }

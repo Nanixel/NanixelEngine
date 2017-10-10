@@ -11,6 +11,7 @@ namespace Engine {
 		const std::string VIEWUNIFORM = "view";
 		const std::string MODELUNIFORM = "model";
 		const std::string TEXTUREUNITFORM = "texture1";
+		const std::string TEXTUREUNIT2 = "texture2";
 		const std::string COLORUNIFORM = "color";
 		const std::string PROJECTIONUNIFORM = "projection";
 

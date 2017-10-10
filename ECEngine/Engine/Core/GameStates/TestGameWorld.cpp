@@ -21,8 +21,8 @@ namespace Engine {
 	extern Engine* ENGINE;
 
 	using namespace Systems;
-	namespace GameStates {
-
+	namespace GameStates {		
+			
 		glm::vec3 sampleCubePositions[] = {
 			glm::vec3(0.0f,  0.0f,  0.0f),
 			glm::vec3(2.0f,  5.0f, -15.0f),
@@ -35,26 +35,125 @@ namespace Engine {
 			glm::vec3(1.5f,  0.2f, -1.5f),
 			glm::vec3(-1.3f,  1.0f, -1.5f)
 		};
-		
-		//Dont think anything calls this init right now
-		void TestGameWorld::Init() {
 
-			//The Test Gameworld space should update with this system
+		void TestGameWorld::Init() {
+			RegisterComponent(MC_Transform);
+			RegisterComponent(MC_Sprite);
+			
+			//spend some time to understand this space stuff
 			RegisterSpace("Test GameWorld");			
-			SetLogicalSpace("Test GameWorld");
+			SetLogicalSpace("Test GameWorld");			
 			SpacePointer gameWorld = ENGINE->GetSpace("Test GameWorld");
 			gameWorld->ClearSpace();
 			
 			gameWorld->AddSystem(GETSYS(CameraSystem));
 			gameWorld->AddSystem(GETSYS(GLGraphics));
-			
-			RegisterComponent(MC_Transform);
-			//RegisterComponent(MC_Drawable);						
+
+			LoadResourceData();							
 
 			CustomWindowPointer window = GETSYS(CustomWindow);
 			window->HideMouseCursor();
 			
-			SpawnDefaultBoxes();			
+ 			SpawnDefaultBoxes();			
+		}
+
+		void TestGameWorld::LoadResourceData() {
+			Sprite::SpriteResource::SpriteSourceShared sprite = std::make_shared<Sprite::SpriteResource>("boxSource");
+			Sprite::SpriteResource::SpriteSourceShared triangle = std::make_shared<Sprite::SpriteResource>("triangleSource");
+			//copying data over like this may be slow an poor performance
+			sprite->meshVerticies = {
+				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+
+				-0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+				-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+				-0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+
+				-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+				-0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+
+				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				-0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+
+				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f
+			};
+
+
+			triangle->meshVerticies = {
+				//POSITION			COLOR							
+				0.0f, 0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+				-0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+
+				0.0f, 0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+				-0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, -0.5f, -0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+
+				0.0f, 0.5f, 0.0f,    1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+				0.0f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
+				0.5f, -0.5f, 0.5f,    0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+
+				-0.5f, -0.5f, 0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+				0.0f, -0.5f, -0.5f,    0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+				0.5f, -0.5f, 0.5f,    0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+			};
+
+			
+			Sprite::AttributeConfiguration::VertexAttribute position(3, 0, Sprite::AttributeConfiguration::POSITION);
+			Sprite::AttributeConfiguration::VertexAttribute color(3, 1, Sprite::AttributeConfiguration::COLOR);
+			Sprite::AttributeConfiguration::VertexAttribute texture(2, 2, Sprite::AttributeConfiguration::TEXTURE);
+
+			std::shared_ptr<Sprite::AttributeConfiguration> config = std::make_shared<Sprite::AttributeConfiguration>();			
+
+			config->attributes = { position, color, texture };
+
+			sprite->vertexStart = 0;
+			sprite->vertexEnd = 36;
+			triangle->vertexStart = 36;
+			triangle->vertexEnd = 48;
+			
+			//sprite->attributes = { position, color, texture };
+			//triangle->attributes = { position, color, texture };
+
+			Systems::ResourceManager::ResourceManagerShared manager = ENGINE->GetResourceManager();
+
+			manager->AddSpriteResource(sprite);
+			manager->AddSpriteResource(triangle);
+
+			manager->vertexAttributeConfigurations.emplace("testAttribs", config);
+
+			manager->LoadSpriteResourcesIntoBuffers();
+			
+			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container.jpg", false, "container");
+			//maybe take this out of here at some point but for now it is needed
+			manager->GenerateBasicTexture();
 		}
 
 		void TestGameWorld::Update(float dt) {
@@ -63,7 +162,12 @@ namespace Engine {
 			//This method is responsible for updating the camera!!!!
 			//realTimeMouse(dt);
 			CameraComponentPointer defaultCamera = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(CameraComponent);
+			//these things should not be here....this is like the handling of the controls
 			RealTimeKeys();
+
+			//EntityPointer test = ENGINE->GetActiveSpace()->GetEntityByName("triangle");
+			//test->GET_COMPONENT(TransformComponent)->rotation = dt;
+
 			ENGINE->SendMsg(nullptr, nullptr, Message::MSG_MOUSE_MOVE);
 			
 		}
@@ -76,9 +180,9 @@ namespace Engine {
 		}
 
 		void TestGameWorld::SendMsg(EntityPointer entityOne, EntityPointer entityTwo, Message::Message message) {						
-			//Handle some entity on entity messages in this state
+			
 		}
-
+	
 		void TestGameWorld::SpawnDefaultBoxes() {
 			for (int i = 0; i < 10; i++) {
 				EntityPointer box = ENGINE->Factory().create("box");
@@ -86,16 +190,33 @@ namespace Engine {
 				box->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
 				box->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
 				box->GET_COMPONENT(SpriteComponent)->textureName = "container";
+				box->GET_COMPONENT(SpriteComponent)->spriteTypeName = "boxSource";
+				box->GET_COMPONENT(SpriteComponent)->shaderName = "box";
 				//add our entity to the active space
 				//PopulateSystemEntites() is then called by the engine to add the spaces entities to each system in the space (This includes GLGraphics)
 				//On GLGraphic's Update(), it loops through its entites and draws it (thereby drawing the boxes that I make here)
 				ENGINE->GetActiveSpace()->AddEntity(box);
-			}			
+			}
+
+			EntityPointer triangle = std::make_shared<Entity>();
+
+			triangle->AddComponent(std::make_shared<TransformComponent>());
+			triangle->AddComponent(std::make_shared<SpriteComponent>());
+			triangle->SetName("triangle");
+			
+			triangle->GET_COMPONENT(TransformComponent)->position = glm::vec3(1.0f, 1.0f, 1.0f);
+			triangle->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
+			triangle->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
+			triangle->GET_COMPONENT(SpriteComponent)->textureName = "base";
+			triangle->GET_COMPONENT(SpriteComponent)->spriteTypeName = "triangleSource";
+			triangle->GET_COMPONENT(SpriteComponent)->shaderName = "box";
+
+			ENGINE->GetActiveSpace()->AddEntity(triangle);
+
 		}
 
-		//program the real time keyboard input...might want to make the engine responsible for this
-		void TestGameWorld::RealTimeKeys() {
-			//Camera system must process keyboard here
+		
+		void TestGameWorld::RealTimeKeys() {		
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_A_PRESS);
 			}
