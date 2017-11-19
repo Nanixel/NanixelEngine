@@ -70,7 +70,7 @@ namespace Engine {
 		//pops the current gamestate off the stack
 		void PopGameState();
 
-		Systems::ResourceManager::ResourceManagerShared GetResourceManager() {
+		Systems::ResourceManagerShared GetResourceManager() {
 			return _resourceManager;
 		}
 
@@ -90,7 +90,7 @@ namespace Engine {
 
 		ArchtypeFactory archetypeFactory;
 
-		Systems::ResourceManager::ResourceManagerShared _resourceManager;
+		Systems::ResourceManagerShared _resourceManager;
 
 		bool running = true;
 		bool testingEngineEnabled = false;

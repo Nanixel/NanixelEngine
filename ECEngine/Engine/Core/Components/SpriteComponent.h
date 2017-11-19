@@ -16,7 +16,7 @@ namespace Engine {
 	protected:
 		bool visible = true;
 	public:
-		SpriteComponent() : Component(EC_SpriteComponent, MC_Sprite) {}
+		SpriteComponent() : Component(EC_SpriteComponent, MC_Sprite), IsDestroyed(false) {}
 		
 		//enum MeshType {
 		//	QUAD,
@@ -25,13 +25,13 @@ namespace Engine {
 
 		//MeshType type = QUAD;
 
-
-		glm::vec3 color = { 0.0f, 1.0f, 0.0f };
-		//needs to be base if we only want the object to be colored and not have a texture
+		glm::vec4 color = { 1.0f, 0.0f, 0.0f, 1.0f };		
 		std::string textureName = "base";
-		std::string shaderName;			
-		//GLuint vertexBufferSize;
+		std::string shaderName; // Sprite component should not have to know about this			
 		std::string spriteTypeName;
+		bool IsSolid;
+		//doing this does not actually set the default.
+		bool IsDestroyed = false;
 
 	};
 

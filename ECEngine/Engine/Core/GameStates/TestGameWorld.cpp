@@ -58,10 +58,9 @@ namespace Engine {
 		}
 
 		void TestGameWorld::LoadResourceData() {
-			Sprite::SpriteResource::SpriteSourceShared sprite = std::make_shared<Sprite::SpriteResource>("boxSource");
-			Sprite::SpriteResource::SpriteSourceShared triangle = std::make_shared<Sprite::SpriteResource>("triangleSource");
+
 			//copying data over like this may be slow an poor performance
-			sprite->meshVerticies = {
+			std::vector<GLfloat> meshVerticies = {
 				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
 				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
 				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
@@ -105,8 +104,7 @@ namespace Engine {
 				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f
 			};
 
-
-			triangle->meshVerticies = {
+			std::vector<GLfloat> triangleMeshVerticies = {
 				//POSITION			COLOR							
 				0.0f, 0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
 				-0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
@@ -125,35 +123,37 @@ namespace Engine {
 				0.5f, -0.5f, 0.5f,    0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
 			};
 
+			Sprite::MeshShared sprite = std::make_shared<Sprite::Mesh>("boxSource", meshVerticies, 36, 0);
+			Sprite::MeshShared triangle = std::make_shared<Sprite::Mesh>("triangleSource", triangleMeshVerticies, 12, 36);
 			
-			Sprite::AttributeConfiguration::VertexAttribute position(3, 0, Sprite::AttributeConfiguration::POSITION);
-			Sprite::AttributeConfiguration::VertexAttribute color(3, 1, Sprite::AttributeConfiguration::COLOR);
-			Sprite::AttributeConfiguration::VertexAttribute texture(2, 2, Sprite::AttributeConfiguration::TEXTURE);
+			//Sprite::AttributeConfiguration::VertexAttribute position(3, 0, Sprite::AttributeConfiguration::POSITION);
+			//Sprite::AttributeConfiguration::VertexAttribute color(3, 1, Sprite::AttributeConfiguration::COLOR);
+			//Sprite::AttributeConfiguration::VertexAttribute texture(2, 2, Sprite::AttributeConfiguration::TEXTURE);
 
-			std::shared_ptr<Sprite::AttributeConfiguration> config = std::make_shared<Sprite::AttributeConfiguration>();			
+			//std::shared_ptr<Sprite::AttributeConfiguration> config = std::make_shared<Sprite::AttributeConfiguration>();			
 
-			config->attributes = { position, color, texture };
+			//config->attributes = { position, color, texture };
 
-			sprite->vertexStart = 0;
-			sprite->vertexEnd = 36;
-			triangle->vertexStart = 36;
-			triangle->vertexEnd = 48;
+			//sprite->vertexStart = 0;
+			//sprite->vertexEnd = 36;
+			//triangle->vertexStart = 36;
+			//triangle->vertexEnd = 48;
 			
 			//sprite->attributes = { position, color, texture };
 			//triangle->attributes = { position, color, texture };
 
-			Systems::ResourceManager::ResourceManagerShared manager = ENGINE->GetResourceManager();
+			Systems::ResourceManagerShared manager = ENGINE->GetResourceManager();
 
-			manager->AddSpriteResource(sprite);
-			manager->AddSpriteResource(triangle);
+			manager->AddMesh(sprite);
+			manager->AddMesh(triangle);
 
-			manager->vertexAttributeConfigurations.emplace("testAttribs", config);
+			//manager->vertexAttributeConfigurations.emplace("testAttribs", config);
 
 			manager->LoadSpriteResourcesIntoBuffers();
 			
 			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container.jpg", false, "container");
 			//maybe take this out of here at some point but for now it is needed
-			manager->GenerateBasicTexture();
+			manager->CreateBasicTexture();
 		}
 
 		void TestGameWorld::Update(float dt) {

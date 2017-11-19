@@ -166,6 +166,12 @@
     <Text Include="Engine\Core\Shaders\2DVertexShader.txt" />
     <Text Include="Engine\Core\Shaders\ECFragShader.txt" />
     <Text Include="Engine\Core\Shaders\ECVertexShader.txt" />
+    <Text Include="Engine\Core\Shaders\ParticleFragment.txt" />
+    <Text Include="Engine\Core\Shaders\ParticleVertex.txt" />
+    <Text Include="Engine\Core\Systems\Resources\assets\levelfour.txt" />
+    <Text Include="Engine\Core\Systems\Resources\assets\levelone.txt" />
+    <Text Include="Engine\Core\Systems\Resources\assets\levelThree.txt" />
+    <Text Include="Engine\Core\Systems\Resources\assets\leveltwo.txt" />
     <Text Include="Engine\OpenGLTutorials\FragmentShader.txt" />
     <Text Include="Engine\OpenGLTutorials\SqFragmentShader.txt" />
     <Text Include="Engine\OpenGLTutorials\SqVertexShader.txt" />
@@ -175,6 +181,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\Core\Components\CameraComponent.h" />
     <ClInclude Include="Engine\Core\Components\ComponentsInclude.h" />
+    <ClInclude Include="Engine\Core\Components\Particle.h" />
     <ClInclude Include="Engine\Core\Components\ResourceComponent.h" />
     <ClInclude Include="Engine\Core\Components\SpriteComponent.h" />
     <ClInclude Include="Engine\Core\Components\TransformComponent.h" />
@@ -193,10 +200,10 @@
     <ClInclude Include="Engine\Core\Libraries\Timer.h" />
     <ClInclude Include="Engine\Core\Systems\Graphics\helpers\SpriteHandler.h" />
     <ClInclude Include="Engine\Core\Systems\Resources\headers\BaseTexture.h" />
-    <ClInclude Include="Engine\Core\Systems\Resources\headers\Resource.h" />
+    <ClInclude Include="Engine\Core\Systems\Resources\headers\IResourceManager.h" />
     <ClInclude Include="Engine\Core\Systems\Resources\headers\ResourceManager.h" />
-    <ClInclude Include="Engine\Core\Systems\Resources\headers\ResourceMap.h" />
-    <ClInclude Include="Engine\Core\Systems\Resources\headers\SptireResource.h" />
+    <ClInclude Include="Engine\Core\Systems\Resources\headers\Mesh.h" />
+    <ClInclude Include="Engine\Core\Systems\Graphics\headers\ParticleSystem.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Engine\Core\Systems\Graphics\headers\CameraSystem.h" />
     <ClInclude Include="Engine\Core\Systems\Graphics\headers\CustomWindow.h" />
@@ -224,6 +231,7 @@
     <ClCompile Include="Engine\Core\GameStates\2DGameWorld.cpp" />
     <ClCompile Include="Engine\Core\GameStates\TestGameWorld.cpp" />
     <ClCompile Include="Engine\Core\Systems\Resources\sources\ResourceManager.cpp" />
+    <ClCompile Include="Engine\Core\Systems\Graphics\sources\ParticleSystem.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -239,6 +247,10 @@
     <ProjectReference Include="..\ECEngineLib\ECEngineLib.vcxproj">
       <Project>{b4eb124d-a53e-43af-a39c-b5426e3bc61f}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Desktop\awesomeface.png" />
+    <Image Include="..\..\..\..\..\Desktop\particle.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

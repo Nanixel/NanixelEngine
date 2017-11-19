@@ -1,44 +1,95 @@
 #include "stdafx.h"
 #include "../ECEngine/Engine/Core/Systems/Resources/headers/ResourceManager.h"
 #include "../ECEngine/Engine/Core/Libraries/stb_image.h"
+#include "../ECEngine/Engine/Core/Utilities/Constants.h"
 #include <numeric>
+#include <sstream>
+#include <algorithm>
 
 namespace Engine {	
 
 	namespace Systems {				
-
+		
+		const std::string RESOURCE_FILE_PATH = "../ECEngine/Engine/Core/Systems/Resources/assets/";
+		const std::string DEFAULT_VERTEX_SHADER = "../ECEngine/Engine/Core/Shaders/ECVertexShader.txt";
+		const std::string DEFAULT_FRAGMENT_SHADER = "../ECEngine/Engine/Core/Shaders/ECFragShader.txt";
+		const std::string DEFAULT_SHADER_IDENTIFIER = "3DShader";
 		ResourceManager::ResourceManager() {
 			//always generate a basic texture on creation of texture resource manager
 			//GenerateBasicTexture();
 		}
 
 		void ResourceManager::ClearResources() {
-			for (auto iter : texturesMap) {
+			for (auto iter : _textures) {
 				glDeleteTextures(1, &iter.second->ID);
 			}
-			texturesMap.clear();
+			_textures.clear();
 
 			//flush VBO and VAO data
 		}
 
-		void ResourceManager::LoadTextureDataFromFile(const GLchar *file, GLboolean alpha, std::string name) {
-			TexturePointer texture = std::make_shared<Texture::BaseTexture>();
+		//SHADERS
 
-			if (alpha) {
-				texture->Internal_Format = GL_RGBA;
-				texture->Image_Format = GL_RGBA;
+		void ResourceManager::LoadDefaultShaders() {
+			Shaders::ShaderPointer defaultShader = std::make_shared<Shaders::ShaderUtility>();
+			defaultShader->LoadShaderFile(DEFAULT_VERTEX_SHADER, DEFAULT_FRAGMENT_SHADER);
+			defaultShader->Compile();
+
+			defaultShader->FindUniforms(Constants::MODELUNIFORM);
+			defaultShader->FindUniforms(Constants::PROJECTIONUNIFORM);
+			defaultShader->FindUniforms(Constants::VIEWUNIFORM);			
+			defaultShader->FindUniforms(Constants::TEXTUREUNITFORM);			
+
+			_shaderPrograms.emplace(DEFAULT_SHADER_IDENTIFIER, defaultShader);
+
+			Shaders::ShaderPointer twoDimensionalShader = std::make_shared<Shaders::ShaderUtility>();
+			twoDimensionalShader->LoadShaderFile("../ECEngine/Engine/Core/Shaders/2DVertexShader.txt", "../ECEngine/Engine/Core/Shaders/2DFragmentShader.txt");
+			twoDimensionalShader->Compile();
+
+			twoDimensionalShader->FindUniforms(Constants::MODELUNIFORM);
+			twoDimensionalShader->FindUniforms(Constants::PROJECTIONUNIFORM);
+			twoDimensionalShader->FindUniforms(Constants::TEXTUREUNITFORM);
+			twoDimensionalShader->FindUniforms(Constants::COLORUNIFORM);
+			_shaderPrograms.emplace("2Dshader", twoDimensionalShader);
+
+			Shaders::ShaderPointer particleShader = std::make_shared<Shaders::ShaderUtility>();
+			particleShader->LoadShaderFile("../ECEngine/Engine/Core/Shaders/ParticleVertex.txt", "../ECEngine/Engine/Core/Shaders/ParticleFragment.txt");
+			particleShader->Compile();
+
+			particleShader->FindUniforms(Constants::PROJECTIONUNIFORM);
+			particleShader->FindUniforms("offset");
+			particleShader->FindUniforms(Constants::COLORUNIFORM);
+			particleShader->FindUniforms(Constants::TEXTUREUNITFORM);
+			_shaderPrograms.emplace("particleShader", particleShader);
+		}
+
+		Shaders::ShaderPointer ResourceManager::GetShader(std::string& name) {
+			ShaderMap::iterator it = _shaderPrograms.find(name);
+			if (it != _shaderPrograms.end()) {
+				return it->second;
 			}
+			throw std::range_error("ERROR::SHADER::SHADER_NOT_FOUND_ON_ADD");
+		}
+
+		Texture::TexturePointer ResourceManager::GetTexture(const std::string& name) {
+			if (_textures.find(name) != _textures.end()) {
+				return _textures[name];
+			}
+			return nullptr;
+		}
+
+		void ResourceManager::LoadTextureDataFromFile(const GLchar *file, GLboolean alpha, std::string name) {
+			Texture::TexturePointer texture = std::make_shared<Texture::BaseTexture>(alpha);
 			int width; 
 			int height;
 			int nrChannels;
-			stbi_set_flip_vertically_on_load(true);
-			//test if this loads from all file locations
+			stbi_set_flip_vertically_on_load(false);
+			
 			unsigned char * imageData = stbi_load(file, &width, &height, &nrChannels, 0);
 
 			if (imageData) {
-				
-				GenerateTexture(texture, width, height, imageData);
-				texturesMap.emplace(name, texture);
+				texture->Generate(width, height, imageData);
+				_textures.emplace(name, texture);
 			}
 			else {
 				std::cout << "ERROR::TEXTURE::FAILED_TO_LOAD_TEXTURE: " << file << std::endl;
@@ -46,33 +97,16 @@ namespace Engine {
 			stbi_image_free(imageData);
 		}
 
-		//just sets the properties of a texture object
-		void ResourceManager::GenerateTexture(TexturePointer textureObject, GLuint width, GLuint height, unsigned char* data) {
-			textureObject->Width = width;
-			textureObject->Height = height;
-
-			glBindTexture(GL_TEXTURE_2D, textureObject->ID);
-			glTexImage2D(GL_TEXTURE_2D, 0, textureObject->Internal_Format, width, height, 0, textureObject->Image_Format, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureObject->Wrap_S);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureObject->Wrap_T);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureObject->Filter_Min);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, textureObject->Filter_Max);
-
-			//Unbind Texture
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
-
-		void ResourceManager::GenerateBasicTexture() {
-			TexturePointer texture = std::make_shared<Texture::BaseTexture>();
+		void ResourceManager::CreateBasicTexture() {
+			Texture::TexturePointer texture = std::make_shared<Texture::BaseTexture>(false);
 			GLubyte data[] = { 255, 255, 255, 255 };
-			GenerateTexture(texture, 1, 1, data);
-			texturesMap.emplace("base", texture);
+			texture->Generate(1, 1, data);
+			_textures.emplace("base", texture);
 		}
-
+		
 		void ResourceManager::BindTexture(const std::string& name) {
-			auto it = texturesMap.find(name);
-			if (it != texturesMap.end()) {
+			auto it = _textures.find(name);
+			if (it != _textures.end()) {
 				glBindTexture(GL_TEXTURE_2D, it->second->ID);
 			}
 			else {
@@ -80,66 +114,84 @@ namespace Engine {
 			}			
 		}
 
-		void ResourceManager::AddSpriteResource(Sprite::SpriteResource::SpriteSourceShared sprite) {
-			spriteResources.emplace(sprite->getName() ,sprite);			
+		void ResourceManager::AddMesh(Sprite::MeshShared sprite) {
+			_spriteResources.emplace(sprite->Name, sprite);
 		}
 
-		Sprite::SpriteResource::SpriteSourceShared ResourceManager::GetSpriteResource(const std::string& name) {
-			//have some null checking here
-			return spriteResources[name];
+		Sprite::MeshShared ResourceManager::GetMesh(const std::string& name) {
+			auto it = _spriteResources.find(name);
+			if (it != _spriteResources.end()) {
+				return _spriteResources[name];
+			}
+			return nullptr;
 		}
 
-		//The idea of this resource manager was to load the noted resources and then have a map of them to load 
+		void ResourceManager::ClearMeshBuffers() {
+			if (_buffers.vertexArrayObject > 0) {
+				glDeleteBuffers(1, &_buffers.vertexArrayObject);
+			}
+			if (_buffers.staticEBO > 0) {
+				glDeleteBuffers(1, &_buffers.staticEBO);
+			}
+			if (_buffers.staticVBO > 0) {
+				glDeleteBuffers(1, &_buffers.staticVBO);
+			}
+		}
+
+		void ResourceManager::BindVertexArrays() {
+			glBindVertexArray(_buffers.vertexArrayObject);
+		}
+
+		void ResourceManager::UnbindVertexArrays() {
+
+		}
+
+		// This should only set up buffers using Mesh Resources
 		bool ResourceManager::LoadSpriteResourcesIntoBuffers() {
+			bool success = false;
+			if (!_spriteResources.empty()) {
+				GLsizei totalVertexVectorSize = std::accumulate(_spriteResources.begin(), _spriteResources.end(), 0,
+					[](GLsizei sum, const std::pair<std::string, Sprite::MeshShared>& sprite) {
+					return sum + sprite.second->CalculateMemoryBlock();
+				});
 			
-			if (spriteResources.empty()) {
-				//no resources were loaded
-				return false;
+				glGenVertexArrays(1, &_buffers.vertexArrayObject);
+				glGenBuffers(1, &_buffers.staticVBO);
+				//Any subsequent VBO, EBO, and AttribPointer calls will be stored in this VAO
+				glBindVertexArray(_buffers.vertexArrayObject);
+				glBindBuffer(GL_ARRAY_BUFFER, _buffers.staticVBO);
+				glBufferData(GL_ARRAY_BUFFER, totalVertexVectorSize,
+					0, GL_STATIC_DRAW);
+
+				AddVertexDataToBoundBuffer();
+				AdjustVertexAttributePointers();
+
+				glBindVertexArray(0);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+				success = true;
 			}		
 
-			GLsizei totalVertexVectorSize = std::accumulate(spriteResources.begin(), spriteResources.end(), 0,
-				[](GLsizei sum, const std::pair<std::string, Sprite::SpriteResource::SpriteSourceShared>& sprite) {
-				return sum + sprite.second->meshVerticies.size() * sizeof(GLfloat);
-			});
-			
-			GLsizeiptr offset = 0;
+			return success;		
+		}
 
-			glGenVertexArrays(1, &_buffers.vertexArrayObject);
-			glGenBuffers(1, &_buffers.staticVBO);
-
-			//Any subsequent VBO, EBO, and AttribPointer calls will be stored in this VAO
-			glBindVertexArray(_buffers.vertexArrayObject);
-			//Bind our sprites vertex data to the GL_ARRAY_BUFFER
-			glBindBuffer(GL_ARRAY_BUFFER, _buffers.staticVBO);
-			glBufferData(GL_ARRAY_BUFFER, totalVertexVectorSize,
-				0, GL_STATIC_DRAW);
-
-			for (auto spriteSource = spriteResources.begin(); spriteSource != spriteResources.end(); ++spriteSource) {
-				if (spriteSource->second->meshVerticies.size() > 0) {
-					//spriteSource->second->offset = offset;
-					InitMeshRenderData(spriteSource->second, offset);
+		void ResourceManager::AddVertexDataToBoundBuffer() {
+			GLsizeiptr bufferOffset = 0;
+			for (auto spriteSource = _spriteResources.begin(); spriteSource != _spriteResources.end(); ++spriteSource) {
+				if (spriteSource->second->VerticiesCount > 0) {
+					// Keep in mind that the offset is passed by reference here.
+					spriteSource->second->SubstituteData(bufferOffset);
 				}
 			}
+		}
 
-			std::shared_ptr<Sprite::AttributeConfiguration> config = vertexAttributeConfigurations.at("testAttribs");
-
-			GLuint strideMultiplier = std::accumulate(config->attributes.begin(), config->attributes.end(), 0,
-				[](int sum, const Sprite::AttributeConfiguration::VertexAttribute& attribute) {
-				return sum + attribute.size;
-			});
-
-	/*		GLuint strideMultiplier = std::accumulate(spriteResources[0]->attributes.begin(), spriteResources[0]->attributes.end(), 0,
-				[](int sum, const Sprite::SpriteResource::VertexAttribute& attribute) {
-				return sum + attribute.size;
-			});
-*/
-			GLsizei vertexStride = strideMultiplier * sizeof(GLfloat);
-
+		void ResourceManager::AdjustVertexAttributePointers() {
+			GLsizei vertexStride = CalculateBufferStride();
 			int counter = 0;
 
-			//Another note -> the locations are highly dependent on how they are specified in the Vertex shader
-			//may need a GLBindBuffer call in here...
-			for (auto it = config->attributes.begin(); it != config->attributes.end(); it++) {
+			//for every attribute in my mesh do this
+			for (auto it = _config.attributes.begin(); it != _config.attributes.end(); it++) {
 				if (it->size > 0) {
 					//this is a shader location
 					glEnableVertexAttribArray(it->location);
@@ -148,29 +200,17 @@ namespace Engine {
 					counter += it->size;
 				}
 			}
-
-			glBindVertexArray(0);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			//things were succesfully loaded
-			return true;
-
 		}
 
-		//this only works for one VAO for now..
-		//CHECK THIS TO SEE IF I AM LOADING THE DATA CORRECTLY - IT WORKS FOR ONE MESH BUT NOT TWO
-		void ResourceManager::InitMeshRenderData(const Sprite::SpriteResource::SpriteSourceShared& spriteType, GLsizeiptr& offset) {
+		GLsizei ResourceManager::CalculateBufferStride() {
+			GLuint strideMultiplier = std::accumulate(_config.attributes.begin(), _config.attributes.end(), 0,
+				[](int sum, const MeshConfiguration::VertexAttribute& attribute) {
+				return sum + attribute.size;
+			});
 
-			//the offset should be zero at the start, the third arguement is the chuck out of the buffers size that we need to take
-			glBufferSubData(GL_ARRAY_BUFFER, offset, spriteType->meshVerticies.size() * sizeof(GLfloat), 
-				&spriteType->meshVerticies[0]);			
-
-			//The stride data will always be the same if the vertex format is the same so it can probably be out of this loop
-		
-			//THERE MAY BE A STATE ISSUE WITH MY VBO....Also its only rendering 10 things so the spacing is off
-
-			offset += spriteType->meshVerticies.size() * sizeof(GLfloat);
+			return strideMultiplier * sizeof(GLfloat);
 		}
+
 	}
 
 }

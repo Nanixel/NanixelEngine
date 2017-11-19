@@ -19,11 +19,19 @@ namespace Engine {
 			rotation(0.0f), speed(2.5f) {}
 
 		glm::vec3 scale;
-		glm::vec3 position;		
+		glm::vec3 position;
+		glm::vec3 Offset;
 
 		float speed;
-		float velocity;		
+		float constantVelocity;		
 		float rotation;
+
+		// TODO refactor this.
+		glm::vec3 Velocity;
+
+		// TODO consider moving these
+		bool Stuck = true;
+		float Radius;
 
 		glm::mat4 modelMatrix;
 

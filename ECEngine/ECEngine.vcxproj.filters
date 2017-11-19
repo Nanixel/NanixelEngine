@@ -40,6 +40,12 @@
       <Filter>Shaders</Filter>
     </Text>
     <Text Include="Engine\Archives\Notes.txt" />
+    <Text Include="Engine\Core\Systems\Resources\assets\levelone.txt" />
+    <Text Include="Engine\Core\Systems\Resources\assets\leveltwo.txt" />
+    <Text Include="Engine\Core\Systems\Resources\assets\levelThree.txt" />
+    <Text Include="Engine\Core\Systems\Resources\assets\levelfour.txt" />
+    <Text Include="Engine\Core\Shaders\ParticleVertex.txt" />
+    <Text Include="Engine\Core\Shaders\ParticleFragment.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -147,13 +153,16 @@
     <ClInclude Include="Engine\Core\Systems\Graphics\helpers\SpriteHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\Systems\Resources\headers\ResourceMap.h">
+    <ClInclude Include="Engine\Core\Systems\Graphics\headers\ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\Systems\Resources\headers\Resource.h">
+    <ClInclude Include="Engine\Core\Components\Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\Systems\Resources\headers\SptireResource.h">
+    <ClInclude Include="Engine\Core\Systems\Resources\headers\IResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Systems\Resources\headers\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -210,5 +219,12 @@
     <ClCompile Include="Engine\Core\Systems\Resources\sources\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\Systems\Graphics\sources\ParticleSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\Desktop\awesomeface.png" />
+    <Image Include="..\..\..\..\..\Desktop\particle.png" />
   </ItemGroup>
 </Project>

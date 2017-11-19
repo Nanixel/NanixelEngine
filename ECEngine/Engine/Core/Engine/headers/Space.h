@@ -30,30 +30,29 @@ namespace Engine {
 		void AddSystem(SystemPointer);
 		void RemoveSystem(std::string);
 		void PopulateSystemEntities(SystemPointer system) const;
-		//load any resources that this space is going to need - only works for sprites at the moment
-		//void LoadSpaceResources(std::vector<Sprite::SpriteResource::SpriteSourceShared> resources);
 
 		EntityPointer CreateEntity();
 		EntityPointer CreateCamera();
 		EntityPointer GetCamera();
 
-
 		EntityPointerList GetEntities(mask) const;
+		
 		EntityPointer GetEntityByName(std::string);
 
 		//and and remove entity pointers from this space
 		void RemoveEntity(EntityPointer entity);
 		void AddEntity(EntityPointer entity);
 		void ClearSpace();
+		void ChangeCamera(EntityPointer camera);
 
 		const std::string& Name() const { return _name; }
 
 	private:
+		EntityPointer _camera;
 		std::string _name;
 		EntityPointerList _entities;
 		SystemPointerList _systems;
-		EntityPointer _camera;
-
+		void EvaluateEntites();
 		//cannot be defaulted or copy constructed
 		Space() = delete;
 		Space(Space &Space) = delete;

@@ -27,8 +27,8 @@ namespace Engine {
 		void CameraSystem::Update(float dt) {						
 
 			for (auto& it : _entities) {				
-				CameraComponentPointer camera = it->GET_COMPONENT(CameraComponent);				
-				
+				CameraComponentPointer camera = it->GET_COMPONENT(CameraComponent);												
+
 				switch (camera->viewType)
 				{
 				case CameraComponent::CameraViewType::FIRST_PERSON:
@@ -45,8 +45,7 @@ namespace Engine {
 				default:
 					break;
 				}
-				
-				
+
 				std::pair<int, int> windowDimensions = std::pair<int, int>(800, 600);				
 				
 				if (camera->projectionMode == CameraComponent::ProjectionMode::PERSPECTIVE) {
@@ -64,27 +63,27 @@ namespace Engine {
 			
 			CameraComponentPointer defaultCamera = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(CameraComponent);
 			TransformComponentPointer cameraTransform = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(TransformComponent);						
-			cameraTransform->velocity = cameraTransform->speed * ENGINE->GetDt();
+			cameraTransform->constantVelocity = cameraTransform->speed * ENGINE->GetDt();
 				
 			switch (message) {
 			case Message::MSG_A_PRESS:
 				if (defaultCamera->viewType == CameraComponent::CameraViewType::FIRST_PERSON) {
-					defaultCamera->Position -= defaultCamera->Right * cameraTransform->velocity;
+					defaultCamera->Position -= defaultCamera->Right * cameraTransform->constantVelocity;
 				}				
 				break;
 			case Message::MSG_D_PRESS:				
 				if (defaultCamera->viewType == CameraComponent::CameraViewType::FIRST_PERSON) {
-					defaultCamera->Position += defaultCamera->Right * cameraTransform->velocity;
+					defaultCamera->Position += defaultCamera->Right * cameraTransform->constantVelocity;
 				}
 				break;
 			case Message::MSG_S_PRESS:
 				if (defaultCamera->viewType == CameraComponent::CameraViewType::FIRST_PERSON) {
-					defaultCamera->Position -= defaultCamera->Front * cameraTransform->velocity;
+					defaultCamera->Position -= defaultCamera->Front * cameraTransform->constantVelocity;
 				}
 				break;
 			case Message::MSG_W_PRESS:
 				if (defaultCamera->viewType == CameraComponent::CameraViewType::FIRST_PERSON) {
-					defaultCamera->Position += defaultCamera->Front * cameraTransform->velocity;
+					defaultCamera->Position += defaultCamera->Front * cameraTransform->constantVelocity;
 				}
 				break;			
 			}
@@ -143,7 +142,7 @@ namespace Engine {
 		//Possibly use this later
 		void CameraSystem::MoveCamera(CameraComponentPointer defaultCamera) {
 			TransformComponentPointer cameraTransform = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(TransformComponent);
-			cameraTransform->velocity = cameraTransform->speed * ENGINE->GetDt();
+			cameraTransform->constantVelocity = cameraTransform->speed * ENGINE->GetDt();
 
 			if (defaultCamera->projectionMode == CameraComponent::ProjectionMode::ORTHOGRAPHIC) {
 

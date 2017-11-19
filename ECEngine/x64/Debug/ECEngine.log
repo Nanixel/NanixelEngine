@@ -3,5 +3,11 @@
 c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecenginelib\shaderutility.h(82): warning C4091: '__declspec(dllimport)': ignored on left of 'Shaders::ShaderUtility' when no variable is declared
 c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(23): warning C4099: 'Engine::Engine': type name first seen using 'class' now seen using 'struct'
   c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\engine\headers\engine.h(23): note: see declaration of 'Engine::Engine'
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\gamestates\2dgameworld.cpp(58): warning C4244: 'argument': conversion from 'double' to 'GLuint', possible loss of data
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\gamestates\2dgameworld.cpp(168): warning C4244: 'argument': conversion from 'double' to 'GLuint', possible loss of data
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\gamestates\2dgameworld.cpp(368): warning C4267: 'initializing': conversion from 'size_t' to 'GLuint', possible loss of data
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\gamestates\2dgameworld.cpp(370): warning C4267: 'initializing': conversion from 'size_t' to 'GLuint', possible loss of data
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\gamestates\2dgameworld.cpp(372): warning C4244: 'initializing': conversion from 'GLuint' to 'GLfloat', possible loss of data
+c:\users\jesse\documents\visual studio 2015\projects\ecengine\ecengine\engine\core\gamestates\2dgameworld.cpp(513): warning C4244: 'argument': conversion from 'double' to 'GLuint', possible loss of data
   ECEngine.vcxproj -> C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.exe
   ECEngine.vcxproj -> C:\Users\jesse\documents\visual studio 2015\Projects\ECEngine\x64\Debug\ECEngine.pdb (Full PDB)

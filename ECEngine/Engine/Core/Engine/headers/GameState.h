@@ -12,7 +12,10 @@ namespace Engine {
 		State_MainMenu,
 		State_Paused,
 		State_TestDemo,
-		State_InGame
+		State_InGame,
+		State_Loading,
+		State_StartScreen,
+		State_CutScence
 	};
 
 	class GameState : public System {
@@ -49,7 +52,8 @@ namespace Engine {
 		GameState() = delete;
 		std::vector<std::string> spaces;
 		const GameStateType state;
-		std::string logicalSpace = "Test GameWorld";
+		//think of logical Space as current?
+		std::string logicalSpace;
 
 	protected:
 

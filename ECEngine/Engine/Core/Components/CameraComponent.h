@@ -19,11 +19,13 @@ namespace Engine {
 
 	class CameraComponent : public Component {
 	public:
+		// TODO refactor into an interface
 		enum ProjectionMode {
 			ORTHOGRAPHIC,
 			PERSPECTIVE
 		};
 
+		// TODO refactor into an interface
 		enum CameraViewType {
 			FIRST_PERSON,
 			THIRD_PERSON,

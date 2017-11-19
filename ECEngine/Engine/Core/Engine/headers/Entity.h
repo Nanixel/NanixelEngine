@@ -35,6 +35,15 @@ namespace Engine {
 			_name = name;
 		}
 
+		void UpdateSpace(std::string spaceIdentifier) {
+			_spaceIdentifier = spaceIdentifier;
+		}
+
+		std::string& SpaceIdentifier() {
+			return _spaceIdentifier;
+		}
+
+		
 #define GET_COMPONENT( type ) \
 		GetComponent<type>(EC_##type)
 
@@ -43,6 +52,7 @@ namespace Engine {
 
 	private:
 		std::string _name;
+		std::string _spaceIdentifier = "";
 		mask _mask = MC_ALIVE;
 		EnumeratedComponent _collider = EC_NONE;
 		ComponentPointer _components[EC_Max];

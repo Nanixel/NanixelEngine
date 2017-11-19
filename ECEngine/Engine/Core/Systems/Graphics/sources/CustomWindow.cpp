@@ -165,7 +165,7 @@ namespace Engine {
 
 
 		void CustomWindow::HideMouseCursor() {
-			OpenGLContext->setMouseCursorVisible(true);
+			OpenGLContext->setMouseCursorVisible(false);
 			OpenGLContext->setMouseCursorGrabbed(true);
 			sf::Mouse::setPosition(sf::Vector2i(Width / 2, Height / 2), *OpenGLContext);
 		}

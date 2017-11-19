@@ -5,8 +5,8 @@
 namespace Engine {
 
 
+	// TODO: this needs to be more robust
 	bool GameState::CheckSpaceActive(std::string name) {
-
 
 		for (auto it : spaces) {
 

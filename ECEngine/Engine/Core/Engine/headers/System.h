@@ -15,6 +15,7 @@ namespace Engine {
 		EC_GLGraphics,
 		EC_CameraSystem,
 		EC_ResourceSystem,
+		EC_ParticleSystem,
 		MovementSys,
 		GameStateSys,
 		MAX
@@ -33,6 +34,7 @@ namespace Engine {
 
 		virtual void SendMsg(EntityPointer entityOne, EntityPointer entity2, Message::Message message) {}
 
+		// TODO: It may be worth putting a method in here to remove any entites in this system
 		void RegisterComponent(BitFieldComponent component);
 
 		inline mask Mask() {

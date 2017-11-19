@@ -15,12 +15,24 @@ namespace Engine {
 		_entities.clear();
 	}
 
-
+	//runs the updates for all the systems in this space
 	void Space::Update(float dt) {
-
+		//there could be a space transitions between iterations aka frames so we want to accont for that maybe
+		//EvaluateEntites();
 		for (auto &system : _systems) {
+			//This seems bad -> arent the entities pointers anyway?
 			PopulateSystemEntities(system);
 			system->Update(dt);
+		}
+	}
+
+	void Space::EvaluateEntites() {
+		for (auto& it : _entities) {
+
+			//add any entities living in this space that fit the system to the system's mask
+			if (it->SpaceIdentifier() != _name) {
+				RemoveEntity(it);
+			}
 		}
 	}
 
@@ -49,15 +61,23 @@ namespace Engine {
 		return _camera;
 	}
 
+	void Space::ChangeCamera(EntityPointer camera) {
+		_camera = camera;
+	}
 
-	//this is called on the gamestate
 	void Space::PopulateSystemEntities(SystemPointer sys) const {
-		//clear the current system entities and populate the system with some new ones
+		//TODO it might be beneficial to base each system off the current space's entities..that way dont have to add them each frame
+		//there might be a problem when doing that because each system would then need to validate each entity...or any newly added ones for the mask
 		sys->_entities.clear();
+		//using Systems::GLGraphics;
+		//GETSYS(GLGraphics)->ClearTextures();
 		if (sys->Mask() != MC_NOOBJECTS) {
 			//foreach entity in this space, add it to each of our systems entities
 			for (auto& it : _entities) {
-
+				std::string name = it->GetName();
+				if (name == "particle" && sys->_name == "Particle System") {
+					int value = 4;
+				}
 				//add any entities living in this space that fit the system to the system's mask
 				mask m = sys->Mask();
 				if (it->CheckMask(m)) {
@@ -66,13 +86,6 @@ namespace Engine {
 			}
 		}
 	}
-
-	//void Space::LoadSpaceResources(std::vector<Sprite::SpriteResource::SpriteSourceShared> resources) {
-	//	Systems::ResourceManager::ResourceManagerShared manager = ENGINE->GetResourceManager();
-	//	std::for_each(resources.begin(), resources.end(), &manager->AddSpriteResource);
-	//	//manager->AddSpriteResource()
-	//}
-
 
 	EntityPointerList Space::GetEntities(mask m) const {
 		EntityPointerList matches;
@@ -108,8 +121,19 @@ namespace Engine {
 		throw ("Tried to remove an entity that doesnt exists");
 	}
 
+	//I can probably use dependecy injection here
 	void Space::AddEntity(EntityPointer entityToAdd) {
-		_entities.push_back(entityToAdd);
+
+		if (entityToAdd->SpaceIdentifier().empty() || entityToAdd->SpaceIdentifier() == _name) {
+			entityToAdd->UpdateSpace(_name);
+			_entities.push_back(entityToAdd);
+		}
+		else {
+			//entity belongs to another space
+			//throw for now, in the future we can explore "Transfering the entity"
+			//in order to transfer the entity, this space must remove it from another space
+			throw ("This entity belongs to another space");
+		}
 	}
 
 	void Space::ClearSpace() {

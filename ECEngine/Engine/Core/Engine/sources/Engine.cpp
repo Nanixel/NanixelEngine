@@ -35,11 +35,13 @@ namespace Engine {
 		//the order of how these are added dictates how they are updated
 		systems.push_back(std::make_shared<Systems::CustomWindow>());
 		systems.push_back(std::make_shared<Systems::CameraSystem>());
-		systems.push_back(std::make_shared<Systems::GLGraphics>());		
+		systems.push_back(std::make_shared<Systems::ParticleSystem>());
+		systems.push_back(std::make_shared<Systems::GLGraphics>());
 		
-		//create a new gameworld space to play in
-		SpacePointer gameWorldSpace = CreateSpace("Test GameWorld");		
-		SetActiveSpace("Test GameWorld");
+		//create a new gameworld space to play in with a default camera and adds it to our space map
+		SpacePointer gameWorldSpace = CreateSpace("Background");
+		//sets the engines active spaces to newly created space
+		SetActiveSpace("Background");
 		
 		using namespace Systems;
 
@@ -69,29 +71,32 @@ namespace Engine {
 	}
 
 	void Engine::Update(float dt) {
+		
+		GameStatePointer gameState = CurrentState(); //Arkaniod Game
 
-		//we set active space here to ensure that the mouse will be in worldspace coordinates for that space
-		SetActiveSpace(CurrentState()->GetLogicalSpace());
+		//we set active space here to ensure that the mouse will be in worldspace coordinates for that space when updating the window
+		SetActiveSpace(gameState->GetLogicalSpace());
 
 		using Systems::CustomWindow;
-		GETSYS(CustomWindow)->Update(dt);		
+		GETSYS(CustomWindow)->Update(dt);
 
-		//the initial state is set up in game -> the rest can be set up between the gamestates them selves (maybe a gamestate map manager?)
-		GameStatePointer gameState = CurrentState();
+		using Systems::GLGraphics;
+		GETSYS(GLGraphics)->NewFrame();
 
-		for (auto space = spaces.begin(); space != spaces.end(); ++space) {
+
+		for (auto space = spaces.begin(); space != spaces.end(); ++space) { 
+			//IM NOT SURE IF THIS IS A GOOD IDEA
 			SetActiveSpace(space->first);
 
-			//IN THE CODE BELOW TWO CALLS CAN HAPPEN TO PopulateSystemEntities -> change this so that only one call happens!!!
-
-			//if this is the space matches what the current gamestate wants to use for updating
-			if (space->first == gameState->GetLogicalSpace()) {			
+			//IF THIS IS NOT TRUE WE DONT NEED TO UPDATE THE GAME LOGIC FOR THESE SPACES
+			if (space->first == gameState->GetLogicalSpace()) {				
 				space->second->PopulateSystemEntities(gameState);
-				gameState->Update(dt);
+				gameState->Update(dt); 
 			}
 
-			if (gameState->CheckSpaceActive(space->first)) {
-				space->second->Update(dt);
+			//IF THIS SPACE IS NOT IN THE CURRENT GAMESTATE, THEN WE DO NOT NEED TO PASS ITS ENTITES TO OUR SYSTEMS FOR UPDATES
+			if (gameState->CheckSpaceActive(space->first)) { 
+				space->second->Update(dt); 
 			}
 		}
 		//GETSYS(CustomWindow)->endFrame();

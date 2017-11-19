@@ -163,7 +163,10 @@ namespace Shaders {
 		//attach shaders to the newly created programID	
 		glAttachShader(shaderProgramID, shaderIDs[ShaderUtility::ShaderType::VERTEX]);				
 		glAttachShader(shaderProgramID, shaderIDs[ShaderUtility::ShaderType::FRAGMENT]);
-		
+		// HACK: remove this code when not using multiple textures
+		glBindFragDataLocation(shaderProgramID, 0, "texture0");
+		glBindFragDataLocation(shaderProgramID, 1, "texture1");
+
 		//test to see if one compiles and the other doesnt
 		glLinkProgram(shaderProgramID);
 		return CheckProgramStatus(shaderProgramID);
