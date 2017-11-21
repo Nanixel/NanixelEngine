@@ -21,8 +21,8 @@ int main(int argc, char* argv[]) {
 	Engine::ENGINE->Init();
 
 	//Start up the main menu
-	Engine::ENGINE->PushGameState(Engine::GameStates::ArkaniodGameWorldPointer(new Engine::GameStates::ArkaniodGameWorld));
-	//Engine::ENGINE->PushGameState(Engine::GameStates::TestGameWorldPointer(new Engine::GameStates::TestGameWorld()));
+	//Engine::ENGINE->PushGameState(Engine::GameStates::ArkaniodGameWorldPointer(new Engine::GameStates::ArkaniodGameWorld));
+	Engine::ENGINE->PushGameState(Engine::GameStates::TestGameWorldPointer(new Engine::GameStates::TestGameWorld()));
 
 	Engine::ENGINE->mainLoop();
 

@@ -18,6 +18,7 @@ namespace Engine {
 			}
 
 			GLsizei CalculateMemoryBlock() {
+				//Need to change this to not be hard coded.
 				int numberOfElementsPerRow = POSITION_COORDS + TEXTURE_COORDS;
 				int vertexArrayCount = numberOfElementsPerRow * VerticiesCount;
 				return vertexArrayCount * sizeof(GLfloat);

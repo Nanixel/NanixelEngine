@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "TestGameWorld.h"
 #include "../ECEngine/Engine/Core/Engine/headers/Engine.h"
-//#include "./ComponentsInclude.h"
-//#include "./SystemsInclude.h"
+#include "../ECEngine/Engine/Core/Utilities/Constants.h"
 #include <math.h>
 #include <sstream>
 #include <cstdlib>
@@ -61,115 +60,86 @@ namespace Engine {
 
 			//copying data over like this may be slow an poor performance
 			std::vector<GLfloat> meshVerticies = {
-				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+				0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
 
-				-0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-				0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-				-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-				-0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
+				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+				-0.5f,  0.5f,  0.5f, 0.0f, 1.0f,
+				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
 
-				-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-				-0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-				-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
+				-0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
 
-				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-				0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-				0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-				0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-				-0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-				-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+				0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
 
-				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-				-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f
+				-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f,
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 			};
 
 			std::vector<GLfloat> triangleMeshVerticies = {
-				//POSITION			COLOR							
-				0.0f, 0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-				-0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-				0.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+				//POSITION								
+				0.0f, 0.5f, 0.0f,    0.0f, 0.0f,
+				-0.5f, -0.5f, 0.5f,  0.0f, 0.0f,
+				0.0f, 0.0f, 0.0f,    0.0f, 0.0f,
 
-				0.0f, 0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-				-0.5f, -0.5f, 0.5f,   0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-				0.0f, -0.5f, -0.5f,   0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+				0.0f, 0.5f, 0.0f,    0.0f, 0.0f,
+				-0.5f, -0.5f, 0.5f,  0.0f, 0.0f,
+				0.0f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-				0.0f, 0.5f, 0.0f,    1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-				0.0f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
-				0.5f, -0.5f, 0.5f,    0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+				0.0f, 0.5f, 0.0f,    0.0f, 0.0f,
+				0.0f, -0.5f, -0.5f,  0.0f, 0.0f,
+				0.5f, -0.5f, 0.5f,   0.0f, 0.0f,
 
-				-0.5f, -0.5f, 0.5f,   1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-				0.0f, -0.5f, -0.5f,    0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-				0.5f, -0.5f, 0.5f,    0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+				-0.5f, -0.5f, 0.5f,  0.0f, 0.0f,
+				0.0f, -0.5f, -0.5f,  0.0f, 0.0f,
+				0.5f, -0.5f, 0.5f,   0.0f, 0.0f,
 			};
 
 			Sprite::MeshShared sprite = std::make_shared<Sprite::Mesh>("boxSource", meshVerticies, 36, 0);
-			Sprite::MeshShared triangle = std::make_shared<Sprite::Mesh>("triangleSource", triangleMeshVerticies, 12, 36);
-			
-			//Sprite::AttributeConfiguration::VertexAttribute position(3, 0, Sprite::AttributeConfiguration::POSITION);
-			//Sprite::AttributeConfiguration::VertexAttribute color(3, 1, Sprite::AttributeConfiguration::COLOR);
-			//Sprite::AttributeConfiguration::VertexAttribute texture(2, 2, Sprite::AttributeConfiguration::TEXTURE);
-
-			//std::shared_ptr<Sprite::AttributeConfiguration> config = std::make_shared<Sprite::AttributeConfiguration>();			
-
-			//config->attributes = { position, color, texture };
-
-			//sprite->vertexStart = 0;
-			//sprite->vertexEnd = 36;
-			//triangle->vertexStart = 36;
-			//triangle->vertexEnd = 48;
-			
-			//sprite->attributes = { position, color, texture };
-			//triangle->attributes = { position, color, texture };
+			Sprite::MeshShared triangle = std::make_shared<Sprite::Mesh>("triangleSource", triangleMeshVerticies, 12, 36);		
 
 			Systems::ResourceManagerShared manager = ENGINE->GetResourceManager();
 
 			manager->AddMesh(sprite);
 			manager->AddMesh(triangle);
 
-			//manager->vertexAttributeConfigurations.emplace("testAttribs", config);
-
 			manager->LoadSpriteResourcesIntoBuffers();
 			
 			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container.jpg", false, "container");
-			//maybe take this out of here at some point but for now it is needed
 			manager->CreateBasicTexture();
 		}
 
 		void TestGameWorld::Update(float dt) {
-			//just have to update the camera here and take user input
-			//I can get the camera through the engines space
-			//This method is responsible for updating the camera!!!!
-			//realTimeMouse(dt);
-			CameraComponentPointer defaultCamera = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(CameraComponent);
-			//these things should not be here....this is like the handling of the controls
+			//CameraComponentPointer defaultCamera = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(CameraComponent);
 			RealTimeKeys();
-
-			//EntityPointer test = ENGINE->GetActiveSpace()->GetEntityByName("triangle");
-			//test->GET_COMPONENT(TransformComponent)->rotation = dt;
-
-			ENGINE->SendMsg(nullptr, nullptr, Message::MSG_MOUSE_MOVE);
-			
+			ENGINE->SendMsg(nullptr, nullptr, Message::MSG_MOUSE_MOVE);			
 		}
 
 		void TestGameWorld::ShutDown() {
@@ -191,11 +161,13 @@ namespace Engine {
 				box->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
 				box->GET_COMPONENT(SpriteComponent)->textureName = "container";
 				box->GET_COMPONENT(SpriteComponent)->spriteTypeName = "boxSource";
-				box->GET_COMPONENT(SpriteComponent)->shaderName = "box";
+				box->GET_COMPONENT(SpriteComponent)->shaderName = "3DShader";
+				box->GET_COMPONENT(SpriteComponent)->color = glm::vec4(1.0f);
+				box->GET_COMPONENT(SpriteComponent)->IsDestroyed = false;
 				//add our entity to the active space
 				//PopulateSystemEntites() is then called by the engine to add the spaces entities to each system in the space (This includes GLGraphics)
 				//On GLGraphic's Update(), it loops through its entites and draws it (thereby drawing the boxes that I make here)
-				ENGINE->GetActiveSpace()->AddEntity(box);
+				ENGINE->GetSpace("Test GameWorld")->AddEntity(box);
 			}
 
 			EntityPointer triangle = std::make_shared<Entity>();
@@ -209,10 +181,11 @@ namespace Engine {
 			triangle->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
 			triangle->GET_COMPONENT(SpriteComponent)->textureName = "base";
 			triangle->GET_COMPONENT(SpriteComponent)->spriteTypeName = "triangleSource";
-			triangle->GET_COMPONENT(SpriteComponent)->shaderName = "box";
+			triangle->GET_COMPONENT(SpriteComponent)->shaderName = "3DShader";
+			triangle->GET_COMPONENT(SpriteComponent)->IsDestroyed = false;
+			triangle->GET_COMPONENT(SpriteComponent)->color = glm::vec4(1.0f);
 
-			ENGINE->GetActiveSpace()->AddEntity(triangle);
-
+			ENGINE->GetSpace("Test GameWorld")->AddEntity(triangle);
 		}
 
 		
