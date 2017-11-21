@@ -166,6 +166,8 @@
     <Text Include="Engine\Core\Shaders\2DVertexShader.txt" />
     <Text Include="Engine\Core\Shaders\ECFragShader.txt" />
     <Text Include="Engine\Core\Shaders\ECVertexShader.txt" />
+    <Text Include="Engine\Core\Shaders\LightSourceFragment.txt" />
+    <Text Include="Engine\Core\Shaders\LightSourceVertex.txt" />
     <Text Include="Engine\Core\Shaders\ParticleFragment.txt" />
     <Text Include="Engine\Core\Shaders\ParticleVertex.txt" />
     <Text Include="Engine\Core\Systems\Resources\assets\levelfour.txt" />

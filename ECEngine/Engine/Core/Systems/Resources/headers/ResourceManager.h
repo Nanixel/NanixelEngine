@@ -36,13 +36,7 @@ namespace Engine {
 					int location;
 				};
 
-				MeshConfiguration() {
-					// make these pointers
-					VertexAttribute position(Sprite::POSITION_COORDS, 0);
-					VertexAttribute texture(Sprite::TEXTURE_COORDS, 1);
-					attributes.push_back(position);
-					attributes.push_back(texture);
-				}
+				MeshConfiguration() {}
 				~MeshConfiguration() {
 					attributes.clear();
 				}
@@ -63,36 +57,36 @@ namespace Engine {
 			void AddMesh(Sprite::MeshShared sprite);
 			bool LoadSpriteResourcesIntoBuffers();
 			//void ChangeMeshVertexConfiguration();
-			void BindVertexArrays();
+			void BindVertexArrays(Sprite::Mesh::MeshType type);
 			void UnbindVertexArrays();
 
 			//TEXTURES
 			void LoadTextureDataFromFile(const GLchar *file, GLboolean alpha, std::string name);
 			void BindTexture(const std::string& name);			
 			void CreateBasicTexture();
-			//int InitializeTexture(const std::string textureName, std::unordered_map<std::string, int>& loadedTextures);
-
-			void ClearResources();
-
+			
 			Texture::TexturePointer GetTexture(const std::string& name);
 			Sprite::MeshShared GetMesh(const std::string& name);
 			void ClearMeshBuffers();
 
+			void ClearResources();
+
 		private:									
 
-			TextureMap _textures;
-			SpriteMap _spriteResources;
+			TextureMap _textures;	
 			ShaderMap _shaderPrograms;
 
-			MeshConfiguration _config;
+			SpriteMap _spriteResources;
+			SpriteMap _lightSourceResources;
+
+			//I should not need to hold on to config
+			//MeshConfiguration _config;
 			Buffer _buffers;
-			//void GenerateTexture(TexturePointer textureObject, GLuint width, GLuint height, unsigned char* imageData);
+			Buffer _lightBuffers;			
 			
-			GLsizei CalculateBufferStride();
-			void AddVertexDataToBoundBuffer();
-			void AdjustVertexAttributePointers();
-			//void SubMeshData(const Sprite::MeshShared& spriteToRender, GLsizeiptr& offset);
-			
+			GLsizei CalculateBufferStride(MeshConfiguration& config);
+			void AddVertexDataToBoundBuffer(SpriteMap& sprites);
+			void AdjustVertexAttributePointers(MeshConfiguration& config);
 		};
 		using ResourceManagerShared = std::shared_ptr<ResourceManager>;
 	}

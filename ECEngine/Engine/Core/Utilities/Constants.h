@@ -15,6 +15,7 @@ namespace Engine {
 		const std::string PROJECTIONUNIFORM = "projection";
 		const std::string OFFSET = "offset";
 		const std::string ALPHA = "alphaValue";
+		const std::string LIGHT_COLOR = "lightColor";
 
 		const int SCREENWITDH = 800;
 		const int SCREENHEIGHT = 600;

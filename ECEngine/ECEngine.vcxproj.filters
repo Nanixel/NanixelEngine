@@ -46,6 +46,8 @@
     <Text Include="Engine\Core\Systems\Resources\assets\levelfour.txt" />
     <Text Include="Engine\Core\Shaders\ParticleVertex.txt" />
     <Text Include="Engine\Core\Shaders\ParticleFragment.txt" />
+    <Text Include="Engine\Core\Shaders\LightSourceVertex.txt" />
+    <Text Include="Engine\Core\Shaders\LightSourceFragment.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">

@@ -17,12 +17,7 @@ namespace Engine {
 		bool visible = true;
 	public:
 		SpriteComponent() : Component(EC_SpriteComponent, MC_Sprite), IsDestroyed(false) {}
-		
-		//enum MeshType {
-		//	QUAD,
-		//	CIRCLE
-		//};
-
+	
 		//MeshType type = QUAD;
 
 		glm::vec4 color = { 1.0f, 0.0f, 0.0f, 1.0f };		

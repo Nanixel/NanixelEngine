@@ -38,7 +38,9 @@ namespace Engine {
 			defaultShader->FindUniforms(Constants::MODELUNIFORM);
 			defaultShader->FindUniforms(Constants::PROJECTIONUNIFORM);
 			defaultShader->FindUniforms(Constants::VIEWUNIFORM);			
-			defaultShader->FindUniforms(Constants::TEXTUREUNITFORM);			
+			defaultShader->FindUniforms(Constants::TEXTUREUNITFORM);
+			defaultShader->FindUniforms(Constants::COLORUNIFORM);
+			defaultShader->FindUniforms(Constants::LIGHT_COLOR);
 
 			_shaderPrograms.emplace(DEFAULT_SHADER_IDENTIFIER, defaultShader);
 
@@ -61,6 +63,17 @@ namespace Engine {
 			particleShader->FindUniforms(Constants::COLORUNIFORM);
 			particleShader->FindUniforms(Constants::TEXTUREUNITFORM);
 			_shaderPrograms.emplace("particleShader", particleShader);
+
+			Shaders::ShaderPointer lightShader = std::make_shared<Shaders::ShaderUtility>();
+			lightShader->LoadShaderFile("../ECEngine/Engine/Core/Shaders/LightSourceVertex.txt",
+				"../ECEngine/Engine/Core/Shaders/LightSourceFragment.txt");
+			lightShader->Compile();
+
+			lightShader->FindUniforms(Constants::MODELUNIFORM);
+			lightShader->FindUniforms(Constants::PROJECTIONUNIFORM);
+			lightShader->FindUniforms(Constants::VIEWUNIFORM);
+
+			_shaderPrograms.emplace("LightSourceShader", lightShader);
 		}
 
 		Shaders::ShaderPointer ResourceManager::GetShader(std::string& name) {
@@ -115,14 +128,25 @@ namespace Engine {
 		}
 
 		void ResourceManager::AddMesh(Sprite::MeshShared sprite) {
-			_spriteResources.emplace(sprite->Name, sprite);
+			if (sprite->Type == Sprite::Mesh::MeshType::LIGHT_SOURCE) {
+				_lightSourceResources.emplace(sprite->Name, sprite);
+			}
+			else if (sprite->Type == Sprite::Mesh::MeshType::QUAD) {
+				_spriteResources.emplace(sprite->Name, sprite);
+			}
 		}
 
 		Sprite::MeshShared ResourceManager::GetMesh(const std::string& name) {
 			auto it = _spriteResources.find(name);
+			auto iterator = _lightSourceResources.find(name);
 			if (it != _spriteResources.end()) {
 				return _spriteResources[name];
 			}
+
+			if (iterator != _lightSourceResources.end()) {
+				return _lightSourceResources[name];
+			}
+
 			return nullptr;
 		}
 
@@ -138,8 +162,14 @@ namespace Engine {
 			}
 		}
 
-		void ResourceManager::BindVertexArrays() {
-			glBindVertexArray(_buffers.vertexArrayObject);
+		void ResourceManager::BindVertexArrays(Sprite::Mesh::MeshType type) {
+			if (type == Sprite::Mesh::MeshType::QUAD) {
+				//Buffers should probably be a self contained object
+				glBindVertexArray(_buffers.vertexArrayObject);
+			}
+			else {
+				glBindVertexArray(_lightBuffers.vertexArrayObject);
+			}
 		}
 
 		void ResourceManager::UnbindVertexArrays() {
@@ -163,22 +193,62 @@ namespace Engine {
 				glBufferData(GL_ARRAY_BUFFER, totalVertexVectorSize,
 					0, GL_STATIC_DRAW);
 
-				AddVertexDataToBoundBuffer();
-				AdjustVertexAttributePointers();
+				AddVertexDataToBoundBuffer(_spriteResources);
+
+				MeshConfiguration::VertexAttribute position(Sprite::POSITION_COORDS, 0);
+				MeshConfiguration::VertexAttribute texture(Sprite::TEXTURE_COORDS, 1);
+
+				MeshConfiguration config;
+				//these can probably be raw pointers
+				config.attributes.push_back(position);
+				config.attributes.push_back(texture);
+
+				AdjustVertexAttributePointers(config);
 
 				glBindVertexArray(0);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 				success = true;
-			}		
+			}
+
+			if (!_lightSourceResources.empty()) {
+				GLsizei totalVertexVectorSize = std::accumulate(_lightSourceResources.begin(), _lightSourceResources.end(), 0,
+					[](GLsizei sum, const std::pair<std::string, Sprite::MeshShared>& sprite) {
+					return sum + sprite.second->CalculateMemoryBlock();
+				});
+
+				glGenVertexArrays(1, &_lightBuffers.vertexArrayObject);
+				glGenBuffers(1, &_lightBuffers.staticVBO);
+				//Any subsequent VBO, EBO, and AttribPointer calls will be stored in this VAO
+				glBindVertexArray(_lightBuffers.vertexArrayObject);
+				glBindBuffer(GL_ARRAY_BUFFER, _lightBuffers.staticVBO);
+				glBufferData(GL_ARRAY_BUFFER, totalVertexVectorSize,
+					0, GL_STATIC_DRAW);
+
+				AddVertexDataToBoundBuffer(_lightSourceResources);
+
+				MeshConfiguration::VertexAttribute position(Sprite::POSITION_COORDS, 0);				
+
+				MeshConfiguration config;
+				//these can probably be raw pointers
+				config.attributes.push_back(position);
+
+				AdjustVertexAttributePointers(config);
+
+				glBindVertexArray(0);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+				success = true;
+			}
 
 			return success;		
 		}
 
-		void ResourceManager::AddVertexDataToBoundBuffer() {
+		void ResourceManager::AddVertexDataToBoundBuffer(SpriteMap& sprites) {
 			GLsizeiptr bufferOffset = 0;
-			for (auto spriteSource = _spriteResources.begin(); spriteSource != _spriteResources.end(); ++spriteSource) {
+			for (auto spriteSource = sprites.begin(); spriteSource != sprites.end(); ++spriteSource) {
 				if (spriteSource->second->VerticiesCount > 0) {
 					// Keep in mind that the offset is passed by reference here.
 					spriteSource->second->SubstituteData(bufferOffset);
@@ -186,12 +256,12 @@ namespace Engine {
 			}
 		}
 
-		void ResourceManager::AdjustVertexAttributePointers() {
-			GLsizei vertexStride = CalculateBufferStride();
+		void ResourceManager::AdjustVertexAttributePointers(MeshConfiguration& config) {
+			GLsizei vertexStride = CalculateBufferStride(config);
 			int counter = 0;
 
 			//for every attribute in my mesh do this
-			for (auto it = _config.attributes.begin(); it != _config.attributes.end(); it++) {
+			for (auto it = config.attributes.begin(); it != config.attributes.end(); it++) {
 				if (it->size > 0) {
 					//this is a shader location
 					glEnableVertexAttribArray(it->location);
@@ -202,8 +272,8 @@ namespace Engine {
 			}
 		}
 
-		GLsizei ResourceManager::CalculateBufferStride() {
-			GLuint strideMultiplier = std::accumulate(_config.attributes.begin(), _config.attributes.end(), 0,
+		GLsizei ResourceManager::CalculateBufferStride(MeshConfiguration& config) {
+			GLuint strideMultiplier = std::accumulate(config.attributes.begin(), config.attributes.end(), 0,
 				[](int sum, const MeshConfiguration::VertexAttribute& attribute) {
 				return sum + attribute.size;
 			});

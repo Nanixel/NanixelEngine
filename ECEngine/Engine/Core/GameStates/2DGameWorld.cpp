@@ -202,7 +202,7 @@ namespace Engine {
 				1.0f, 0.0f, 0.0f,  1.0f, 0.0f
 			};
 
-			Sprite::MeshShared sprite = std::make_shared<Sprite::Mesh>("spriteSource", meshVerticies, 6, 0);
+			Sprite::MeshShared sprite = std::make_shared<Sprite::Mesh>("spriteSource", meshVerticies, 6, 0, Sprite::Mesh::MeshType::QUAD);
 
 			Systems::ResourceManagerShared manager = ENGINE->GetResourceManager();
 			manager->AddMesh(sprite);

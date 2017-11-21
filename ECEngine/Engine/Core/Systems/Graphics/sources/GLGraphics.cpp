@@ -82,6 +82,7 @@ namespace Engine {
 					shaderProgram->UpdateUniforms(Constants::PROJECTIONUNIFORM, camera->projectionMatrix);
 					shaderProgram->UpdateUniforms(Constants::VIEWUNIFORM, camera->viewMatrix);
 					shaderProgram->UpdateUniforms(Constants::OFFSET, transform->position);
+					shaderProgram->UpdateUniforms(Constants::LIGHT_COLOR, glm::vec4(1.0f));
 
 					glm::mat4 model;
 
@@ -90,9 +91,10 @@ namespace Engine {
 					model = glm::scale(model, glm::vec3(transform->scale.x, transform->scale.y, transform->scale.z));				
 					shaderProgram->UpdateUniforms(Constants::MODELUNIFORM, model);
 				
-					_resourceManager->BindVertexArrays();
-
 					Sprite::MeshShared mesh = _resourceManager->GetMesh(sprite->spriteTypeName);
+
+					_resourceManager->BindVertexArrays(mesh->Type);
+					
 					glDrawArrays(GL_TRIANGLES, mesh->VertexStart, mesh->VertexEnd);
 					texture->Deactivate();
 					glBindVertexArray(0);

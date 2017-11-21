@@ -12,7 +12,15 @@ namespace Engine {
 
 		class Mesh {
 		public:
-			Mesh(std::string name, std::vector<GLfloat> verticies, int numberOfVerticies, int startIndex) : Name(name), _verticies(verticies), VerticiesCount(numberOfVerticies) {
+
+			enum MeshType {
+				QUAD,
+				LIGHT_SOURCE,
+			};
+
+
+			Mesh(std::string name, std::vector<GLfloat> verticies, int numberOfVerticies, int startIndex, MeshType type) : Name(name), 
+				_verticies(verticies), VerticiesCount(numberOfVerticies), Type(type) {
 				VertexStart = startIndex;
 				VertexEnd = VertexStart + numberOfVerticies;			
 			}
@@ -38,6 +46,7 @@ namespace Engine {
 			int VertexEnd = 0;
 			std::string Name;
 			int VerticiesCount;
+			MeshType Type;
 
 		private:
 			std::vector<GLfloat> _verticies;
