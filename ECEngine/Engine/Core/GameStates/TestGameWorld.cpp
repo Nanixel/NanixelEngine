@@ -23,7 +23,7 @@ namespace Engine {
 	namespace GameStates {		
 			
 		glm::vec3 sampleCubePositions[] = {
-			glm::vec3(0.0f,  0.0f,  0.0f),
+			glm::vec3(0.0f,  0.0f,  1.0f),
 			glm::vec3(2.0f,  5.0f, -15.0f),
 			glm::vec3(-1.5f, -2.2f, -2.5f),
 			glm::vec3(-3.8f, -2.0f, -12.3f),
@@ -60,47 +60,47 @@ namespace Engine {
 
 			//copying data over like this may be slow an poor performance
 			std::vector<GLfloat> meshVerticies = {
-				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-				0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-				-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+				0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+				0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+				0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+				-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
 
-				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-				0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-				-0.5f,  0.5f,  0.5f, 0.0f, 1.0f,
-				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+				0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 
-				-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-				-0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-				-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
 
-				0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-				0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-				0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-				0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+				0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+				0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+				0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+				0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
 
-				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-				0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-				0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-				0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+				0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+				0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+				0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
 
-				-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
-				0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-				0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f,
-				-0.5f,  0.5f, -0.5f, 0.0f, 1.0f
+				-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+				0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+				-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f,  0.0f
 			};
 
 			std::vector<GLfloat> triangleMeshVerticies = {
@@ -124,7 +124,8 @@ namespace Engine {
 
 			Sprite::MeshShared sprite = std::make_shared<Sprite::Mesh>("boxSource", meshVerticies, 36, 0, Sprite::Mesh::MeshType::QUAD);
 			Sprite::MeshShared triangle = std::make_shared<Sprite::Mesh>("triangleSource", triangleMeshVerticies, 12, 0, Sprite::Mesh::MeshType::LIGHT_SOURCE);
-
+			sprite->TotalAttributesSize = 8;
+			triangle->TotalAttributesSize = 3;
 			Systems::ResourceManagerShared manager = ENGINE->GetResourceManager();
 
 			manager->AddMesh(sprite);
@@ -150,14 +151,35 @@ namespace Engine {
 		}
 
 		void TestGameWorld::SendMsg(EntityPointer entityOne, EntityPointer entityTwo, Message::Message message) {						
-			
+			EntityPointer box = ENGINE->GetSpace("Test GameWorld")->GetEntityByName("box");
+			TransformComponentPointer transform = box->GET_COMPONENT(TransformComponent);
+			float delta = ENGINE->GetDt();
+			switch (message) {
+			case Message::MSG_UP:
+				transform->rotation = transform->rotation * delta;
+				transform->rotationVector = glm::vec3(1.0f, 0.0f, 0.0f);
+				break;
+			case Message::MSG_DOWN:
+				transform->rotation = transform->rotation * -delta;
+				transform->rotationVector = glm::vec3(1.0f, 0.0f, 0.0f);
+				break;
+			case Message::MSG_LEFT:
+				transform->rotation = transform->rotation * delta;
+				transform->rotationVector = glm::vec3(0.0f, 1.0f, 0.0f);
+				break;
+			case Message::MSG_RIGHT:
+				transform->rotation = transform->rotation * -delta;
+				transform->rotationVector = glm::vec3(0.0f, 1.0f, 0.0f);
+				break;
+			}
 		}
 	
 		void TestGameWorld::SpawnDefaultBoxes() {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 1; i++) {
 				EntityPointer box = ENGINE->Factory().create("box");
 				box->GET_COMPONENT(TransformComponent)->position = sampleCubePositions[i];
-				box->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
+				box->GET_COMPONENT(TransformComponent)->rotation = 50.0f;
+				box->GET_COMPONENT(TransformComponent)->rotationVector = glm::vec3(0.5f, 1.0f, 0.0f);
 				box->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
 				box->GET_COMPONENT(SpriteComponent)->textureName = "container";
 				box->GET_COMPONENT(SpriteComponent)->spriteTypeName = "boxSource";
@@ -176,9 +198,9 @@ namespace Engine {
 			triangle->AddComponent(std::make_shared<SpriteComponent>());
 			triangle->SetName("triangle");
 			
-			triangle->GET_COMPONENT(TransformComponent)->position = glm::vec3(-3.8f, -2.0f, -12.3f);
+			triangle->GET_COMPONENT(TransformComponent)->position = glm::vec3(1.0f, 0.0f, 3.0f);
 			triangle->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
-			triangle->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f);
+			triangle->GET_COMPONENT(TransformComponent)->scale = glm::vec3(0.2f);
 			triangle->GET_COMPONENT(SpriteComponent)->textureName = "base";
 			triangle->GET_COMPONENT(SpriteComponent)->spriteTypeName = "triangleSource";
 			triangle->GET_COMPONENT(SpriteComponent)->shaderName = "LightSourceShader";
@@ -200,6 +222,18 @@ namespace Engine {
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_W_PRESS);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_UP);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_DOWN);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_RIGHT);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+				ENGINE->SendMsg(nullptr, nullptr, Message::MSG_LEFT);
 			}
 		}
 	}

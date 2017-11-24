@@ -16,11 +16,12 @@ namespace Engine {
 	public:
 
 		TransformComponent() : Component(EC_TransformComponent, MC_Transform), position(glm::vec3(0.0f, 0.0f, 0.0f)), scale(glm::vec3(1.0f, 1.0f, 1.0f)),
-			rotation(0.0f), speed(2.5f) {}
+			rotation(0.0f), speed(2.5f), rotationVector(glm::vec3(0.0f, 0.0f, 1.0f)) {}
 
 		glm::vec3 scale;
 		glm::vec3 position;
 		glm::vec3 Offset;
+		glm::vec3 rotationVector;
 
 		float speed;
 		float constantVelocity;		

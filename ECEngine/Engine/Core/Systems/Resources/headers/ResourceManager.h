@@ -34,6 +34,7 @@ namespace Engine {
 					VertexAttribute(GLint _size, int _location) : size(_size), location(_location) {}
 					GLint size;
 					int location;
+					//bool includeInPointer = true;
 				};
 
 				MeshConfiguration() {}

@@ -3,14 +3,41 @@
 out vec4 FragColor;
 
 in vec2 textureCoord;
+in vec3 Normal;
+in vec3 FragPos;
+in vec3 LightPosition;
+//in vec3 CameraPosition;
 
 uniform vec4 color;
 uniform vec4 lightColor;
+uniform vec3 cameraPos;
+
 
 uniform sampler2D sprite;
 
 void main()
 {
+	float ambientStrength = 0.1;
+	vec3 ambient = ambientStrength * lightColor.xyz;
+
+	vec3 norm = normalize(Normal);
+	// we normalize this because we just care about the direction, not the magnitude
+	vec3 lightDirection = normalize(LightPosition - FragPos);
+	// we use max to ensure the diff never becomes negative
+	float diff = max(dot(norm, lightDirection), 0.0);
+	vec3 diffuse = diff * lightColor.xyz;
+
+	
+	float specularStrength = 0.5;
+	vec3 viewDir = normalize(cameraPos - FragPos);
+	vec3 reflectDir = reflect(-lightDirection, norm);
+	//32 is the shinyness value of the hightlight
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32); 
+	vec3 specular = specularStrength * spec * lightColor.xyz;
+
+
 	//FragColor = color * lightColor;
-    FragColor = color * lightColor * texture(sprite, textureCoord);
+	vec3 result = (ambient + diffuse + specular) * color.xyz;
+	//vec4 texture
+    FragColor = vec4(result, 1.0f) * texture(sprite, textureCoord); 
 }

@@ -83,11 +83,14 @@ namespace Engine {
 					shaderProgram->UpdateUniforms(Constants::VIEWUNIFORM, camera->viewMatrix);
 					shaderProgram->UpdateUniforms(Constants::OFFSET, transform->position);
 					shaderProgram->UpdateUniforms(Constants::LIGHT_COLOR, glm::vec4(1.0f));
+					shaderProgram->UpdateUniforms("lightPos", glm::vec3(1.0f, 0.0f, 3.0f));
+					//Keep in mind that every space has a camera
+					shaderProgram->UpdateUniforms("cameraPos", ENGINE->GetSpace("Test GameWorld")->GetCamera()->GET_COMPONENT(TransformComponent)->position);
 
 					glm::mat4 model;
 
 					model = glm::translate(model, glm::vec3(entityToDraw->GET_COMPONENT(TransformComponent)->position));
-					model = glm::rotate(model, glm::radians(transform->rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+					model = glm::rotate(model, glm::radians(transform->rotation) * ENGINE->GetDt(), transform->rotationVector);
 					model = glm::scale(model, glm::vec3(transform->scale.x, transform->scale.y, transform->scale.z));				
 					shaderProgram->UpdateUniforms(Constants::MODELUNIFORM, model);
 				
@@ -108,7 +111,7 @@ namespace Engine {
 			// TODO Disable this for 2D games!!!
 			// When you disable this for 2D games this will be drawn on top of each other in the order that they are drawn
 			glEnable(GL_DEPTH_TEST);
-			glClearColor(0.2f, 0.2f, 0.3f, 1.0f);
+			glClearColor(0.27f, 0.28f, 0.33f, 1.0f);
 
 			//glSentcilMask(~0);
 			//glBindFramebuffer(GL_FRAMEBUFFER, 0);

@@ -41,6 +41,8 @@ namespace Engine {
 			defaultShader->FindUniforms(Constants::TEXTUREUNITFORM);
 			defaultShader->FindUniforms(Constants::COLORUNIFORM);
 			defaultShader->FindUniforms(Constants::LIGHT_COLOR);
+			defaultShader->FindUniforms("lightPos");
+			defaultShader->FindUniforms("cameraPos");
 
 			_shaderPrograms.emplace(DEFAULT_SHADER_IDENTIFIER, defaultShader);
 
@@ -180,6 +182,18 @@ namespace Engine {
 		bool ResourceManager::LoadSpriteResourcesIntoBuffers() {
 			bool success = false;
 			if (!_spriteResources.empty()) {
+
+				MeshConfiguration::VertexAttribute position(Sprite::POSITION_COORDS, 0);
+				MeshConfiguration::VertexAttribute texture(Sprite::TEXTURE_COORDS, 1);
+				MeshConfiguration::VertexAttribute normal(3, 2);
+				//normal.includeInPointer = false;
+
+				MeshConfiguration config;
+				//these can probably be raw pointers
+				config.attributes.push_back(position);
+				config.attributes.push_back(texture);
+				config.attributes.push_back(normal);
+
 				GLsizei totalVertexVectorSize = std::accumulate(_spriteResources.begin(), _spriteResources.end(), 0,
 					[](GLsizei sum, const std::pair<std::string, Sprite::MeshShared>& sprite) {
 					return sum + sprite.second->CalculateMemoryBlock();
@@ -194,14 +208,6 @@ namespace Engine {
 					0, GL_STATIC_DRAW);
 
 				AddVertexDataToBoundBuffer(_spriteResources);
-
-				MeshConfiguration::VertexAttribute position(Sprite::POSITION_COORDS, 0);
-				MeshConfiguration::VertexAttribute texture(Sprite::TEXTURE_COORDS, 1);
-
-				MeshConfiguration config;
-				//these can probably be raw pointers
-				config.attributes.push_back(position);
-				config.attributes.push_back(texture);
 
 				AdjustVertexAttributePointers(config);
 
@@ -262,7 +268,7 @@ namespace Engine {
 
 			//for every attribute in my mesh do this
 			for (auto it = config.attributes.begin(); it != config.attributes.end(); it++) {
-				if (it->size > 0) {
+				if (it->size > 0) { // && it->includeInPointer == true
 					//this is a shader location
 					glEnableVertexAttribArray(it->location);
 					glVertexAttribPointer(it->location, it->size, GL_FLOAT, GL_FALSE, vertexStride,
