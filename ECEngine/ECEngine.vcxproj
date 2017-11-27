@@ -183,6 +183,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\Core\Components\CameraComponent.h" />
     <ClInclude Include="Engine\Core\Components\ComponentsInclude.h" />
+    <ClInclude Include="Engine\Core\Components\LightSource.h" />
     <ClInclude Include="Engine\Core\Components\Particle.h" />
     <ClInclude Include="Engine\Core\Components\ResourceComponent.h" />
     <ClInclude Include="Engine\Core\Components\SpriteComponent.h" />

@@ -17,6 +17,8 @@ enum CameraMovement {
 
 namespace Engine {
 
+	float deltaTime = 0.0f; //Time between current frame and last frame
+	float lastFrame = 0.0f; 
 	extern Engine* ENGINE;
 
 	using namespace Systems;
@@ -61,46 +63,46 @@ namespace Engine {
 			//copying data over like this may be slow an poor performance
 			std::vector<GLfloat> meshVerticies = {
 				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
-				0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
-				0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
-				0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
-				-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+				0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 0.0f, -1.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 0.0f, -1.0f,
+				-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, -1.0f,
 				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
 
 				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-				0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+				-0.5f,  0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
 				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 
-				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
-				-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
-				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
-				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, -1.0f,  0.0f,  0.0f,
 				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
-				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, -1.0f,  0.0f,  0.0f,
+				-0.5f,  0.5f,  0.5f, 1.0f, 0.0f, -1.0f,  0.0f,  0.0f,
 
-				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
-				0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
-				0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
-				0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f,  0.0f,
+				0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f,  0.0f,
+				0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f,  0.0f,
 				0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
-				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  0.0f,  0.0f,
 
-				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
-				0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
-				0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
-				0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, -1.0f,  0.0f,
+				0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, -1.0f,  0.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+				0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f, -1.0f,  0.0f,
 				-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
-				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, -1.0f,  0.0f,
+				-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, -1.0f,  0.0f,
 
-				-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
-				0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
-				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
-				0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+				-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 0.0f,  1.0f,  0.0f,
+				0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  1.0f,  0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f,
+				0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f,  0.0f,
 				-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, 0.0f,  1.0f,  0.0f,
-				-0.5f,  0.5f, -0.5f, 0.0f, 0.0f, 0.0f,  1.0f,  0.0f
+				-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, 0.0f,  1.0f,  0.0f
 			};
 
 			std::vector<GLfloat> triangleMeshVerticies = {
@@ -133,6 +135,9 @@ namespace Engine {
 
 			manager->LoadSpriteResourcesIntoBuffers();
 			
+			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/matrix.jpg", false, "matrix");
+			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container2_specular.png", true, "specular_container");
+			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container2.png", true, "container2");
 			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container.jpg", false, "container");
 			manager->CreateBasicTexture();
 		}
@@ -140,48 +145,52 @@ namespace Engine {
 		void TestGameWorld::Update(float dt) {
 			//CameraComponentPointer defaultCamera = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(CameraComponent);
 			RealTimeKeys();
-			ENGINE->SendMsg(nullptr, nullptr, Message::MSG_MOUSE_MOVE);			
+			ENGINE->SendMsg(nullptr, nullptr, Message::MSG_MOUSE_MOVE);
+
+			EntityPointer lightSource = ENGINE->GetSpace("Test GameWorld")->GetEntityByName("triangle");
+
+			TransformComponentPointer transform = lightSource->GET_COMPONENT(TransformComponent);
+			LightSourceShared source = lightSource->GET_COMPONENT(LightSource);
+			
+
+			////float currentTime = testClock.getElapsedTime().asSeconds();
+			////deltaTime = currentTime - lastFrame;
+			//lastFrame = currentTime;		
+
+			////transform->position.x = 1.0f + std::sin(currentTime) * 2.0f;
+
+			//glm::vec3 lightColor;
+			//lightColor.x = sin(currentTime * 2.0f);
+			//lightColor.y = sin(currentTime * 0.7f);
+			//lightColor.z = sin(currentTime * 1.3f);
+
+
+			//for (auto& it : _entities) {
+			//	SpritePointer sprite = it->GET_COMPONENT(SpriteComponent);
+			//	//if (it->GetName() == "box");
+			//	sprite->DiffuseColor = lightColor * glm::vec3(0.5f);
+			//	sprite->AmbientColor = sprite->DiffuseColor * glm::vec3(0.2f);
+			//}
 		}
 
 		void TestGameWorld::ShutDown() {
 			if (ENGINE->SpaceExists("Test GameWorld")) {
 				ENGINE->GetSpace("Test GameWorld")->ClearSpace();
 			}
-
 		}
 
 		void TestGameWorld::SendMsg(EntityPointer entityOne, EntityPointer entityTwo, Message::Message message) {						
-			EntityPointer box = ENGINE->GetSpace("Test GameWorld")->GetEntityByName("box");
-			TransformComponentPointer transform = box->GET_COMPONENT(TransformComponent);
-			float delta = ENGINE->GetDt();
-			switch (message) {
-			case Message::MSG_UP:
-				transform->rotation = transform->rotation * delta;
-				transform->rotationVector = glm::vec3(1.0f, 0.0f, 0.0f);
-				break;
-			case Message::MSG_DOWN:
-				transform->rotation = transform->rotation * -delta;
-				transform->rotationVector = glm::vec3(1.0f, 0.0f, 0.0f);
-				break;
-			case Message::MSG_LEFT:
-				transform->rotation = transform->rotation * delta;
-				transform->rotationVector = glm::vec3(0.0f, 1.0f, 0.0f);
-				break;
-			case Message::MSG_RIGHT:
-				transform->rotation = transform->rotation * -delta;
-				transform->rotationVector = glm::vec3(0.0f, 1.0f, 0.0f);
-				break;
-			}
+
 		}
 	
 		void TestGameWorld::SpawnDefaultBoxes() {
 			for (int i = 0; i < 1; i++) {
 				EntityPointer box = ENGINE->Factory().create("box");
 				box->GET_COMPONENT(TransformComponent)->position = sampleCubePositions[i];
-				box->GET_COMPONENT(TransformComponent)->rotation = 50.0f;
+				box->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
 				box->GET_COMPONENT(TransformComponent)->rotationVector = glm::vec3(0.5f, 1.0f, 0.0f);
 				box->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
-				box->GET_COMPONENT(SpriteComponent)->textureName = "container";
+				box->GET_COMPONENT(SpriteComponent)->textureName = "container2";
 				box->GET_COMPONENT(SpriteComponent)->spriteTypeName = "boxSource";
 				box->GET_COMPONENT(SpriteComponent)->shaderName = "3DShader";
 				box->GET_COMPONENT(SpriteComponent)->color = glm::vec4(1.0f, 0.5f, 0.31f, 1.0f);
@@ -196,6 +205,7 @@ namespace Engine {
 
 			triangle->AddComponent(std::make_shared<TransformComponent>());
 			triangle->AddComponent(std::make_shared<SpriteComponent>());
+			triangle->AddComponent(std::make_shared<LightSource>());
 			triangle->SetName("triangle");
 			
 			triangle->GET_COMPONENT(TransformComponent)->position = glm::vec3(1.0f, 0.0f, 3.0f);
@@ -204,7 +214,11 @@ namespace Engine {
 			triangle->GET_COMPONENT(SpriteComponent)->textureName = "base";
 			triangle->GET_COMPONENT(SpriteComponent)->spriteTypeName = "triangleSource";
 			triangle->GET_COMPONENT(SpriteComponent)->shaderName = "LightSourceShader";
-			triangle->GET_COMPONENT(SpriteComponent)->IsDestroyed = false;
+			triangle->GET_COMPONENT(SpriteComponent)->IsDestroyed = false;		
+
+			triangle->GET_COMPONENT(SpriteComponent)->AmbientColor = glm::vec3(0.2f, 0.2f, 0.2f);
+			triangle->GET_COMPONENT(SpriteComponent)->DiffuseColor = glm::vec3(0.5f, 0.5f, 0.5f);
+			triangle->GET_COMPONENT(SpriteComponent)->LightSpecular = glm::vec3(1.0f, 1.0f, 1.0f);
 
 			ENGINE->GetSpace("Test GameWorld")->AddEntity(triangle);
 		}

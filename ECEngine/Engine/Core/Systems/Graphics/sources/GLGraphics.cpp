@@ -13,7 +13,8 @@
 #include <glm/gtc/matrix_transform.hpp> //scale, rotate, translate, projection, ortho
 
 namespace Engine {
-	
+
+	sf::Clock testClock;
 	extern Engine *ENGINE;
 	namespace Systems {
 
@@ -68,7 +69,8 @@ namespace Engine {
 			//example: draw all the box entities on one go
 			SpritePointer sprite = entityToDraw->GET_COMPONENT(SpriteComponent);
 			if (!sprite->IsDestroyed) {							
-				TransformComponentPointer transform = entityToDraw->GET_COMPONENT(TransformComponent);
+				TransformComponentPointer transform = entityToDraw->GET_COMPONENT(TransformComponent);			
+
 				Shaders::ShaderPointer shaderProgram = _resourceManager->GetShader(sprite->shaderName);
 
 				if (shaderProgram.get() != nullptr) {
@@ -76,21 +78,46 @@ namespace Engine {
 
 					Texture::TexturePointer texture = _resourceManager->GetTexture(sprite->textureName);
 					texture->Activate(0);
-
 					shaderProgram->UpdateUniforms(Constants::TEXTUREUNITFORM, 0);
+				
+					Texture::TexturePointer texture1 = _resourceManager->GetTexture("specular_container");
+					texture1->Activate(1);
+					shaderProgram->UpdateUniforms(Constants::TEXTUREUNITFORM, 1);		
+
+					Texture::TexturePointer texture2 = _resourceManager->GetTexture("matrix");
+					texture2->Activate(2);
+					shaderProgram->UpdateUniforms(Constants::TEXTUREUNITFORM, 2);
+					
 					shaderProgram->UpdateUniforms(Constants::COLORUNIFORM, sprite->color);
 					shaderProgram->UpdateUniforms(Constants::PROJECTIONUNIFORM, camera->projectionMatrix);
 					shaderProgram->UpdateUniforms(Constants::VIEWUNIFORM, camera->viewMatrix);
 					shaderProgram->UpdateUniforms(Constants::OFFSET, transform->position);
-					shaderProgram->UpdateUniforms(Constants::LIGHT_COLOR, glm::vec4(1.0f));
-					shaderProgram->UpdateUniforms("lightPos", glm::vec3(1.0f, 0.0f, 3.0f));
+					//shaderProgram->UpdateUniforms(Constants::LIGHT_COLOR, glm::vec4(1.0f));
+					shaderProgram->UpdateUniforms("lightPos", ENGINE->GetSpace("Test GameWorld")->GetEntityByName("triangle")->GET_COMPONENT(TransformComponent)->position);
 					//Keep in mind that every space has a camera
-					shaderProgram->UpdateUniforms("cameraPos", ENGINE->GetSpace("Test GameWorld")->GetCamera()->GET_COMPONENT(TransformComponent)->position);
+					//shaderProgram->UpdateUniforms("cameraPos", ENGINE->GetSpace("Test GameWorld")->GetCamera()->GET_COMPONENT(TransformComponent)->position);
+
+					//shaderProgram->UpdateUniforms("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
+					shaderProgram->UpdateUniforms("material.diffuse", 0);
+					shaderProgram->UpdateUniforms("material.specular", 1);
+					shaderProgram->UpdateUniforms("material.emission", 2);
+					shaderProgram->UpdateUniforms("material.shininess", 64.0f);
+		
+					//these colors need to be applied to all things in the scene so it would best be stored on a 
+					//common light source object - aka this should not be based on a component
+					//shaderProgram->UpdateUniforms("light.diffuse", sprite->DiffuseColor);
+					//shaderProgram->UpdateUniforms("light.specular", sprite->AmbientColor);
+					shaderProgram->UpdateUniforms("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+					shaderProgram->UpdateUniforms("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+					shaderProgram->UpdateUniforms("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+					shaderProgram->UpdateUniforms("time", testClock.getElapsedTime().asSeconds());
+					
 
 					glm::mat4 model;
 
 					model = glm::translate(model, glm::vec3(entityToDraw->GET_COMPONENT(TransformComponent)->position));
-					model = glm::rotate(model, glm::radians(transform->rotation) * ENGINE->GetDt(), transform->rotationVector);
+					model = glm::rotate(model, glm::radians(transform->rotation), transform->rotationVector);
 					model = glm::scale(model, glm::vec3(transform->scale.x, transform->scale.y, transform->scale.z));				
 					shaderProgram->UpdateUniforms(Constants::MODELUNIFORM, model);
 				

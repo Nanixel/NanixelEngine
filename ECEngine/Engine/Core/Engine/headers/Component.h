@@ -15,6 +15,7 @@ namespace Engine {
 		EC_TransformComponent = 4,
 		EC_ResourceComponent = 5,
 		EC_Particle = 6,
+		EC_LightSource = 7,
 		//max components that exist
 		EC_Max
 	};
@@ -27,6 +28,7 @@ namespace Engine {
 		MC_Sprite = 1 << 3,
 		MC_Camera = 1 << 4,
 		MC_Particle = 1 << 5,
+		MC_LightSource = 1 << 6,
 		//system doesnt wish to recieve any objects
 		MC_NOOBJECTS = -1
 	};

@@ -28,6 +28,10 @@ namespace Engine {
 		//doing this does not actually set the default.
 		bool IsDestroyed = false;
 
+		glm::vec3 LightSpecular;
+		glm::vec3 DiffuseColor;
+		glm::vec3 AmbientColor;
+
 	};
 
 	using SpritePointer = std::shared_ptr<SpriteComponent>;

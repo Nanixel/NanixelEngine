@@ -40,9 +40,21 @@ namespace Engine {
 			defaultShader->FindUniforms(Constants::VIEWUNIFORM);			
 			defaultShader->FindUniforms(Constants::TEXTUREUNITFORM);
 			defaultShader->FindUniforms(Constants::COLORUNIFORM);
-			defaultShader->FindUniforms(Constants::LIGHT_COLOR);
+			defaultShader->FindUniforms("time");
+			//defaultShader->FindUniforms(Constants::LIGHT_COLOR);
 			defaultShader->FindUniforms("lightPos");
-			defaultShader->FindUniforms("cameraPos");
+			//defaultShader->FindUniforms("cameraPos");
+			//defaultShader->FindUniforms("material.ambient");
+			defaultShader->FindUniforms("material.diffuse");
+			defaultShader->FindUniforms("material.specular");
+			defaultShader->FindUniforms("material.emission");
+			defaultShader->FindUniforms("material.shininess");
+
+			defaultShader->FindUniforms("light.ambient");
+			defaultShader->FindUniforms("light.diffuse");
+			defaultShader->FindUniforms("light.specular");
+			//defaultShader->FindUniforms("light.ambient");
+
 
 			_shaderPrograms.emplace(DEFAULT_SHADER_IDENTIFIER, defaultShader);
 
