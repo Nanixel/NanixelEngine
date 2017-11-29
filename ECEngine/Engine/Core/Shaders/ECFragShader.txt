@@ -6,6 +6,7 @@ in vec2 textureCoord;
 in vec3 Normal;
 in vec3 FragPos;
 in vec3 LightPosition;
+in vec3 LightDirection;
 
 struct Material {
 	sampler2D diffuse;
@@ -15,11 +16,24 @@ struct Material {
 };
 
 struct Light {
-	vec3 position;
+	//vec3 position; // This is not necessery when using directional lights
+	vec3 direction; //Used for directional light
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+	
+	//Below used for point lights
+	float constant;
+	float linear;
+	float quadratic;
+
+	//Used for spotlights
+	vec3 position;
+	//vec3 direction - located above
+	float cutOff;
+	float outerCutOff;
 };
+
 
 uniform vec4 color;
 uniform Material material;
@@ -29,15 +43,24 @@ uniform float time;
 void main()
 {	
 
-	vec3 ambient = light.ambient * vec3(texture(material.specular, textureCoord));
+	float distance = length(LightPosition - FragPos);
+	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+
+	vec3 ambient = light.ambient * vec3(texture(material.diffuse, textureCoord));
 
 	vec3 norm = normalize(Normal);
 	// we normalize this because we just care about the direction, not the magnitude
+    //vec3 lightDirection = normalize(-light.direction);
 	vec3 lightDirection = normalize(LightPosition - FragPos);
 	// we use max to ensure the diff never becomes negative
 	float diff = max(dot(norm, lightDirection), 0.0);
-	vec3 diffuse = light.diffuse * diff * vec3(texture(material.specular, textureCoord));
+	vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, textureCoord));
 	
+	float theta = dot(lightDirection, normalize(-LightDirection));
+	float epsilon = light.cutOff - light.outerCutOff;
+	//clamp prevents negative values and values greater than one - the first arg is a function -> the result is clamped.
+	float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+
 	vec3 viewDir = normalize(-FragPos);
 	vec3 reflectDir = reflect(-lightDirection, norm);
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
@@ -49,9 +72,18 @@ void main()
 		emission = texture(material.emission, textureCoord).rgb;
 		//here we are adding time as the y coord of the texture
 		emission = texture(material.emission, textureCoord + vec2(0.0, time)).rgb; //moving
-		emission = emission * (sin(time) * 0.5 + 0.5) * 2.0;
+		//emission = emission * (sin(time) * 0.5 + 0.5) * 2.0;
 	}
-	vec3 result = ambient + diffuse + specular + emission;
+
+	ambient *= attenuation;
+	//these were attenuation before!!
+	diffuse *= intensity;
+	specular *= intensity;
+
+	vec3 result = ambient + diffuse + specular;// + emission;
+
+	FragColor = vec4(result, 1.0f);
+
 	//vec4 texture
-    FragColor = vec4(result, 1.0f);
+    
 }

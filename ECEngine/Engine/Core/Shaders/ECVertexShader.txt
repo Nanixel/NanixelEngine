@@ -8,13 +8,14 @@ out vec2 textureCoord;
 out vec3 Normal;
 out vec3 FragPos;
 out vec3 LightPosition;
+out vec3 LightDirection;
 
 uniform vec3 lightPos;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-
+uniform vec3 direction;
 
 void main() 
 {
@@ -27,5 +28,5 @@ void main()
    FragPos = vec3(view * model * vec4(position, 1.0));
 
    LightPosition = vec3(view * vec4(lightPos, 1.0f));
-
+   LightDirection = vec3(view * vec4(direction, 0.0f));
 }

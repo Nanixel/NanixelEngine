@@ -65,6 +65,8 @@ namespace Engine {
 			TransformComponentPointer cameraTransform = ENGINE->GetActiveSpace()->GetCamera()->GET_COMPONENT(TransformComponent);						
 			cameraTransform->constantVelocity = cameraTransform->speed * ENGINE->GetDt();
 				
+			//TODO Camera Position can be on the transform component rather than the camera component
+
 			switch (message) {
 			case Message::MSG_A_PRESS:
 				if (defaultCamera->viewType == CameraComponent::CameraViewType::FIRST_PERSON) {

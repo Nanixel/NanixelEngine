@@ -46,6 +46,10 @@ namespace Engine {
 		
 			//NewFrame();
 			//glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+			//TODO Light Sources should be iterated over separely
+			//for (auto& it : _lightSources) {...}
+
 			for (auto& it : _entities) {
 				DrawEntity(it, camera);
 			}
@@ -93,7 +97,8 @@ namespace Engine {
 					shaderProgram->UpdateUniforms(Constants::VIEWUNIFORM, camera->viewMatrix);
 					shaderProgram->UpdateUniforms(Constants::OFFSET, transform->position);
 					//shaderProgram->UpdateUniforms(Constants::LIGHT_COLOR, glm::vec4(1.0f));
-					shaderProgram->UpdateUniforms("lightPos", ENGINE->GetSpace("Test GameWorld")->GetEntityByName("triangle")->GET_COMPONENT(TransformComponent)->position);
+					//shaderProgram->UpdateUniforms("lightPos", ENGINE->GetSpace("Test GameWorld")->GetEntityByName("triangle")->GET_COMPONENT(TransformComponent)->position);
+					shaderProgram->UpdateUniforms("lightPos", camera->Position);
 					//Keep in mind that every space has a camera
 					//shaderProgram->UpdateUniforms("cameraPos", ENGINE->GetSpace("Test GameWorld")->GetCamera()->GET_COMPONENT(TransformComponent)->position);
 
@@ -110,6 +115,16 @@ namespace Engine {
 					shaderProgram->UpdateUniforms("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 					shaderProgram->UpdateUniforms("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
 					shaderProgram->UpdateUniforms("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+					shaderProgram->UpdateUniforms("direction", camera->Front);
+					//pass the cos of the angle here so that we can compare the dot product result in the shader
+					shaderProgram->UpdateUniforms("light.cutOff", glm::cos(glm::radians(12.5f)));
+					float test = glm::cos(glm::radians(17.5));
+					shaderProgram->UpdateUniforms("light.outerCutOff", test);
+			
+					//this takes a lightsources values
+					shaderProgram->UpdateUniforms("light.constant", 1.0f);
+					shaderProgram->UpdateUniforms("light.linear", 0.09f);
+					shaderProgram->UpdateUniforms("light.quadratic", 0.032f);
 
 					shaderProgram->UpdateUniforms("time", testClock.getElapsedTime().asSeconds());
 					
@@ -138,7 +153,7 @@ namespace Engine {
 			// TODO Disable this for 2D games!!!
 			// When you disable this for 2D games this will be drawn on top of each other in the order that they are drawn
 			glEnable(GL_DEPTH_TEST);
-			glClearColor(0.27f, 0.28f, 0.33f, 1.0f);
+			glClearColor(0.15f, 0.17f, 0.18f, 1.0f);
 
 			//glSentcilMask(~0);
 			//glBindFramebuffer(GL_FRAMEBUFFER, 0);

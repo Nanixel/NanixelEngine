@@ -53,6 +53,12 @@ namespace Engine {
 			defaultShader->FindUniforms("light.ambient");
 			defaultShader->FindUniforms("light.diffuse");
 			defaultShader->FindUniforms("light.specular");
+			defaultShader->FindUniforms("direction");
+			defaultShader->FindUniforms("light.constant");
+			defaultShader->FindUniforms("light.linear");
+			defaultShader->FindUniforms("light.quadratic");
+			defaultShader->FindUniforms("light.cutOff");
+			defaultShader->FindUniforms("light.outerCutOff");
 			//defaultShader->FindUniforms("light.ambient");
 
 

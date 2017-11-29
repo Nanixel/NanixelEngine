@@ -184,11 +184,12 @@ namespace Engine {
 		}
 	
 		void TestGameWorld::SpawnDefaultBoxes() {
-			for (int i = 0; i < 1; i++) {
+			for (int i = 0; i < 10; i++) {
 				EntityPointer box = ENGINE->Factory().create("box");
 				box->GET_COMPONENT(TransformComponent)->position = sampleCubePositions[i];
-				box->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
-				box->GET_COMPONENT(TransformComponent)->rotationVector = glm::vec3(0.5f, 1.0f, 0.0f);
+				float angle = 20.0f * i;
+				box->GET_COMPONENT(TransformComponent)->rotation = angle;
+				box->GET_COMPONENT(TransformComponent)->rotationVector = glm::vec3(1.0f, 0.3f, 0.5f);
 				box->GET_COMPONENT(TransformComponent)->scale = glm::vec3(1.0f, 1.0f, 1.0f);
 				box->GET_COMPONENT(SpriteComponent)->textureName = "container2";
 				box->GET_COMPONENT(SpriteComponent)->spriteTypeName = "boxSource";
