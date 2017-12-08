@@ -37,6 +37,13 @@ namespace Engine {
 			glm::vec3(-1.3f,  1.0f, -1.5f)
 		};
 
+		glm::vec3 pointLightPositions[] = {
+			glm::vec3(0.7f,  0.2f,  2.0f),
+			glm::vec3(2.3f, -3.3f, -4.0f),
+			glm::vec3(-4.0f,  2.0f, -12.0f),
+			glm::vec3(0.0f,  0.0f, -3.0f)
+		};
+
 		void TestGameWorld::Init() {
 			RegisterComponent(MC_Transform);
 			RegisterComponent(MC_Sprite);
@@ -184,6 +191,26 @@ namespace Engine {
 		}
 	
 		void TestGameWorld::SpawnDefaultBoxes() {
+
+			for (int i = 0; i < 4; i++) {
+				EntityPointer lightSource = std::make_shared<Entity>();
+
+				lightSource->AddComponent(std::make_shared<TransformComponent>());
+				lightSource->AddComponent(std::make_shared<SpriteComponent>());
+				lightSource->AddComponent(std::make_shared<LightSource>());
+				lightSource->SetName("triangle");
+
+				lightSource->GET_COMPONENT(TransformComponent)->position = pointLightPositions[i];
+				lightSource->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
+				lightSource->GET_COMPONENT(TransformComponent)->scale = glm::vec3(0.2f);
+				lightSource->GET_COMPONENT(SpriteComponent)->textureName = "base";
+				lightSource->GET_COMPONENT(SpriteComponent)->spriteTypeName = "triangleSource";
+				lightSource->GET_COMPONENT(SpriteComponent)->shaderName = "LightSourceShader";
+				lightSource->GET_COMPONENT(SpriteComponent)->IsDestroyed = false;
+
+				ENGINE->GetSpace("Test GameWorld")->AddEntity(lightSource);
+			}
+
 			for (int i = 0; i < 10; i++) {
 				EntityPointer box = ENGINE->Factory().create("box");
 				box->GET_COMPONENT(TransformComponent)->position = sampleCubePositions[i];
@@ -201,27 +228,7 @@ namespace Engine {
 				//On GLGraphic's Update(), it loops through its entites and draws it (thereby drawing the boxes that I make here)
 				ENGINE->GetSpace("Test GameWorld")->AddEntity(box);
 			}
-
-			EntityPointer triangle = std::make_shared<Entity>();
-
-			triangle->AddComponent(std::make_shared<TransformComponent>());
-			triangle->AddComponent(std::make_shared<SpriteComponent>());
-			triangle->AddComponent(std::make_shared<LightSource>());
-			triangle->SetName("triangle");
 			
-			triangle->GET_COMPONENT(TransformComponent)->position = glm::vec3(1.0f, 0.0f, 3.0f);
-			triangle->GET_COMPONENT(TransformComponent)->rotation = 0.0f;
-			triangle->GET_COMPONENT(TransformComponent)->scale = glm::vec3(0.2f);
-			triangle->GET_COMPONENT(SpriteComponent)->textureName = "base";
-			triangle->GET_COMPONENT(SpriteComponent)->spriteTypeName = "triangleSource";
-			triangle->GET_COMPONENT(SpriteComponent)->shaderName = "LightSourceShader";
-			triangle->GET_COMPONENT(SpriteComponent)->IsDestroyed = false;		
-
-			triangle->GET_COMPONENT(SpriteComponent)->AmbientColor = glm::vec3(0.2f, 0.2f, 0.2f);
-			triangle->GET_COMPONENT(SpriteComponent)->DiffuseColor = glm::vec3(0.5f, 0.5f, 0.5f);
-			triangle->GET_COMPONENT(SpriteComponent)->LightSpecular = glm::vec3(1.0f, 1.0f, 1.0f);
-
-			ENGINE->GetSpace("Test GameWorld")->AddEntity(triangle);
 		}
 
 		

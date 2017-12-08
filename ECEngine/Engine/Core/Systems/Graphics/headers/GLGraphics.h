@@ -26,7 +26,8 @@ namespace Engine {
 
 		private:									
 			ResourceManagerShared _resourceManager;
-			void DrawEntity(const EntityPointer &entityToDraw, const CameraComponentPointer &camera);						;			
+			void DrawEntity(const EntityPointer &entityToDraw, const CameraComponentPointer &camera);
+			int _shitIndex =0;
 		};
 	}	
 }

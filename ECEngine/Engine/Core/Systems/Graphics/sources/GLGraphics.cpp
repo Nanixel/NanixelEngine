@@ -49,10 +49,31 @@ namespace Engine {
 
 			//TODO Light Sources should be iterated over separely
 			//for (auto& it : _lightSources) {...}
+			std::string test = "3DShader";
+			Shaders::ShaderPointer shaderProgram = _resourceManager->GetShader(test);
 
+			_shitIndex = 0;
 			for (auto& it : _entities) {
+
+				if (it->GetName() == "triangle") {
+					//The issue here is that the triangle sprite depends on two shaders -> one to draw it and one for lighting
+					shaderProgram->Use();
+					std::string number = std::to_string(_shitIndex);
+					shaderProgram->UpdateUniforms(("pointLights[" + number + "].position").c_str(), it->GET_COMPONENT(TransformComponent)->position);
+					shaderProgram->UpdateUniforms(("pointLights[" + number + "].constant").c_str(), 1.0f);
+					shaderProgram->UpdateUniforms(("pointLights[" + number + "].linear").c_str(), 0.09f);
+					shaderProgram->UpdateUniforms(("pointLights[" + number + "].quadratic").c_str(), 0.032f);
+					shaderProgram->UpdateUniforms(("pointLights[" + number + "].ambient").c_str(), glm::vec3(0.05f, 0.05f, 0.05f));
+					shaderProgram->UpdateUniforms(("pointLights[" + number + "].diffuse").c_str(), glm::vec3(0.8f, 0.8f, 0.8f));
+					shaderProgram->UpdateUniforms(("pointLights[" + number + "].specular").c_str(), glm::vec3(1.0f, 1.0f, 1.0f));
+					_shitIndex++;
+					shaderProgram->UnUse();
+				}
+
+
 				DrawEntity(it, camera);
 			}
+			_shitIndex = 0;
 			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
 
@@ -98,7 +119,30 @@ namespace Engine {
 					shaderProgram->UpdateUniforms(Constants::OFFSET, transform->position);
 					//shaderProgram->UpdateUniforms(Constants::LIGHT_COLOR, glm::vec4(1.0f));
 					//shaderProgram->UpdateUniforms("lightPos", ENGINE->GetSpace("Test GameWorld")->GetEntityByName("triangle")->GET_COMPONENT(TransformComponent)->position);
-					shaderProgram->UpdateUniforms("lightPos", camera->Position);
+					shaderProgram->UpdateUniforms("viewPos", camera->Position);
+
+					shaderProgram->UpdateUniforms("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+					shaderProgram->UpdateUniforms("dirLight.ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+					shaderProgram->UpdateUniforms("dirLight.diffuse", glm::vec3(0.4f, 0.4f, 0.4f));
+					shaderProgram->UpdateUniforms("dirLight.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+
+					shaderProgram->UpdateUniforms("spotLight.position", camera->Position);
+					shaderProgram->UpdateUniforms("spotLight.direction", camera->Front);
+					shaderProgram->UpdateUniforms("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+					float test = glm::cos(glm::radians(17.5));
+					shaderProgram->UpdateUniforms("spotLight.outerCutOff", test);
+					//this takes a lightsources values
+					shaderProgram->UpdateUniforms("spotLight.constant", 1.0f);
+					shaderProgram->UpdateUniforms("spotLight.linear", 0.09f);
+					shaderProgram->UpdateUniforms("spotLight.quadratic", 0.032f);
+					//these colors need to be applied to all things in the scene so it would best be stored on a 
+					//common light source object - aka this should not be based on a component
+					//shaderProgram->UpdateUniforms("light.diffuse", sprite->DiffuseColor);
+					//shaderProgram->UpdateUniforms("light.specular", sprite->AmbientColor);
+					shaderProgram->UpdateUniforms("spotLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+					shaderProgram->UpdateUniforms("spotLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+					shaderProgram->UpdateUniforms("spotLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		
 					//Keep in mind that every space has a camera
 					//shaderProgram->UpdateUniforms("cameraPos", ENGINE->GetSpace("Test GameWorld")->GetCamera()->GET_COMPONENT(TransformComponent)->position);
 
@@ -107,24 +151,9 @@ namespace Engine {
 					shaderProgram->UpdateUniforms("material.specular", 1);
 					shaderProgram->UpdateUniforms("material.emission", 2);
 					shaderProgram->UpdateUniforms("material.shininess", 64.0f);
-		
-					//these colors need to be applied to all things in the scene so it would best be stored on a 
-					//common light source object - aka this should not be based on a component
-					//shaderProgram->UpdateUniforms("light.diffuse", sprite->DiffuseColor);
-					//shaderProgram->UpdateUniforms("light.specular", sprite->AmbientColor);
-					shaderProgram->UpdateUniforms("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-					shaderProgram->UpdateUniforms("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
-					shaderProgram->UpdateUniforms("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-					shaderProgram->UpdateUniforms("direction", camera->Front);
-					//pass the cos of the angle here so that we can compare the dot product result in the shader
-					shaderProgram->UpdateUniforms("light.cutOff", glm::cos(glm::radians(12.5f)));
-					float test = glm::cos(glm::radians(17.5));
-					shaderProgram->UpdateUniforms("light.outerCutOff", test);
-			
-					//this takes a lightsources values
-					shaderProgram->UpdateUniforms("light.constant", 1.0f);
-					shaderProgram->UpdateUniforms("light.linear", 0.09f);
-					shaderProgram->UpdateUniforms("light.quadratic", 0.032f);
+						
+					//shaderProgram->UpdateUniforms("direction", camera->Front);
+					//pass the cos of the angle here so that we can compare the dot product result in the shader							
 
 					shaderProgram->UpdateUniforms("time", testClock.getElapsedTime().asSeconds());
 					

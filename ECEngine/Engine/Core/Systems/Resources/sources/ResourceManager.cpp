@@ -42,23 +42,43 @@ namespace Engine {
 			defaultShader->FindUniforms(Constants::COLORUNIFORM);
 			defaultShader->FindUniforms("time");
 			//defaultShader->FindUniforms(Constants::LIGHT_COLOR);
-			defaultShader->FindUniforms("lightPos");
-			//defaultShader->FindUniforms("cameraPos");
+			//defaultShader->FindUniforms("lightPos");
+			defaultShader->FindUniforms("viewPos");
 			//defaultShader->FindUniforms("material.ambient");
 			defaultShader->FindUniforms("material.diffuse");
 			defaultShader->FindUniforms("material.specular");
 			defaultShader->FindUniforms("material.emission");
 			defaultShader->FindUniforms("material.shininess");
 
-			defaultShader->FindUniforms("light.ambient");
-			defaultShader->FindUniforms("light.diffuse");
-			defaultShader->FindUniforms("light.specular");
-			defaultShader->FindUniforms("direction");
-			defaultShader->FindUniforms("light.constant");
-			defaultShader->FindUniforms("light.linear");
-			defaultShader->FindUniforms("light.quadratic");
-			defaultShader->FindUniforms("light.cutOff");
-			defaultShader->FindUniforms("light.outerCutOff");
+			defaultShader->FindUniforms("spotLight.position");
+			defaultShader->FindUniforms("spotLight.direction");
+
+			defaultShader->FindUniforms("spotLight.cutOff");
+			defaultShader->FindUniforms("spotLight.outerCutOff");
+
+			defaultShader->FindUniforms("spotLight.constant");
+			defaultShader->FindUniforms("spotLight.linear");
+			defaultShader->FindUniforms("spotLight.quadratic");
+
+			defaultShader->FindUniforms("spotLight.ambient");
+			defaultShader->FindUniforms("spotLight.diffuse");
+			defaultShader->FindUniforms("spotLight.specular");					
+	
+			defaultShader->FindUniforms("dirLight.direction");
+			defaultShader->FindUniforms("dirLight.ambient");
+			defaultShader->FindUniforms("dirLight.diffuse");
+			defaultShader->FindUniforms("dirLight.specular");
+
+			for (int i = 0; i < 4; i++) {
+				std::string number = std::to_string(i);
+				defaultShader->FindUniforms(("pointLights[" + number + "].position").c_str());
+				defaultShader->FindUniforms(("pointLights[" + number + "].constant").c_str());
+				defaultShader->FindUniforms(("pointLights[" + number + "].linear").c_str());
+				defaultShader->FindUniforms(("pointLights[" + number + "].quadratic").c_str());
+				defaultShader->FindUniforms(("pointLights[" + number + "].ambient").c_str());
+				defaultShader->FindUniforms(("pointLights[" + number + "].diffuse").c_str());
+				defaultShader->FindUniforms(("pointLights[" + number + "].specular").c_str());
+			}
 			//defaultShader->FindUniforms("light.ambient");
 
 
