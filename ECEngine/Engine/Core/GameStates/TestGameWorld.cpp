@@ -68,6 +68,89 @@ namespace Engine {
 		void TestGameWorld::LoadResourceData() {
 
 			//copying data over like this may be slow an poor performance
+			
+			std::vector<Sprite::Mesh::Vertex> verticies;
+
+			Sprite::Mesh::Vertex v1(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+			Sprite::Mesh::Vertex v2(glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+			Sprite::Mesh::Vertex v3(glm::vec3(0.5f, 0.5f, -0.5f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+			Sprite::Mesh::Vertex v4(glm::vec3(0.5f, 0.5f, -0.5f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+			Sprite::Mesh::Vertex v5(glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+			Sprite::Mesh::Vertex v6(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+
+			Sprite::Mesh::Vertex v7(glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			Sprite::Mesh::Vertex v8(glm::vec3(0.5f, -0.5f, 0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			Sprite::Mesh::Vertex v9(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			Sprite::Mesh::Vertex v10(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			Sprite::Mesh::Vertex v11(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			Sprite::Mesh::Vertex v12(glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			//BELOW HERE
+			Sprite::Mesh::Vertex v13(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v14(glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec2(1.0f, 1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v15(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v16(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v17(glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v18(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+
+			Sprite::Mesh::Vertex v19(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v20(glm::vec3(0.5f, 0.5f, -0.5f), glm::vec2(1.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v21(glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v22(glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v23(glm::vec3(0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex v24(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+			Sprite::Mesh::Vertex v25(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			Sprite::Mesh::Vertex v26(glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			Sprite::Mesh::Vertex v27(glm::vec3(0.5f, -0.5f, 0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			Sprite::Mesh::Vertex v28(glm::vec3(0.5f, -0.5f, 0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			Sprite::Mesh::Vertex v29(glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+			Sprite::Mesh::Vertex v30(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+
+			Sprite::Mesh::Vertex v31(glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			Sprite::Mesh::Vertex v32(glm::vec3(0.5f, 0.5f, -0.5f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			Sprite::Mesh::Vertex v33(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			Sprite::Mesh::Vertex v34(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			Sprite::Mesh::Vertex v35(glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			Sprite::Mesh::Vertex v36(glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+			verticies.push_back(v1);
+			verticies.push_back(v2);
+			verticies.push_back(v3);
+			verticies.push_back(v4);
+			verticies.push_back(v5);
+			verticies.push_back(v6);
+			verticies.push_back(v7);
+			verticies.push_back(v8);
+			verticies.push_back(v9);
+			verticies.push_back(v10);
+			verticies.push_back(v11);
+			verticies.push_back(v12);
+			verticies.push_back(v13);
+			verticies.push_back(v14);
+			verticies.push_back(v15);
+			verticies.push_back(v16);
+			verticies.push_back(v17);
+			verticies.push_back(v18);
+			verticies.push_back(v19);
+			verticies.push_back(v20);
+			verticies.push_back(v21);
+			verticies.push_back(v22);
+			verticies.push_back(v23);
+			verticies.push_back(v24);
+			verticies.push_back(v25);
+			verticies.push_back(v26);
+			verticies.push_back(v27);
+			verticies.push_back(v28);
+			verticies.push_back(v29);
+			verticies.push_back(v30);
+			verticies.push_back(v31);
+			verticies.push_back(v32);
+			verticies.push_back(v33);
+			verticies.push_back(v34);
+			verticies.push_back(v35);
+			verticies.push_back(v36);
+
+
 			std::vector<GLfloat> meshVerticies = {
 				-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
 				0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 0.0f, -1.0f,
@@ -131,22 +214,55 @@ namespace Engine {
 				0.5f, -0.5f, 0.5f,
 			};
 
-			Sprite::MeshShared sprite = std::make_shared<Sprite::Mesh>("boxSource", meshVerticies, 36, 0, Sprite::Mesh::MeshType::QUAD);
-			Sprite::MeshShared triangle = std::make_shared<Sprite::Mesh>("triangleSource", triangleMeshVerticies, 12, 0, Sprite::Mesh::MeshType::LIGHT_SOURCE);
+			std::vector<Sprite::Mesh::Vertex> triangleVerticies;
+			Sprite::Mesh::Vertex t1(glm::vec3(0.0f, 0.5f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t2(glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t3(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t4(glm::vec3(0.0f, 0.5f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t5(glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t6(glm::vec3(0.0f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+			Sprite::Mesh::Vertex t7(glm::vec3(0.0f, 0.5f, 0.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t8(glm::vec3(0.0f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t9(glm::vec3(0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t10(glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t11(glm::vec3(0.0f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+			Sprite::Mesh::Vertex t12(glm::vec3(0.5f, -0.5f, 0.5f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+			triangleVerticies.push_back(t1);
+			triangleVerticies.push_back(t2);
+			triangleVerticies.push_back(t3);
+			triangleVerticies.push_back(t4);
+			triangleVerticies.push_back(t5);
+			triangleVerticies.push_back(t6);
+			triangleVerticies.push_back(t7);
+			triangleVerticies.push_back(t8);
+			triangleVerticies.push_back(t9);
+			triangleVerticies.push_back(t10);
+			triangleVerticies.push_back(t11);
+			triangleVerticies.push_back(t12);			
+
+			Sprite::MeshShared sprite = std::make_shared<Sprite::Mesh>("boxSource", verticies, 36, 0, Sprite::Mesh::MeshType::QUAD);
+			Sprite::MeshShared triangle = std::make_shared<Sprite::Mesh>("triangleSource", triangleVerticies, 12, 0, Sprite::Mesh::MeshType::LIGHT_SOURCE);
 			sprite->TotalAttributesSize = 8;
 			triangle->TotalAttributesSize = 3;
 			Systems::ResourceManagerShared manager = ENGINE->GetResourceManager();
 
-			manager->AddMesh(sprite);
 			manager->AddMesh(triangle);
+			manager->AddMesh(sprite);
 
-			manager->LoadSpriteResourcesIntoBuffers();
+			//manager->LoadSpriteResourcesIntoBuffers();
 			
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/matrix.jpg", false, "matrix");
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container2_specular.png", true, "specular_container");
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container2.png", true, "container2");
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container.jpg", false, "container");
-			manager->CreateBasicTexture();
+			//Texture::TexturePointer matrix = manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/matrix.jpg", false, "matrix", "diffuse");
+			Texture::TexturePointer specContainer = manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container2_specular.png", true, "specular_container", "specular");
+			Texture::TexturePointer container2 = manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container2.png", true, "container2", "diffuse");
+
+			sprite->AddTexture(specContainer);
+			sprite->AddTexture(container2);
+			//Texture::TexturePointer container = manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/container.jpg", false, "container", "diffuse");
+			Texture::TexturePointer baseTexture = manager->CreateBasicTexture();
+			//triangle->AddTexture(baseTexture);			
+			
 		}
 
 		void TestGameWorld::Update(float dt) {

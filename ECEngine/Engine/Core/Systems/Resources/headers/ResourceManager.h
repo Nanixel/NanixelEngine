@@ -62,9 +62,10 @@ namespace Engine {
 			void UnbindVertexArrays();
 
 			//TEXTURES
-			void LoadTextureDataFromFile(const GLchar *file, GLboolean alpha, std::string name);
+			Texture::TexturePointer LoadTextureDataFromFile(const GLchar *file, GLboolean alpha, std::string name,
+				std::string type);
 			void BindTexture(const std::string& name);			
-			void CreateBasicTexture();
+			Texture::TexturePointer  CreateBasicTexture();
 			
 			Texture::TexturePointer GetTexture(const std::string& name);
 			Sprite::MeshShared GetMesh(const std::string& name);

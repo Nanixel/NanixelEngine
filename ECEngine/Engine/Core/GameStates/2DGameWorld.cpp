@@ -202,20 +202,20 @@ namespace Engine {
 				1.0f, 0.0f, 0.0f,  1.0f, 0.0f
 			};
 
-			Sprite::MeshShared sprite = std::make_shared<Sprite::Mesh>("spriteSource", meshVerticies, 6, 0, Sprite::Mesh::MeshType::QUAD);
+			//Sprite::MeshShared sprite = std::make_shared<Sprite::Mesh>("spriteSource", meshVerticies, 6, 0, Sprite::Mesh::MeshType::QUAD);
 
 			Systems::ResourceManagerShared manager = ENGINE->GetResourceManager();
-			manager->AddMesh(sprite);
+			//manager->AddMesh(sprite);
 			manager->LoadSpriteResourcesIntoBuffers();
 
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/block.png", false, "block");
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/block_solid.png", false, "block_solid");
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/awesomeface.png", true, "face");
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/background.jpg", false, "background");
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/paddle.png", true, "wall");
-			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/particle.png", true, "particle");
+//			manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/block.png", false, "block");
+			//manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/block_solid.png", false, "block_solid");
+		//	manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/awesomeface.png", true, "face");
+			//manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/background.jpg", false, "background");
+			//manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/paddle.png", true, "wall");
+			//manager->LoadTextureDataFromFile("../ECEngine/Engine/Core/Systems/Resources/assets/particle.png", true, "particle");
 
-			manager->CreateBasicTexture();
+			//manager->CreateBasicTexture();
 		}
 
 		void ArkaniodGameWorld::CreateEntities() {

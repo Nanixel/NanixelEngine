@@ -101,17 +101,9 @@ namespace Engine {
 				if (shaderProgram.get() != nullptr) {
 					shaderProgram->Use();
 
-					Texture::TexturePointer texture = _resourceManager->GetTexture(sprite->textureName);
-					texture->Activate(0);
-					shaderProgram->UpdateUniforms(Constants::TEXTUREUNITFORM, 0);
-				
-					Texture::TexturePointer texture1 = _resourceManager->GetTexture("specular_container");
-					texture1->Activate(1);
-					shaderProgram->UpdateUniforms(Constants::TEXTUREUNITFORM, 1);		
+					Sprite::MeshShared mesh = _resourceManager->GetMesh(sprite->spriteTypeName);
 
-					Texture::TexturePointer texture2 = _resourceManager->GetTexture("matrix");
-					texture2->Activate(2);
-					shaderProgram->UpdateUniforms(Constants::TEXTUREUNITFORM, 2);
+					mesh->SetUpTexture(shaderProgram);			
 					
 					shaderProgram->UpdateUniforms(Constants::COLORUNIFORM, sprite->color);
 					shaderProgram->UpdateUniforms(Constants::PROJECTIONUNIFORM, camera->projectionMatrix);
@@ -147,9 +139,8 @@ namespace Engine {
 					//shaderProgram->UpdateUniforms("cameraPos", ENGINE->GetSpace("Test GameWorld")->GetCamera()->GET_COMPONENT(TransformComponent)->position);
 
 					//shaderProgram->UpdateUniforms("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
-					shaderProgram->UpdateUniforms("material.diffuse", 0);
-					shaderProgram->UpdateUniforms("material.specular", 1);
-					shaderProgram->UpdateUniforms("material.emission", 2);
+					
+					//shaderProgram->UpdateUniforms("material.emission", 2);
 					shaderProgram->UpdateUniforms("material.shininess", 64.0f);
 						
 					//shaderProgram->UpdateUniforms("direction", camera->Front);
@@ -165,12 +156,12 @@ namespace Engine {
 					model = glm::scale(model, glm::vec3(transform->scale.x, transform->scale.y, transform->scale.z));				
 					shaderProgram->UpdateUniforms(Constants::MODELUNIFORM, model);
 				
-					Sprite::MeshShared mesh = _resourceManager->GetMesh(sprite->spriteTypeName);
-
-					_resourceManager->BindVertexArrays(mesh->Type);
+					
+					mesh->Activate();
+					//_resourceManager->BindVertexArrays(mesh->Type);
 					
 					glDrawArrays(GL_TRIANGLES, mesh->VertexStart, mesh->VertexEnd);
-					texture->Deactivate();
+					//texture->Deactivate();
 					glBindVertexArray(0);
 					shaderProgram->UnUse();
 				}

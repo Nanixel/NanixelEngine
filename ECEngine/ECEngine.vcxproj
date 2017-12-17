@@ -113,13 +113,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\jesse\Desktop\open_gl_stuff\headers;C:\Users\jesse\Documents\Visual Studio 2015\Projects\ECEngine\ECEngineLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\jesse\Desktop\open_gl_stuff\headers;C:\Users\jesse\Documents\Visual Studio 2015\Projects\ECEngine\ECEngineLib;$(SolutionDir)\External Libraries\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OpenGL32.lib;glew32.lib;glew32s.lib;glfw3.lib;glfw3dll.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-graphics-d.lib;ECEngineLib.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\jesse\Desktop\open_gl_stuff\libs;C:\Users\jesse\Documents\Visual Studio 2015\Projects\ECEngine\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenGL32.lib;glew32.lib;glew32s.lib;glfw3.lib;glfw3dll.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-graphics-d.lib;ECEngineLib.lib;assimp-vc140-mt.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\jesse\Desktop\open_gl_stuff\libs;C:\Users\jesse\Documents\Visual Studio 2015\Projects\ECEngine\x64\Debug;$(SolutionDir)\External Libraries\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

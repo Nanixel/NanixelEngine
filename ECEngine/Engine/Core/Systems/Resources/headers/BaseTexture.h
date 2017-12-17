@@ -87,6 +87,7 @@ namespace Texture {
 		GLuint Wrap_T;
 		GLuint Filter_Min;
 		GLuint Filter_Max;
+		std::string Type;
 	};
 	using TexturePointer = std::shared_ptr<Texture::BaseTexture>;
 }

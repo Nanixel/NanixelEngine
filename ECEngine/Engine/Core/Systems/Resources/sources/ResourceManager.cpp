@@ -45,8 +45,8 @@ namespace Engine {
 			//defaultShader->FindUniforms("lightPos");
 			defaultShader->FindUniforms("viewPos");
 			//defaultShader->FindUniforms("material.ambient");
-			defaultShader->FindUniforms("material.diffuse");
-			defaultShader->FindUniforms("material.specular");
+			defaultShader->FindUniforms("material.diffuse1");
+			defaultShader->FindUniforms("material.specular1");
 			defaultShader->FindUniforms("material.emission");
 			defaultShader->FindUniforms("material.shininess");
 
@@ -131,7 +131,7 @@ namespace Engine {
 			return nullptr;
 		}
 
-		void ResourceManager::LoadTextureDataFromFile(const GLchar *file, GLboolean alpha, std::string name) {
+		Texture::TexturePointer ResourceManager::LoadTextureDataFromFile(const GLchar *file, GLboolean alpha, std::string name, std::string type) {
 			Texture::TexturePointer texture = std::make_shared<Texture::BaseTexture>(alpha);
 			int width; 
 			int height;
@@ -142,19 +142,23 @@ namespace Engine {
 
 			if (imageData) {
 				texture->Generate(width, height, imageData);
+				texture->Type = type;
 				_textures.emplace(name, texture);
 			}
 			else {
 				std::cout << "ERROR::TEXTURE::FAILED_TO_LOAD_TEXTURE: " << file << std::endl;
 			}
 			stbi_image_free(imageData);
+			return texture;
 		}
 
-		void ResourceManager::CreateBasicTexture() {
+		Texture::TexturePointer  ResourceManager::CreateBasicTexture() {
 			Texture::TexturePointer texture = std::make_shared<Texture::BaseTexture>(false);
 			GLubyte data[] = { 255, 255, 255, 255 };
 			texture->Generate(1, 1, data);
+			texture->Type = "diffuse";
 			_textures.emplace("base", texture);
+			return texture;
 		}
 		
 		void ResourceManager::BindTexture(const std::string& name) {
@@ -219,7 +223,7 @@ namespace Engine {
 		// This should only set up buffers using Mesh Resources
 		bool ResourceManager::LoadSpriteResourcesIntoBuffers() {
 			bool success = false;
-			if (!_spriteResources.empty()) {
+			if (!_spriteResources.empty()) { // Sprite resources sets up _buffers
 
 				MeshConfiguration::VertexAttribute position(Sprite::POSITION_COORDS, 0);
 				MeshConfiguration::VertexAttribute texture(Sprite::TEXTURE_COORDS, 1);
@@ -244,6 +248,15 @@ namespace Engine {
 				glBindBuffer(GL_ARRAY_BUFFER, _buffers.staticVBO);
 				glBufferData(GL_ARRAY_BUFFER, totalVertexVectorSize,
 					0, GL_STATIC_DRAW);
+
+				GLsizei totalIndiciesSize = std::accumulate(_spriteResources.begin(), _spriteResources.end(), 0, 
+					[](GLsizei sum, const std::pair<std::string, Sprite::MeshShared>& sprite) {
+					return sum + sprite.second->CalculateIndexBlock();
+
+				});
+
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffers.staticEBO);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, totalIndiciesSize, 0, GL_STATIC_DRAW);
 
 				AddVertexDataToBoundBuffer(_spriteResources);
 
@@ -291,11 +304,12 @@ namespace Engine {
 		}
 
 		void ResourceManager::AddVertexDataToBoundBuffer(SpriteMap& sprites) {
-			GLsizeiptr bufferOffset = 0;
+			GLsizei bufferOffset = 0;
 			for (auto spriteSource = sprites.begin(); spriteSource != sprites.end(); ++spriteSource) {
 				if (spriteSource->second->VerticiesCount > 0) {
 					// Keep in mind that the offset is passed by reference here.
 					spriteSource->second->SubstituteData(bufferOffset);
+					spriteSource->second->SubstituteIndexData(bufferOffset);
 				}
 			}
 		}
